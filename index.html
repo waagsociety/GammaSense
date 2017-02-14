@@ -1,0 +1,21 @@
+<html>
+<head>
+  <!--<script type="text/javascript" src="../../../js/lib/ccv.js"></script>-->
+  <!-- Load the polyfill to switch-hit between Chrome and Firefox -->
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <script type="text/javascript" src="src/js/radio.js"></script>
+  <style type="text/css" src="src/css/radio.css"></style>
+  <script>
+    window.onload = initialize;
+  </script>
+  <title>Radioactivity</title>
+</head>
+<body>
+
+
+<video id="localVideo" autoplay muted></video>
+<canvas width="300" height="150" id="localCanvas">
+  <h2>Canvas not supported in your browser</h2>
+</canvas>
+</body>
+</html>
