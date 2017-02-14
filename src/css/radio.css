@@ -24,20 +24,3 @@ a:link { color: #ffffff; } a:visited {color: #ffffff; }
   -webkit-transition-duration: 2s;
   opacity: 0;
 }
-#logo {
-  display: block;
-  top:4;
-  right:4;
-  position:absolute;
-  float:right;
-  #opacity: 0.8;
-}
-
-#credit {
-  display: block;
-  top:28;
-  right:4;
-  position:absolute;
-  float:right;
-  font-size:10px;
-}

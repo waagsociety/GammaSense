@@ -38,7 +38,7 @@ var poll = function() {
   ctx2.lineJoin = "round";
   ctx2.clearRect (0, 0, localCanvas.width,localCanvas.height);
   var outImageData = ctx2.getImageData(0, 0, localCanvas.width,localCanvas.height);
-  grayscale(inImageData,outImageData);
+  blackwhite(inImageData,outImageData);
 
   /* draw detected area */
 
@@ -53,6 +53,24 @@ var grayscale = function(inImageData,outImageData) {
 
     for (var i = 0; i < inPixels.length; i += 4) {
       var avg = (inPixels[i] + inPixels[i + 1] + inPixels[i + 2]) / 3;
+      outImageData.data[i]     = avg; // red
+      outImageData.data[i + 1] = avg; // green
+      outImageData.data[i + 2] = avg; // blue
+      outImageData.data[i + 3] = inPixels[i + 3]; // blue
+    }
+};
+
+var blackwhite = function(inImageData,outImageData) {
+   var inPixels = inImageData.data;
+
+
+    for (var i = 0; i < inPixels.length; i += 4) {
+      var avg = (inPixels[i] + inPixels[i + 1] + inPixels[i + 2]) / 3;
+      if( avg > 125){
+        avg = 255;
+      }else{
+        avg = 0;
+      }
       outImageData.data[i]     = avg; // red
       outImageData.data[i + 1] = avg; // green
       outImageData.data[i + 2] = avg; // blue
