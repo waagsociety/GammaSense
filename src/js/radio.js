@@ -149,11 +149,13 @@ var lumAvrg = function(R,G,B) {
 var blackwhite = function(inImageData,outImageData) {
    var inPixels = inImageData.data;
    var threshold = document.getElementById("thresholdin").value;
+   var counter = 0;
 
   for (var i = 0; i < inPixels.length; i += 4) {
       var avg = lumAvrg(inPixels[i], inPixels[i + 1], inPixels[i + 2]);
       if( avg > threshold){
         avg = 255;
+        counter = counter + 1;
       }else{
         avg = 0;
       }
@@ -163,6 +165,7 @@ var blackwhite = function(inImageData,outImageData) {
       outImageData.data[i + 3] = inPixels[i + 3]; // alpha
       // outImageData.data[i + 3] = 255; // alpha
     }
+    document.getElementById("nrpixel").innerHTML = counter + " / " + (inPixels.length/4);
 };
 
 var onGotStream = function(stream) {
