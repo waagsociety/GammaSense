@@ -4,7 +4,7 @@
   <!-- Load the polyfill to switch-hit between Chrome and Firefox -->
   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
   <script type="text/javascript" src="src/js/radio.js"></script>
-  <style type="text/css" src="src/css/radio.css"></style>
+  <link rel="stylesheet" href="src/css/radio.css">
   <script>
     window.onload = initialize;
   </script>
@@ -14,8 +14,24 @@
 
 
 <video id="localVideo" autoplay muted></video>
-<canvas width="300" height="150" id="localCanvas">
+<canvas id="localCanvas">
   <h2>Canvas not supported in your browser</h2>
 </canvas>
+<div>
+  <label for="select">Filter: </label>
+  <select id="filter">
+    <option value="none">None</option>
+    <option value="blur">Blur</option>
+    <option value="grayscale">Grayscale</option>
+    <option value="invert">Invert</option>
+    <option value="sepia">Sepia</option>
+  </select>
+  <label for="thresholdin">Threshold to detect bean</label>
+  <input type="number" name="thresholdin" id="thresholdin" value="125">
+  <label for="secondsin">Poll interval (seconds)</label>
+  <input type="number" name="secondsin" id="secondsin" value="2">
+  <input id="grayscalebtn" value="Gray Scale" type="button">
+  <input id="blackwhitebtn" value="Black &amp; White" type="button">
+</div>
 </body>
 </html>
