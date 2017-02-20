@@ -1,0 +1,116 @@
+* {
+  font-family: Avenir;
+  line-height: 1;
+  vertical-align: baseline;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  border-width: 0;
+  border-style: solid;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+img#display {
+  background-color: #000;
+  width: 100%;
+  height: 100%;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scaleX(-1);
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+#monitor.is-active canvas {
+  opacity: 1;
+}
+
+button.prominent {
+  background-color: #08d88c;
+}
+
+button {
+  color: white;
+  background-color: #111;
+  font-size: 150%;
+  padding: 0.325em 1.5em 0.5em;
+  display: inline-block;
+  height: 2.5em;
+  border-radius: 1.5em;
+  width: 9em;
+  max-width: 100%;
+  cursor: pointer;
+}
+
+button[disabled] {
+  color: #555;
+  background-color: #111;
+  cursor: default;
+}
+
+header {
+  color: white;
+  text-align: center;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 4.5em;
+  z-index: 1000;
+  padding: 1em;
+}
+
+#monitor {
+  color: white;
+  padding: 8em 5%;
+  width: 100%;
+  max-width: 56em;
+  margin: 0 auto;
+  z-index: 100;
+}
+
+#monitor h1 {
+  font-size: 250%;
+  line-height: 1.4;
+  margin: 0 0 0.325em;
+}
+
+#monitor p {
+  font-size: 125%;
+}
+
+#monitor #measure-stop,
+#monitor.is-active #measure-start {
+  display: none;
+}
+
+#monitor.is-active #measure-stop {
+  display: inline-block;
+}
+
+nav.controls {
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.5em;
+  height: 8em;
+  z-index: 100000;
+}
+
+
+
+
+
+
+
+

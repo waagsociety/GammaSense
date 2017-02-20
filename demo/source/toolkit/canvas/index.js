@@ -1,0 +1,6 @@
+export { createImageData } from './createImageData'
+export { getContext } from './getContext'
+export { getContext2d } from './getContext2d'
+export { getImageData } from './getImageData'
+export { putImageData } from './putImageData'
+export { toDataURL } from './toDataURL'

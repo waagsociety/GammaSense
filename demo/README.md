@@ -1,20 +1,5 @@
-Urban AirQ feedback app
-=======================
+# Get started
+Open index.html to try the demo
 
-## Development
-```
-npm install
-npm start
-```
-
-## Deploying
-
-```
-# One-time setup
-git remote add production ssh://sensor.waag.org/var/repo/airq.git
-```
-
-```
-# Trigger deploy
-npm run deploy
-```
+To develop run `npm install && npm start`.
+To build a new version of the app run `npm run build`.
