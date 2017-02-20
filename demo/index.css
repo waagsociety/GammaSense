@@ -85,6 +85,7 @@ header {
 
 #monitor p {
   font-size: 125%;
+  line-height: 1.75;
 }
 
 #monitor #measure-stop,
