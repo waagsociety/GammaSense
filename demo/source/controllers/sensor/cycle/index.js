@@ -14,7 +14,7 @@ export function cycle(interval) {
       function iteration() {
         if (initialised === false || callback(video) === false) {
           video.srcObject.getVideoTracks().forEach(track => track.stop())
-          video.src = null
+          video.src = ''
           clearInterval(trigger)
         }
         initialised = true

@@ -94,7 +94,7 @@ function cycle(interval) {
           video.srcObject.getVideoTracks().forEach(function (track) {
             return track.stop();
           });
-          video.src = null;
+          video.src = '';
           clearInterval(trigger);
         }
         initialised = true;
@@ -196,14 +196,39 @@ function sensor$1(interval, setup) {
 }
 
 var measuring = false;
-function monitor(iterations) {
+function monitor(circle) {
 
   var canvas = document.querySelector('#display');
+  // const minute = 60 * 1000
+  var length = circle.getTotalLength();
+
+  var start = Date.now();
+  circle.style.strokeDasharray = length;
+  circle.style.strokeDashoffset = 0;
+
+  var storage = [];
   var count = 0;
+  var total = 0;
 
   return function (_ref) {
     var sample = _ref.sample,
         imageData = _ref.imageData;
+
+
+    var duration = Date.now() - start;
+
+    if (duration >= 60000) {
+      console.log('reset', storage);
+      storage.push({ start: start, count: count, total: total, gamma: total / count });
+      start = Date.now();
+      total = 0;
+      count = 0;
+    } else {
+      circle.style.strokeDashoffset = -(duration / 1000 * (length / 30));
+      total += sample.gamma;
+      ++count;
+    }
+
     var width = imageData.width,
         height = imageData.height;
 
@@ -224,11 +249,13 @@ function radioactive(gamma) {
 
   var start = element.querySelector('#measure-start');
   var stop = element.querySelector('#measure-stop');
-  var measure = sensor$1(200, config.video);
+  var countdown = element.querySelector('#countdown');
+
+  var measure = sensor$1(250, config.video);
 
   start.addEventListener('click', function (event) {
     element.classList.toggle('is-active');
-    measure(monitor(1000), filter(2, radioactive));
+    measure(monitor(countdown), filter(2, radioactive));
     measuring = true;
   });
 

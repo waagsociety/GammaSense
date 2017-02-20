@@ -3,12 +3,36 @@ import sensor, { filter } from './controllers/sensor'
 import { putImageData } from './toolkit'
 
 let measuring = false
-function monitor(iterations) {
-  
+function monitor(circle) {
+
   const canvas = document.querySelector('#display')
+  // const minute = 60 * 1000
+  const length = circle.getTotalLength()
+
+  let start = Date.now()
+  circle.style.strokeDasharray = length
+  circle.style.strokeDashoffset = 0
+  
+  const storage = []
   let count = 0
+  let total = 0
 
   return function({ sample, imageData }) {
+
+    const duration = Date.now() - start
+
+    if (duration >= 60000) {
+      console.log('reset', storage)
+      storage.push({ start, count, total, gamma: total / count })
+      start = Date.now()
+      total = 0
+      count = 0
+    }
+    else {
+      circle.style.strokeDashoffset = - ((duration / 1000) * (length / 30))
+      total += sample.gamma
+      ++count
+    }
     
     const { width, height } = imageData
     canvas.width = width
@@ -30,16 +54,17 @@ function radioactive(gamma) {
   return [128 - offset, 255, 192 - offset, 255]
 }
 
-
 !function(element) {
   
   const start = element.querySelector('#measure-start')
   const stop = element.querySelector('#measure-stop')
-  const measure = sensor(200, config.video)
+  const countdown = element.querySelector('#countdown')
+
+  const measure = sensor(250, config.video)
 
   start.addEventListener('click', function(event) {
     element.classList.toggle('is-active')
-    measure(monitor(1000), filter(2, radioactive))
+    measure(monitor(countdown), filter(2, radioactive))
     measuring = true
   })
 
