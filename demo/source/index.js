@@ -5,7 +5,7 @@ import { putImageData, average } from './toolkit'
 let measuring = false
 function monitor(canvas, svg) {
 
-  const sampleTime = 2000
+  const sampleTime = 60000
 
   const circle = svg.querySelector('circle')
   const text = svg.querySelector('text')
