@@ -10,6 +10,6 @@ export default {
 	plugins: [
 		resolve(),
 		babel(),
-		// uglify(),
+		uglify(),
 	],
 }

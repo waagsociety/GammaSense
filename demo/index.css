@@ -110,16 +110,22 @@ nav.controls {
 
 svg {
   opacity: 0;
-  stroke: #08d88c;
-  stroke-width: 2;
+  fill: currentColor;
   width: 20em;
   z-index: 10;
   position: absolute;
   left: 50%;
   margin: 0 0 0 -10em;
   transition: opacity 0.4s ease;
-  z-index: 10000;
+  z-index: 10000;  
+}
+
+#countdown {
   transform: rotate(-90deg);
+  transform-origin: center;
+  fill: none;
+  stroke: #08d88c;
+  stroke-width: 2;
 }
 
 #monitor.is-active svg {

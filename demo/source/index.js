@@ -1,12 +1,14 @@
 import { config } from './config'
 import sensor, { filter } from './controllers/sensor'
-import { putImageData } from './toolkit'
+import { putImageData, average } from './toolkit'
 
 let measuring = false
-function monitor(circle) {
+function monitor(canvas, svg) {
 
-  const canvas = document.querySelector('#display')
-  // const minute = 60 * 1000
+  const sampleTime = 2000
+
+  const circle = svg.querySelector('circle')
+  const text = svg.querySelector('text')
   const length = circle.getTotalLength()
 
   let start = Date.now()
@@ -14,6 +16,7 @@ function monitor(circle) {
   circle.style.strokeDashoffset = 0
   
   const storage = []
+  const samples = []
   let count = 0
   let total = 0
 
@@ -21,15 +24,18 @@ function monitor(circle) {
 
     const duration = Date.now() - start
 
-    if (duration >= 60000) {
-      console.log('reset', storage)
-      storage.push({ start, count, total, gamma: total / count })
+    if (duration >= sampleTime) {
+      const gamma = total / count
+      const onePercent = sample.resolution / 100
+      samples.push(gamma / onePercent)
+      text.textContent = Math.round(average(...samples) * 100) / 100
+      storage.push({ start, count, total, gamma })
       start = Date.now()
       total = 0
       count = 0
     }
     else {
-      circle.style.strokeDashoffset = - ((duration / 1000) * (length / 30))
+      circle.style.strokeDashoffset = - ((duration / 1000) * (length / ((sampleTime / 1000) / 2)))
       total += sample.gamma
       ++count
     }
@@ -56,15 +62,17 @@ function radioactive(gamma) {
 
 !function(element) {
   
+  const canvas = element.querySelector('canvas')
+  const svg = element.querySelector('svg')
+
   const start = element.querySelector('#measure-start')
   const stop = element.querySelector('#measure-stop')
-  const countdown = element.querySelector('#countdown')
 
   const measure = sensor(250, config.video)
 
   start.addEventListener('click', function(event) {
     element.classList.toggle('is-active')
-    measure(monitor(countdown), filter(2, radioactive))
+    measure(monitor(canvas, svg), filter(2, radioactive))
     measuring = true
   })
 

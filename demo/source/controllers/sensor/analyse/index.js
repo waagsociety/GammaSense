@@ -9,6 +9,7 @@ export function analyse(imageData, filter) {
   const sample = {
     time: Date.now(),
     resolution: length / 4,
+    distribution: Array(255).fill(0),
     gamma: 0,
   }
 
@@ -29,6 +30,7 @@ export function analyse(imageData, filter) {
     data[a] = filtered[3]
 
     sample.gamma += hasGammaRadiation
+    sample.distribution[0 | lumincance] += 1
 
   }
 
