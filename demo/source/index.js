@@ -1,4 +1,8 @@
+import magritte from 'magritte'
 import { config } from './config'
+import { storeModel } from './model'
+import { Controls, Header, Monitor } from './view'
+
 import sensor, { filter } from './controllers/sensor'
 import { putImageData } from './toolkit'
 
@@ -45,34 +49,35 @@ function monitor(circle) {
   
 }
 
-function heatmap(gamma) {
-  return [255, 255 - gamma, 0, 255]
-}
-
+const heatmap = gamma => [255, 255 - gamma, 0, 255]
 function radioactive(gamma) {
   const offset = 0 | (gamma* 0.75)
   return [128 - offset, 255, 192 - offset, 255]
 }
 
-!function(element) {
+const render = magritte('#app', Header, Monitor, Controls)
+
+render(storeModel)
+
+// !function(element) {
   
-  const start = element.querySelector('#measure-start')
-  const stop = element.querySelector('#measure-stop')
-  const countdown = element.querySelector('#countdown')
+//   const start = element.querySelector('#measure-start')
+//   const stop = element.querySelector('#measure-stop')
+//   const countdown = element.querySelector('#countdown')
 
-  const measure = sensor(250, config.video)
+//   const measure = sensor(250, config.video)
 
-  start.addEventListener('click', function(event) {
-    element.classList.toggle('is-active')
-    measure(monitor(countdown), filter(2, radioactive))
-    measuring = true
-  })
+//   start.addEventListener('click', function(event) {
+//     element.classList.toggle('is-active')
+//     measure(monitor(countdown), filter(2, radioactive))
+//     measuring = true
+//   })
 
-  stop.addEventListener('click', function(event) {
-    element.classList.toggle('is-active')
-    measuring = false
-  })
+//   stop.addEventListener('click', function(event) {
+//     element.classList.toggle('is-active')
+//     measuring = false
+//   })
 
-}(document.querySelector('#monitor'))
+// }(document.querySelector('#monitor'))
 
 

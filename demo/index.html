@@ -7,29 +7,13 @@
 </head>
 <body>
 
-  <header>
-    <h1>GammaSense</h1>
-  </header>
+  <div id="app"></div>
 
-  <section id="monitor">
+  <canvas id="display"></canvas>
 
-    <h1>Meten is Weten</h1>
-
-    <p>
-    Maskeer je webcam met tape om een meting te verrichten. Het is belangrijk dat de gebruikte tape geen licht doorlaat, wat dan resteert is gammastraling.
-    </p>
-
-    <canvas id="display"></canvas>
-    <svg viewBox="0 0 320 320" hidden>
-      <circle id="countdown" cx="160" cy="160" r="144"/>
-    </svg>
-
-    <nav class="controls">
-      <button id="measure-start" class="prominent" type='button'>Start meting</button>
-      <button id="measure-stop" type='button'>Stop meting</button>
-    </nav>
-
-  </section>
+  <svg viewBox="0 0 320 320" hidden>
+    <circle id="countdown" cx="160" cy="160" r="144"/>
+  </svg>
 
   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
   <script src="bundle/index.js"></script>
