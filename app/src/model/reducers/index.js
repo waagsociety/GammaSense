@@ -2,12 +2,10 @@ import { combineReducers } from 'redux'
 import sensor from './sensor'
 import session from  './session'
 
-const reducers = createCombinedReducers({
+export default createCombinedReducers({
   sensor,
   session,
 })
-
-export default reducers
 
 // reducers
 function createCombinedReducers(object) {

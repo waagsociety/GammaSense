@@ -1,5 +1,7 @@
 export default {
-  id: null,
+  id: Date.now(),
+  informed: null,
+  baseline: null,
   support: {
     canvas: hasCanvasSupport(),
     webRTC: hasWebRTCSupport(),

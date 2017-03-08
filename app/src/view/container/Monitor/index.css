@@ -1,0 +1,19 @@
+
+.Monitor button {
+  color: #fff;
+  background-color: #141820;
+  font-size: 112.5%;
+  width: 12em;
+  padding: 1em 0.5em 1.25em;
+  margin: 0 0 0 -6em;
+  border-radius: 2em;
+  position: absolute;
+  bottom: 1.5em;
+  left: 50%;
+  z-index: 100;
+  cursor: pointer;
+}
+
+.Monitor button.prominent {
+  background-color: #18C880;
+}

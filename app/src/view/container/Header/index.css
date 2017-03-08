@@ -1,0 +1,30 @@
+.Header {
+  color: white;
+  width: 100%;
+  height: 4em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.Header h1 {
+  text-align: center;
+  padding: 0.75em 1em;
+  font-size: 150%;
+}
+
+.Header button {
+  background-color: #eee;
+  position: absolute;
+  width: 3em;
+  height: 3em;
+  margin: 0.5em 1em;
+  border-radius: 0.25em;
+}
+
+.Header button.primary { left: 0 }
+.Header button.primary ~ h1 { margin-left: 4rem }
+
+.Header button.secondary { right: 0 }
+.Header button.secondary ~ h1 { margin-right: 4rem }
