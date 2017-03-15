@@ -10,6 +10,7 @@ export function analyse(imageData, filter) {
   const resolution = length / 4
   const distribution = []
   let gamma = 0
+  let color = 0
 
   while (index < length) {
     
@@ -20,6 +21,8 @@ export function analyse(imageData, filter) {
 
     const lumincance = luma(data[r], data[g], data[b])
     const hasGammaRadiation = lumincance > 0
+    
+    color += data[r] !== data[g] && data[g] !== data[b]
 
     const filtered = filter(lumincance)
     data[r] = filtered[0]
@@ -28,12 +31,15 @@ export function analyse(imageData, filter) {
     data[a] = filtered[3]
 
     gamma += hasGammaRadiation
+    
     distribution[0 | lumincance] += 1
 
   }
 
+  const tooMuchColor = (color / resolution) > 1 / 100
+  const error = tooMuchColor
   const percentage = (gamma / resolution) * 100
-  const sample = { time, resolution, distribution, percentage, gamma }
+  const sample = { time, resolution, distribution, percentage, gamma, error }
 
   return { imageData, sample }
 
