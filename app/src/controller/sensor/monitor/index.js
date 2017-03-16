@@ -14,12 +14,13 @@ export function monitor(callback, filter, display) {
     
     const normalised = analyse(imageData, filter)
     const { sample } = normalised
+    const { error } = sample
 
     const continued = callback({ sample, imageData })
 
     display(normalised.imageData, continued)
 
-    return continued
+    return continued && !error
 
   }
 

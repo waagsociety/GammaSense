@@ -1,8 +1,10 @@
 import React from 'react'
 
-export default function Graph({ width, height, layers, strokeWidth = 4 }) {
+export const Graph = ({ width, height, layers }) => {
 
   const viewBox = [0, 0, width, height].join(' ')
+  const strokeWidth = 4
+
   const pathProperties = { width, height, bleed: strokeWidth } 
 
   const paths = layers.map(layer => {

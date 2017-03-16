@@ -1,9 +1,10 @@
 import React from 'react'
 
-export default function SensorToggle({ state, events }) {
+export const SensorToggle = ({ state, events }) => {
   
   const { sensor } = state
   const { active } = sensor
+  console.log(active)
   const { start, stop } = events
   
   return active

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Header, Monitor } from './container'
+import { Header, Monitor, SideBar } from './container/'
 
 function Route({ component, hash, path }) {
   hash = hash === undefined || location.hash === hash
@@ -27,7 +27,7 @@ export default class App extends React.Component {
       <Header {...model}/>
       <Monitor {...model}/>
       <Route component={<H1 {...model}/>} hash='#information'/>
-      <Route component={<H1 {...model}/>} hash='#mijn-metingen'/>
+      <Route component={<SideBar>afaf</SideBar>} hash='#mijn-metingen'/>
     </div>
   }
 

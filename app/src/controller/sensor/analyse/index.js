@@ -36,8 +36,8 @@ export function analyse(imageData, filter) {
 
   }
 
-  const tooMuchColor = (color / resolution) > 1 / 100
-  const error = tooMuchColor
+  const monochrome = (color / resolution) < 1 / 100
+  const error = !monochrome && { monochrome }
   const percentage = (gamma / resolution) * 100
   const sample = { time, resolution, distribution, percentage, gamma, error }
 

@@ -1,4 +1,8 @@
 import config from '../../../config'
+import { map, path, pipe, mean } from 'ramda'
+
+const getPercentage = path(['percentage'])
+const getAveragePercentage = pipe(map(getPercentage), mean)
 
 export const sensor = {
 
@@ -10,15 +14,18 @@ export const sensor = {
     // const cycles = [] // used to cache completed measurements
 
     config.sensor(({ sample, imageData }) => {
-            
+      
       const { active } = getState().sensor
+
       if (active) {
         
+        const { error } = sample
         samples.push(sample)
         const average = getAveragePercentage(samples)
         
-        const measurement = { samples, average }
-        dispatch.sensor({ measurement })
+        const measurement = { samples, average, error }
+        
+        dispatch.sensor({ measurement, active: !error })
 
       }
       else dispatch.sensor({ measurement: null })
@@ -29,13 +36,4 @@ export const sensor = {
 
   },
 
-}
-
-function getAveragePercentage(data) {
-  let sum = 0
-  const length = data.length
-  for (let index = 0; index < length; ++index) {
-    sum += data[index].percentage
-  }
-  return sum / length
 }
