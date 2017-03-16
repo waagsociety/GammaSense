@@ -1,5 +1,5 @@
 import React from 'react'
-import { Header, Monitor, SideBar } from './container/'
+import { Header, History, Monitor, Information } from './container/'
 
 function Route({ component, hash, path }) {
   hash = hash === undefined || location.hash === hash
@@ -7,15 +7,16 @@ function Route({ component, hash, path }) {
   return hash && path ? component : null
 }
 
-const H1 = ({ state }) => {
-  const { hash } = state.route
-  return <h1>{hash}</h1>
-}
-
 export default class App extends React.Component {
 
   componentDidMount(x) {
     const { model } = this.props
+    
+    if (!model.state.session.informed) {
+      location.hash = '#informatie'
+      model.dispatch.session({ informed: true })
+    }
+
     window.onhashchange = function(event) {
       model.dispatch.route({ hash: location.hash })
     }
@@ -23,11 +24,12 @@ export default class App extends React.Component {
 
   render() {
     const { model } = this.props
+    console.log(model.state.session.informed)
     return <div>
       <Header {...model}/>
       <Monitor {...model}/>
-      <Route component={<H1 {...model}/>} hash='#information'/>
-      <Route component={<SideBar>afaf</SideBar>} hash='#mijn-metingen'/>
+      <Route component={<Information {...model}/>} hash='#informatie'/>
+      <Route component={<History {...model}/>} hash='#mijn-metingen'/>
     </div>
   }
 

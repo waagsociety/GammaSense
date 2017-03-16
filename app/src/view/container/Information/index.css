@@ -1,0 +1,12 @@
+.Information {
+  padding: 1em;
+}
+
+.Information ol {
+  padding: 1em;
+}
+
+.Information ol li {
+  margin: 0 0 1em;
+  list-style: initial;
+}

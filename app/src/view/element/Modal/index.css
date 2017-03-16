@@ -1,13 +1,64 @@
 .Modal {
+  background-color: rgba(0,0,0,0.75);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 2.5%;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.Modal div {
   color: #000;
   background-color: #fff;
-  position: fixed; 
+  position: relative;
   width: 24em;
-  height: 16em;
-  padding: 2em;
-  margin: -8em 0 0 -12em;
-  left: 50%;
-  top: 50%;
-  z-index: 100;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  padding: 1.5em 1.5em 4.5em;
   border-radius: 0.25em;
+  overflow: hidden;
+}
+
+.Modal h1 {
+  line-height: 1.5;
+  margin: 0 0 0.625em;
+}
+
+.Modal p {
+  line-height: 1.5;
+  margin: 0 0 1em;
+}
+
+.Modal nav {
+  background-color: inherit;
+  width: 100%;
+  height: 3.25em;
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #ddd;
+}
+
+.Modal .action {
+  color: #141820;
+  flex-grow: 1;
+  padding: 0 0.25em 0.25em;
+  cursor: pointer;
+}
+
+.Modal a {
+  text-decoration: none;
+}
+
+.Modal .action:last-child {
+  color: #18C880;
+  font-weight: 500;
 }

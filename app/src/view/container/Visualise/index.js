@@ -29,11 +29,13 @@ export const Visualise = ({ measurement }) => {
 
     return <section className="Visualise">
       
-      <h1>Average: {average.toFixed(2)}%</h1>
-      
+      <h1>Metingen</h1>
+
       <ul>
+        <li>Gemiddelde: {average.toFixed(2)}%</li>
         <li>Piek: {spike.toFixed(2)}%</li>
-        <li>Metingen: {length}</li>
+        <li>Metingen: {Math.floor(length / samplesPerMinute)}</li>
+        <li>Samples: {length}</li>
       </ul>
 
       <Graph width={width} height={height} layers={layers}/>

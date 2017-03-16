@@ -25,7 +25,7 @@ export const sensor = {
         
         const measurement = { samples, average, error }
         
-        dispatch.sensor({ measurement, active: !error })
+        dispatch.sensor({ measurement, error, active: !error })
 
       }
       else dispatch.sensor({ measurement: null })

@@ -1,4 +1,5 @@
 export { Header } from './Header'
+export { History } from './History'
 export { Monitor } from './Monitor'
-export { SideBar } from './SideBar'
+export { Information } from './Information'
 export { Visualise } from './Visualise'

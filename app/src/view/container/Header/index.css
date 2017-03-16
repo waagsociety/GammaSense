@@ -15,12 +15,13 @@
 }
 
 .Header button {
-  background-color: #eee;
+  color: white;
   position: absolute;
   width: 3em;
   height: 3em;
   margin: 0.5em 1em;
   border-radius: 0.25em;
+  cursor: pointer;
 }
 
 .Header button.primary { left: 0 }

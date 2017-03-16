@@ -11,5 +11,9 @@ export const events = (dispatch, getState) => ({
     console.log('stop')
     sensor.monitor({ dispatch, active: false, getState })
   },
+
+  reset: event => {
+    dispatch.sensor({ measurement: null, error: false })
+  },
   
 })

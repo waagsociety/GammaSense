@@ -1,5 +1,4 @@
-
-.Monitor button {
+.SensorToggle {
   color: #fff;
   background-color: #141820;
   font-size: 112.5%;
@@ -14,6 +13,6 @@
   cursor: pointer;
 }
 
-.Monitor button.prominent {
+.SensorToggle.prominent {
   background-color: #18C880;
 }

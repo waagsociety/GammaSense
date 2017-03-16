@@ -1,0 +1,9 @@
+.Icon {
+  /*background-color: #333;*/
+  width: 2em;
+  height: 2em;
+  stroke: currentColor;
+  fill: currentColor;
+  text-anchor: middle;
+  stroke-width: 0;
+}
