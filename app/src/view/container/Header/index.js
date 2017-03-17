@@ -1,12 +1,10 @@
 import React from 'react'
-import config from '../../../config'
 import { Icon } from '../../element/'
 import './index.css'
 
 export const Header = ({ state }) => {
   
   const { routes } = state.config
-  console.log('routes', routes.history)
 
   return <header className="Header">
 

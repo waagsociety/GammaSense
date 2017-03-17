@@ -8,7 +8,7 @@ export function analyse(imageData, filter) {
 
   const time = Date.now()
   const resolution = length / 4
-  const distribution = []
+  // const distribution = []
   let gamma = 0
   let color = 0
 
@@ -32,14 +32,14 @@ export function analyse(imageData, filter) {
 
     gamma += hasGammaRadiation
     
-    distribution[0 | lumincance] += 1
+    // distribution[0 | lumincance] += 1
 
   }
 
   const monochrome = (color / resolution) < 1 / 100
   const error = !monochrome && { monochrome }
   const percentage = (gamma / resolution) * 100
-  const sample = { time, resolution, distribution, percentage, gamma, error }
+  const sample = { time, resolution, percentage, gamma, error }
 
   return { imageData, sample }
 

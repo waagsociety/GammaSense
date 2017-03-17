@@ -12,8 +12,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     const { model } = this.props
-    const { routes } = model.state.config
-    
+    // const { routes } = model.state.config    
     if (!model.state.session.informed) {
       // location.href = routes.information
       model.dispatch.session({ informed: true })
