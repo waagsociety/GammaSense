@@ -11,11 +11,13 @@ export const sensor = {
     dispatch.sensor({ active })
     
     const samples = []
-    // const cycles = [] // used to cache completed measurements
+    const cycles = []
 
     config.sensor(({ sample, imageData }) => {
       
       const { active } = getState().sensor
+      const { length } = samples
+      const completedCycle = length  === 60
 
       if (active) {
         
@@ -24,11 +26,18 @@ export const sensor = {
         const average = getAveragePercentage(samples)
         
         const measurement = { samples, average, error }
+        if (completedCycle) {
+          cycles.push(measurement)
+          samples.length = 0
+        }
         
-        dispatch.sensor({ measurement, error, active: !error })
+        dispatch.sensor({ measurement, cycles, error, active: !error })
 
       }
-      else dispatch.sensor({ measurement: null })
+      else {
+        console.log(cycles)
+        dispatch.sensor({ measurement: null })
+      }
       
       return active
 

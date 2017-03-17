@@ -1,5 +1,6 @@
 import sensor, { visualise } from './controller/sensor'
 
+// sensor
 function radioactive(gamma) {
   const offset = 0 | (gamma* 0.75)
   return gamma > 0
@@ -20,6 +21,18 @@ const media = {
   },
 }
 
+// location
+const { origin, pathname, search } = location
+const root = [origin, pathname, search].join('').replace(/\/$/, '')
+console.log(root, location)
+
+const routes = {
+  home: root + '#',
+  information: root + '#informatie',
+  history: root + '#mijn-metingen',
+}
+
 export default {
-  sensor: sensor({ interval, media, filter, display })
+  routes,
+  sensor: sensor({ interval, media, filter, display }),
 }

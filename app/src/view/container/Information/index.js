@@ -3,6 +3,8 @@ import './index.css'
 
 export const Information = ({ state }) => {
 
+  const { routes } = state.config
+
   return <section className='Information full primary panel'>
 
     <header>
@@ -20,7 +22,7 @@ export const Information = ({ state }) => {
     </article>
 
     <nav>
-      <button><a href='./#'>Ik begrijp het</a></button>
+      <button><a href={routes.home}>Ik begrijp het</a></button>
     </nav>
 
   </section>

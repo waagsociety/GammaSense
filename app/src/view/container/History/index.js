@@ -3,6 +3,8 @@ import './index.css'
 
 export const History = ({ state }) => {
 
+  const { routes } = state.config
+
   return <section className='History secondary panel'>
 
     <header>
@@ -16,7 +18,7 @@ export const History = ({ state }) => {
     </article>
 
     <nav>
-      <button><a href='./#'>Sluit</a></button>
+      <button><a href={routes.home}>Sluit</a></button>
     </nav>
 
   </section>

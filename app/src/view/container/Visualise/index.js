@@ -14,7 +14,7 @@ export const Visualise = ({ measurement }) => {
   if (measurement) {
     
     const { innerWidth: width, innerHeight: height } = window
-    const { samples, average } = measurement
+    const { samples, cycles, average } = measurement
     const { length } = samples
 
     const percentages = getPercentageMap(samples)
@@ -34,7 +34,7 @@ export const Visualise = ({ measurement }) => {
       <ul>
         <li>Gemiddelde: {average.toFixed(2)}%</li>
         <li>Piek: {spike.toFixed(2)}%</li>
-        <li>Metingen: {Math.floor(length / samplesPerMinute)}</li>
+        <li>Metingen: {cycles.length}</li>
         <li>Samples: {length}</li>
       </ul>
 

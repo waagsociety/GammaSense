@@ -15,7 +15,7 @@ export const Monitor = ({ state, dispatch, getState }) => {
   const { start, stop, reset } = events(dispatch, getState)
   
   const actions = [
-    { label: "Leest instructies", event: reset, route: '#informatie' },
+    { label: "Bekijk instructies", event: reset, route: '#informatie' },
     { label: "Probeer opnieuw", event: reset },
   ]
   
