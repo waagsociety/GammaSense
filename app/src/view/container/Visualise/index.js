@@ -34,7 +34,7 @@ export const Visualise = ({ measurement }) => {
       <ul>
         <li>Gemiddelde: {average.toFixed(2)}%</li>
         <li>Piek: {spike.toFixed(2)}%</li>
-        <li>Metingen: {cycles.length}</li>
+        <li>Metingen: {(cycles || []).length}</li>
         <li>Samples: {length}</li>
       </ul>
 
