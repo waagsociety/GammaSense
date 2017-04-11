@@ -1,0 +1,15 @@
+---
+  - hosts: all
+    remote_user: stefano
+    become: yes
+    roles:
+     - role: thefinn93.letsencrypt
+       letsencrypt_webroot_path: /var/www/html
+       letsencrypt_email: stefano@gammasense.org
+       letsencrypt_cert_domains:
+        - www.gammasense.org
+        # - example.net
+       letsencrypt_renewal_command_args: '--renew-hook "systemctl restart nginx"'
+     - role: mattiaslundberg.letsencrypt
+       letsencrypt_domain_name: www.gammasense.org
+       letsencrypt_email: stefano@gammasense.org
