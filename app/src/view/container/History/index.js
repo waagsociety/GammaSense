@@ -4,8 +4,9 @@ import './index.css'
 export const History = ({ state }) => {
 
   const { routes } = state.config
+  const hidden = routes.history !== location.hash
 
-  return <section className='History secondary panel'>
+  return <section className='History secondary panel' hidden={hidden}>
 
     <header>
       <h1>Mijn metingen</h1>

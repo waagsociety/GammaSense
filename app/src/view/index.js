@@ -1,5 +1,5 @@
 import React from 'react'
-import { Header, History, Monitor, Information } from './container/'
+import { Header, History, Monitor, Information, Map } from './container/'
 
 function Route({ component, href, hash, path }) {
   href = href === undefined || location.href === href
@@ -34,8 +34,9 @@ export default class App extends React.Component {
     return <div>
       <Header {...model}/>
       <Monitor {...model}/>
-      <Route component={<Information {...model}/>} hash={routes.information}/>
-      <Route component={<History {...model}/>} hash={routes.history}/>
+      <Map {...model}/>
+      <Information {...model}/>
+      <History {...model}/>
     </div>
 
   }

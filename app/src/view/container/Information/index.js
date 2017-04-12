@@ -4,8 +4,9 @@ import './index.css'
 export const Information = ({ state }) => {
 
   const { routes } = state.config
+  const hidden = routes.information !== location.hash
 
-  return <section className='Information full primary panel'>
+  return <section className='Information full primary panel' hidden={hidden}>
 
     <header>
       <h1>Informatie</h1>

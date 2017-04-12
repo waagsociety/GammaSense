@@ -13,7 +13,6 @@ export default dialogue.create({
         secondary: "View Instructions",
       },
     },
-
   },
   nl_NL: {
     measure: {

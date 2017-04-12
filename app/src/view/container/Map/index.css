@@ -1,0 +1,13 @@
+.Map {
+  background-image: url(map.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center; 
+  color: transparent;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}

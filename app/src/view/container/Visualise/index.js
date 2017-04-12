@@ -38,7 +38,7 @@ export const Visualise = ({ measurement }) => {
         <li>Samples: {length}</li>
       </ul>
 
-      <Graph width={width} height={height} layers={layers}/>
+      <Graph width={width} height={height / 2} layers={layers}/>
 
     </section>
 
