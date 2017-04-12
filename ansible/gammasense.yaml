@@ -9,6 +9,7 @@
       admin_mail: "{{ my_user }}/@{{ my_site }}"
       root_dir: /var/www
       app_name: gamma
+      my_home: "/home/{{ my_user }}"
       git_home: "/home/{{ my_user }}/src/{{ app_name }}"
       git_repo: https://github.com/waagsociety/makingradio.git
       node_version: 6.x
@@ -48,9 +49,9 @@
      - role: ChengLong.iptables
     tasks:
       - name: Set Node repo
-        script: ./install_node_repo.sh "{{ git_home }}/nodesource_setup.sh" "{{ node_version }}" "{{ my_user }}"
+        script: ./install_node_repo.sh "{{ my_home }}/nodesource_setup.sh" "{{ node_version }}" "{{ my_user }}"
         args:
-          creates: "{{ git_home }}/nodesource_setup.sh"
+          creates: "{{ my_home }}/nodesource_setup.sh"
       - name: Deploy app
         script: ./deploy.sh {{ git_home }} "{{ root_dir }}/{{ app_name }}" "{{ git_repo }}" "{{ my_user }}"
       # args:

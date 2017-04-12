@@ -5,16 +5,13 @@ MY_USER=${4}
 
 APP_DIR=${GIT_DIR}/app
 
-if [ -d "${DEST_DIR}" ]
-then
-    sudo rm -rf ${DEST_DIR}
-fi
-
-sudo mkdir ${DEST_DIR}
-
 if [ ! -d "${GIT_DIR}" ]
 then
 	sudo su $MY_USER -c "git clone ${REPO} ${GIT_DIR}"
+elif sudo su $MY_USER -c "git -C ${GIT_DIR} status" | grep "Your branch is up-to-date with" >/dev/null
+then
+  echo "Code not changed"
+  exit 0
 fi
 
 cd ${GIT_DIR};
@@ -41,7 +38,12 @@ then
     exit 1
 fi
 
-cd -
+if [ -d "${DEST_DIR}" ]
+then
+    sudo rm -rf ${DEST_DIR}
+fi
+
+sudo mkdir ${DEST_DIR}
 
 sudo cp -r ${APP_DIR}/build/* ${DEST_DIR}
 sudo chown -R www-data:www-data ${DEST_DIR}
