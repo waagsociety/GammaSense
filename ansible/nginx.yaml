@@ -1,15 +1,38 @@
 ---
-  - hosts: all
+  - name: Configure app web server
+    hosts: all
     remote_user: stefano
     become: yes
+    vars:
+      my_site: gammasense.org
+      admin_mail: stefano@gammasense.org
+      root_dir: /var/www
+      app_name: gamma
     roles:
      - role: thefinn93.letsencrypt
-       letsencrypt_webroot_path: /var/www/html
-       letsencrypt_email: stefano@gammasense.org
+       letsencrypt_webroot_path: "{{ root_dir }}"
+       letsencrypt_email: "{{ admin_mail }}"
        letsencrypt_cert_domains:
-        - www.gammasense.org
+        - "{{ my_site }}"
         # - example.net
        letsencrypt_renewal_command_args: '--renew-hook "systemctl restart nginx"'
-     - role: mattiaslundberg.letsencrypt
-       letsencrypt_domain_name: www.gammasense.org
-       letsencrypt_email: stefano@gammasense.org
+     - role: nickjj.nginx
+       tags: nginx
+       # nginx_basic_auth:
+       #   - { user: 'coolperson', password: 'heylookatmeicanviewtheprivateblog' }
+       nginx_sites:
+         default:
+           domains: ["{{ my_site }}", "www.{{ my_site }}"]
+           default_server: True
+           root: "{{ root_dir }}/{{ app_name }}"
+           nginx_letsencrypt_root: "{{ root_dir }}/challenges"
+           ssl:
+             certpath: /etc/letsencrypt/live
+           # upstreams:
+           #   - name: 'myapp'
+           #     servers: ['localhost:3000', 'localhost:3001']
+         # blog:
+         #   domains: ['blog.example.com']
+         #   serve_assets:
+         #     enabled: False
+         #   basic_auth: True
