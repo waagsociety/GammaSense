@@ -33,6 +33,8 @@ then
     exit 1
 fi
 
+sudo su $MY_USER -c "rm -rf ./build"
+
 if ! sudo su $MY_USER -c "npm run build"
 then
     echo "Error running npm build"
