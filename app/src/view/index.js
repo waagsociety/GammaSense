@@ -11,16 +11,19 @@ function Route({ component, href, hash, path }) {
 export default class App extends React.Component {
 
   componentDidMount() {
+    
     const { model } = this.props
-    // const { routes } = model.state.config    
+    const { routes } = model.state.config
+
     if (!model.state.session.informed) {
-      // location.href = routes.information
+      location.href = routes.information
       model.dispatch.session({ informed: true })
     }
 
     window.onhashchange = function(event) {
       model.dispatch.route({ hash: location.hash })
     }
+
   }
 
   render() {
@@ -31,8 +34,8 @@ export default class App extends React.Component {
     return <div>
       <Header {...model}/>
       <Monitor {...model}/>
-      <Route component={<Information {...model}/>} href={routes.information}/>
-      <Route component={<History {...model}/>} href={routes.history}/>
+      <Route component={<Information {...model}/>} hash={routes.information}/>
+      <Route component={<History {...model}/>} hash={routes.history}/>
     </div>
 
   }

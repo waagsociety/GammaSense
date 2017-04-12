@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import config from '../../config'
+import dialog from '../../dialog'
 import route from './route'
 import sensor from './sensor'
 import session from  './session'
@@ -7,6 +8,7 @@ import session from  './session'
 
 export default createCombinedReducers({
   config,
+  dialog,
   route,
   sensor,
   session,

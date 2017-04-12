@@ -24,20 +24,17 @@ export const sensor = {
         
         const { error } = sample
         samples.push(sample)
-        
+
         const measurement = summarize(samples)
         if (completedCycle) {          
           cycles.push(summarize(samples.slice(0 - density)))
           console.log('completedCycle', cycles)
         }
-        
+
         dispatch.sensor({ measurement, cycles, error, active: !error })
 
       }
-      else {
-        console.log(cycles.slice())
-        dispatch.sensor({ measurement: null })
-      }
+      else dispatch.sensor({ measurement: null, baseline: null })
       
       return active
 

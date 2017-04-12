@@ -25,13 +25,14 @@ const media = {
 }
 
 // location
-const { origin, pathname, search } = location
-const root = [origin, pathname, search].join('').replace(/\/$/, '')
+// const { origin, pathname, search } = location
+// const root = [origin, pathname, search].join('').replace(/\/$/, '')
 
 const routes = {
-  home: root + '#',
-  information: root + '#informatie',
-  history: root + '#mijn-metingen',
+  home: '#',
+  measurement: '#meting',
+  information: '#informatie',
+  history: '#mijn-metingen',
 }
 
 // console.log(root, routes, location)

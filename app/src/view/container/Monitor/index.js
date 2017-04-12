@@ -1,23 +1,22 @@
 import React from 'react'
 import { path } from 'ramda'
-
-import dialog from '../../../dialog'
 import { events } from './events'
 
 import { Visualise } from '../'
 import { Modal, SensorToggle } from '../../element/'
 
-const getErrorContent = path(['monitor', 'error'])
+const getErrorContent = path(['measure', 'error'])
 
 export const Monitor = ({ state, dispatch, getState }) => {
 
-  const { measurement, error } = state.sensor
+  const { sensor, dialog } = state
+  const { measurement, error } = sensor
   const { start, stop, reset } = events(dispatch, getState)
   
-  const actions = [
-    { label: "Bekijk instructies", event: reset, route: '#informatie' },
-    { label: "Probeer opnieuw", event: reset },
-  ]
+  const actions = {
+    primary: { event: reset, route: '#informatie' },
+    secondary: { event: reset },
+  }
   
   const feedback = error
     ? <Modal content={getErrorContent(dialog)} actions={actions}/> 
