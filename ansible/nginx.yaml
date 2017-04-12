@@ -1,13 +1,17 @@
 ---
   - name: Configure app web server
     hosts: all
-    remote_user: stefano
+    remote_user: "{{ my_user }}"
     become: yes
     vars:
+      my_user: stefano
       my_site: gammasense.org
       admin_mail: stefano@gammasense.org
       root_dir: /var/www
       app_name: gamma
+      git_home: /home/stefano/src/gamma
+      git_repo: https://github.com/waagsociety/makingradio.git
+      node_version: 6.x
     roles:
      - role: thefinn93.letsencrypt
        letsencrypt_webroot_path: "{{ root_dir }}"
@@ -36,3 +40,15 @@
          #   serve_assets:
          #     enabled: False
          #   basic_auth: True
+
+    #  - role: mrlesmithjr.nodejs
+    #    nodejs_debian_packages:
+    #      - npm
+    #      - build-essential
+    tasks:
+      - name: Set Node repo
+        script: ./install_node_repo.sh "{{ git_home }}" "{{ node_version }}" "{{ my_user }}"
+      - name: Deploy app
+        script: ./deploy.sh {{ git_home }} "{{ root_dir }}/{{ app_name }}" "{{ git_repo }}" "{{ my_user }}"
+      # args:
+      #   creates: /the/created/file.txt
