@@ -3,7 +3,7 @@ import './index.css'
 
 export const Map = ({ state }) => {
 
-  const { routes } = state.config
+  // const { routes } = state.config
 
   return <section className='Map full content'>
 

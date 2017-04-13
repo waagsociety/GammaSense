@@ -1,12 +1,12 @@
 import React from 'react'
 import { Header, History, Monitor, Information, Map } from './container/'
 
-function Route({ component, href, hash, path }) {
-  href = href === undefined || location.href === href
-  hash = hash === undefined || location.hash === hash
-  path = path === undefined || location.pathname === path 
-  return href && hash && path ? component : null
-}
+// function Route({ component, href, hash, path }) {
+//   href = href === undefined || location.href === href
+//   hash = hash === undefined || location.hash === hash
+//   path = path === undefined || location.pathname === path 
+//   return href && hash && path ? component : null
+// }
 
 export default class App extends React.Component {
 
@@ -29,7 +29,7 @@ export default class App extends React.Component {
   render() {
 
     const { model } = this.props
-    const { routes } = model.state.config
+    // const { routes } = model.state.config
 
     return <div>
       <Header {...model}/>
