@@ -19,7 +19,7 @@
        letsencrypt_email: "{{ admin_mail }}"
        letsencrypt_cert_domains:
         - "{{ my_site }}"
-        # - example.net
+        - "www.{{ my_site }}"
        letsencrypt_renewal_command_args: '--renew-hook "systemctl restart nginx"'
      - role: nickjj.nginx
        tags: nginx
@@ -27,7 +27,7 @@
        #   - { user: 'coolperson', password: 'heylookatmeicanviewtheprivateblog' }
        nginx_sites:
          default:
-           domains: ["{{ my_site }}", "www.{{ my_site }}"]
+           domains: ["{{ my_site }}"]
            default_server: True
            root: "{{ root_dir }}/{{ app_name }}"
            nginx_letsencrypt_root: "{{ root_dir }}/challenges"
@@ -41,7 +41,13 @@
          #   serve_assets:
          #     enabled: False
          #   basic_auth: True
-
+         www:
+            domains: ["www.{{ my_site }}"]
+            default_server: False
+            root: "{{ root_dir }}/{{ app_name }}"
+            nginx_letsencrypt_root: "{{ root_dir }}/challenges"
+            ssl:
+              certpath: /etc/letsencrypt/live
     #  - role: mrlesmithjr.nodejs
     #    nodejs_debian_packages:
     #      - npm

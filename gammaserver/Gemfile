@@ -1,0 +1,9 @@
+# A sample Gemfile
+source "https://rubygems.org"
+
+# gem "rails"
+gem "sinatra"
+gem "sinatra-contrib"
+gem "pg"
+gem "passenger", ">= 5.0.25", require: "phusion_passenger/rack_handler"
+gem "json"
