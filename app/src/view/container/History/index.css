@@ -1,6 +1,7 @@
 .History {
   padding: 1em;
   transition: 167ms ease;
+  background-color: white;
 }
 
 .History[hidden] {

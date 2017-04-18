@@ -1,6 +1,10 @@
 import React from 'react'
-import { length } from 'ramda'
+import { length, path } from 'ramda'
 import './index.css'
+
+const pathMeasureStart = path(['measure', 'start'])
+const pathMeasureStop = path(['measure', 'stop'])
+const pathMeasureCancel = path(['measure', 'cancel'])
 
 export const SensorToggle = ({ state, events }) => {
   
@@ -12,10 +16,10 @@ export const SensorToggle = ({ state, events }) => {
   
   return active
     ? <button className="SensorToggle" type="button" onClick={stop} disabled={initialised}>
-        {initialised ? dialog.measure.stop : dialog.measure.cancel}
+        {initialised ? pathMeasureStop(dialog) : pathMeasureCancel(dialog)}
       </button>
     : <button className="SensorToggle prominent start" type="button" onClick={start}>
-        {dialog.measure.start}
+        {pathMeasureStart(dialog)}
       </button>
 
 }

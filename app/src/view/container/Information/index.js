@@ -9,22 +9,28 @@ export const Information = ({ state }) => {
   return <section className='Information full primary panel' hidden={hidden}>
 
     <header>
-      <h1>Informatie</h1>
+      <h1>Instructies</h1>
     </header>
 
     <article>
 
-      <ol>
-        <li>Dek je camera volledig af met tape dat licht blokkeert,</li>
-        <li>klik “Start Meting” om te beginnen,</li>
-        <li>wacht minimaal 1 minuut om een volledige meting te verrichten.</li>
-      </ol>
+      <section>
+
+        <ol>
+          <li>Dek je camera volledig af met tape dat licht blokkeert,</li>
+          <li>klik “Start Meting” om te beginnen,</li>
+          <li>wacht minimaal 1 minuut om een volledige meting te verrichten.</li>
+        </ol> 
+
+        <nav>
+          <button><a href={routes.home}>Ik begrijp het</a></button>
+        </nav>
+
+      </section>
 
     </article>
 
-    <nav>
-      <button><a href={routes.home}>Ik begrijp het</a></button>
-    </nav>
+   
 
   </section>
 
