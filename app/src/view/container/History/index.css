@@ -1,3 +1,12 @@
 .History {
   padding: 1em;
+  transition: 167ms ease;
+}
+
+.History[hidden] {
+  display: block;
+  opacity: 0.75;
+  transform: translateX(100%);
+  top: 0;
+  transform-origin: center;
 }

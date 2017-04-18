@@ -1,5 +1,6 @@
 .Information {
   padding: 1em;
+  transition: 200ms;
 }
 
 .Information ol {
@@ -9,4 +10,16 @@
 .Information ol li {
   margin: 0 0 1em;
   list-style: initial;
+}
+
+.Information[hidden] {
+  display: block;
+  opacity: 0;
+  transform-origin: center bottom;
+  transform: scale(0.875);
+  pointer-events: none;
+}
+
+canvas {
+  pointer-events: none;
 }

@@ -1,19 +1,20 @@
-.SensorToggle {
+.LocationToggle {
   color: #fff;
   background-color: #141820;
+  text-indent: -999em;
   font-size: 112.5%;
-  width: 12.5em;
+  width: 3em;
   height: 3em;
   padding: 0.875em 0.5em 1.25em;
-  margin: 0 0 0 -6em;
-  border-radius: 2em;
+  margin: 0 0 0 0;
+  border-radius: 1.5em;
   position: absolute;
   bottom: 1.5em;
-  left: 50%;
+  left: 1.5em;
   z-index: 100;
   cursor: pointer;
 }
 
-.SensorToggle.prominent {
+.LocationToggle.prominent {
   background-color: #18C880;
 }

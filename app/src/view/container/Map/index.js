@@ -1,15 +1,15 @@
 import React from 'react'
 import './index.css'
 
+import { LocationToggle } from '../../element/'
+
 export const Map = ({ state }) => {
 
-  // const { routes } = state.config
+  return <section className='Map full content' hidden={state.sensor.active}>
 
-  return <section className='Map full content'>
+    <div id='MapBox'></div>
 
-    <header>
-      <h1>Map</h1>
-    </header>
+    <LocationToggle events={{}} state={state} />
 
   </section>
 
