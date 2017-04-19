@@ -8,7 +8,7 @@ import { Modal, LocationToggle } from '../../element/'
 
 const errorContent = {
   title: "Uw locatie kon niet worden bepaald",
-  message: "Oops.",
+  message: "Het is helaas niet mogelijk een meting te doen zonder locatie-gegevens.",
 }
 
 const transferCoords = transfer('longitude', 'latitude')

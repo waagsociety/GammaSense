@@ -1,4 +1,5 @@
 import { sensor } from '../../../model'
+import { geolocation } from '../../../controller'
 
 export const events = (dispatch, getState) => ({
   
@@ -14,6 +15,10 @@ export const events = (dispatch, getState) => ({
 
   reset: event => {
     dispatch.sensor({ measurement: null, error: false })
+  },
+
+  prepare: event => {
+    geolocation(dispatch)
   },
   
 })

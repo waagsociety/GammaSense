@@ -13,7 +13,7 @@ export const Monitor = ({ state, dispatch, getState }) => {
 
   const { sensor, config } = state
   const { measurement, error } = sensor
-  const { start, stop, reset } = events(dispatch, getState)
+  const { prepare, start, stop, reset } = events(dispatch, getState)
   
   const errorActions = {
     primary: { label: "Probeer opnieuw", event: reset, route: '#informatie' },
@@ -26,7 +26,7 @@ export const Monitor = ({ state, dispatch, getState }) => {
 
   return <section className="Monitor">
     {feedback}
-    <SensorToggle events={{ start, stop }} state={state}/>
+    <SensorToggle events={{ prepare, start, stop }} state={state}/>
   </section>
 
 }
