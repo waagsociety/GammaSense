@@ -1,5 +1,6 @@
 import React from 'react'
 import MapComponent from 'mapbox-gl-react'
+import { geolocation } from '../../../controller/'
 import './index.css'
 
 import events from './events'
@@ -13,15 +14,14 @@ const errorContent = {
 const transferCoords = transfer('longitude', 'latitude')
 
 export const Map = ({ state, dispatch }) => {
-  
-  const map = window._MAPBOX_
-  const { requestLocation, reset } = events(dispatch)
+
+  const { requestLocation, reset } = events(dispatch, window._MAPBOX_)
   const { location, config } = state
   const { mapbox } = config
   const { data, error } = location
 
   const errorActions = {
-    primary: { label: "Oké", event: reset },
+    primary: { label: "OK", event: reset },
   }
 
   const coords = transferCoords(data && data.coords)
@@ -36,7 +36,7 @@ export const Map = ({ state, dispatch }) => {
       zoom={mapbox.zoom}
       eventHandlers={{ 
         load: map => {
-          window._MAPBOX_ = map
+          window._MAPBOX_ = geolocation(dispatch, map)
           dispatch.location({ ready: true })
         }
       }}

@@ -1,3 +1,3 @@
 export { sensor } from './sensor'
-export { location } from './location'
+export { geolocation } from './geolocation'
 export { dialogue } from './dialogue'

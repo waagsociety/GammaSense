@@ -1,6 +1,5 @@
 import React from 'react'
 import { Header, History, Monitor, Information, Map } from './container/'
-import { location } from '../controller/'
 
 export default class App extends React.Component {
 

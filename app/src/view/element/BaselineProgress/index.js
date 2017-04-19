@@ -2,7 +2,6 @@ import React from 'react'
 import './index.css'
 
 export function BaselineProgress({ percentage }) {
-  console.log(percentage)
   return <div className='BaselineProgress'>
     <h1>Initializing</h1>
     <h2>{Math.round(percentage)}%</h2>
