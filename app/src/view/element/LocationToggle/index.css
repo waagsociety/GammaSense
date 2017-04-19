@@ -24,4 +24,10 @@
 
 .LocationToggle.loading .Icon {
   opacity: 0.5;
+  animation: loading 600ms infinite alternate;
+}
+
+@keyframes loading {
+  from { opacity: 1 }
+  to { opacity: 0.25 }
 }
