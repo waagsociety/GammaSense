@@ -6,8 +6,6 @@ export default class App extends React.Component {
 
   componentDidMount() {
     
-    // location()
-
     const { model } = this.props
     const { routes } = model.state.config
 
@@ -15,6 +13,8 @@ export default class App extends React.Component {
       location.href = routes.information
       model.dispatch.session({ informed: true })
     }
+
+    console.log('dialog', model.state.dialog)
 
     window.onhashchange = function(event) {
       model.dispatch.route({ hash: location.hash })

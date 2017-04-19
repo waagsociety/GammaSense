@@ -5,6 +5,7 @@ export default {
   support: {
     canvas: hasCanvasSupport(),
     webRTC: hasWebRTCSupport(),
+    geolocation: hasGeolocationSupport(),
   },
 }
 
@@ -14,4 +15,8 @@ function hasCanvasSupport() {
 
 function hasWebRTCSupport() {
   return !!navigator.getUserMedia
+}
+
+function hasGeolocationSupport() {
+  return !!navigator.geolocation
 }

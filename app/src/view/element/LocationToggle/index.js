@@ -1,12 +1,26 @@
 import React from 'react'
 import './index.css'
 
-export const LocationToggle = ({ state, events }) => {
+import { Icon } from '../Icon/'
+
+export const LocationToggle = ({ events, location }) => {
   
-  // const { location } = state
+  const { requestLocation } = events
+  const { support, loading, error } = location
+  const disabled = !support || loading
+
+  const className = classNames('LocationToggle icon', loading && 'loading', error && 'error')
   
-  return <button className="LocationToggle icon" type="button">
-    Get My Location
+  return <button className={className} type="button" onClick={requestLocation} disabled={disabled}>
+    <Icon name='location'/> Get My Location
   </button>
 
+}
+
+function classNames(...list) {
+  return list.filter(isString).join(' ')
+}
+
+function isString(value) {
+  return typeof value === 'string'
 }

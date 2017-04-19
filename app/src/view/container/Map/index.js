@@ -1,15 +1,31 @@
 import React from 'react'
 import './index.css'
 
-import { LocationToggle } from '../../element/'
+import events from './events'
+import { Modal, LocationToggle } from '../../element/'
 
-export const Map = ({ state }) => {
+const errorContent = {
+  title: "Uw locatie kon niet worden bepaald",
+  message: "Oops.",
+}
+
+export const Map = ({ state, dispatch }) => {
+  
+  const { requestLocation, reset } = events(dispatch)
+  const { location } = state
+  const { error } = location
+
+  const errorActions = {
+    primary: { label: "Oké", event: reset },
+  }
 
   return <section className='Map full content' hidden={state.sensor.active}>
 
     <div id='MapBox'></div>
 
-    <LocationToggle events={{}} state={state} />
+    { error ? <Modal content={errorContent} {...errorActions}/> : null }
+
+    <LocationToggle events={{ requestLocation }} location={location} />
 
   </section>
 

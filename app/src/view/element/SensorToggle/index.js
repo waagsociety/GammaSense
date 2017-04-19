@@ -1,25 +1,21 @@
 import React from 'react'
-import { length, path } from 'ramda'
+import { length } from 'ramda'
 import './index.css'
-
-const pathMeasureStart = path(['measure', 'start'])
-const pathMeasureStop = path(['measure', 'stop'])
-const pathMeasureCancel = path(['measure', 'cancel'])
 
 export const SensorToggle = ({ state, events }) => {
   
-  const { sensor, dialog } = state
-  const { active, cycles } = sensor
+  const { sensor } = state
+  const { active, measurement } = sensor
   const { start, stop } = events
 
-  const initialised = !!length(cycles)
+  const initialised = measurement && !!length(measurement.cycles)
   
   return active
-    ? <button className="SensorToggle" type="button" onClick={stop} disabled={initialised}>
-        {initialised ? pathMeasureStop(dialog) : pathMeasureCancel(dialog)}
+    ? <button className="SensorToggle" type="button" onClick={stop}>
+        {initialised ? 'Stop meting' : 'Annuleer meting'}
       </button>
     : <button className="SensorToggle prominent start" type="button" onClick={start}>
-        {pathMeasureStart(dialog)}
+        {'Start meting'}
       </button>
 
 }

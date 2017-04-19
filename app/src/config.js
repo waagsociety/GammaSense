@@ -10,9 +10,9 @@ function radioactive(gamma) {
 
 const filter = radioactive
 const display = visualise(document.querySelector('#display'))
-const minute = 1000 * 60
+const sampleTime = 250 * 60
 const interval = 1000
-const density = minute / interval
+const density = sampleTime / interval
 
 const media = {
   audio: false,

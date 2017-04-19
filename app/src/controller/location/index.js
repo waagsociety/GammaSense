@@ -1,5 +1,3 @@
-
-
 export function location() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(console.log)

@@ -1,26 +1,28 @@
 import React from 'react'
-import { path } from 'ramda'
 import { events } from './events'
 
 import { Visualise } from '../'
 import { Modal, SensorToggle } from '../../element/'
 
-const getErrorContent = path(['measure', 'error'])
+const errorContent = {
+  title: "De meting kon niet worden voltooid",
+  message: "Controleer of webcam goed afgedekt wordt met tape.",
+}
 
 export const Monitor = ({ state, dispatch, getState }) => {
 
-  const { sensor, dialog } = state
+  const { sensor, config } = state
   const { measurement, error } = sensor
   const { start, stop, reset } = events(dispatch, getState)
   
-  const actions = {
-    primary: { event: reset, route: '#informatie' },
-    secondary: { event: reset },
+  const errorActions = {
+    primary: { label: "Probeer opnieuw", event: reset, route: '#informatie' },
+    secondary: { label: "Bekijk instructies", event: reset },
   }
   
   const feedback = error
-    ? <Modal content={getErrorContent(dialog)} actions={actions}/> 
-    : <Visualise measurement={measurement}/>
+    ? <Modal content={errorContent} {...errorActions}/>
+    : <Visualise measurement={measurement} config={config}/>
 
   return <section className="Monitor">
     {feedback}
