@@ -1,0 +1,6 @@
+- include: ruby.yml
+  tags: [ruby_core]
+- include: bundler.yml
+  tags: [ruby_bundler]
+- include: permissions.yml
+  tags: [ruby_permissions]

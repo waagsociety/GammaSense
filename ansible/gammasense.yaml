@@ -13,7 +13,10 @@
       git_home: "/home/{{ my_user }}/src/{{ app_name }}"
       git_repo: https://github.com/waagsociety/makingradio.git
       node_version: 6.x
+      app_port: 8090
     roles:
+     - role: zzet.postgresql
+     - role: palkan.ruby
      - role: thefinn93.letsencrypt
        letsencrypt_webroot_path: "{{ root_dir }}"
        letsencrypt_email: "{{ admin_mail }}"
@@ -48,6 +51,23 @@
             nginx_letsencrypt_root: "{{ root_dir }}/challenges"
             ssl:
               certpath: /etc/letsencrypt/live
+         app:
+             domains: ["{{ my_site }}"]
+             listen_http: "{{ app_port }}"
+             listen_https: "{{ app_port }}"
+             default_server: False
+             root: "{{ root_dir }}"
+             nginx_letsencrypt_root: "{{ root_dir }}/challenges"
+             ssl:
+               certpath: /etc/letsencrypt/live
+             upstreams:
+               - name: 'gammaapp'
+                 servers: ['localhost:4000']
+                 add_proxy_settings:
+                   - 'proxy_http_version 1.1'
+                   - 'proxy_set_header Host $http_host'
+                   - 'proxy_set_header Upgrade $http_upgrade'
+                   - 'proxy_buffering off'
     #  - role: mrlesmithjr.nodejs
     #    nodejs_debian_packages:
     #      - npm

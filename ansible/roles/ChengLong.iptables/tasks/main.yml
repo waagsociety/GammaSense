@@ -6,7 +6,7 @@
     - iptables-persistent
 
 - name: Apply rules
-  script: basic_iptables_rules.sh
+  script: basic_iptables_rules.sh "{{ app_port }}"
 
 # - name: Restart iptables-persistent
 #   service: name=iptables-persistent state=restarted enabled=yes

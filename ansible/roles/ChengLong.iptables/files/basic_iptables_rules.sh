@@ -19,6 +19,12 @@ iptables -A INPUT -p tcp --dport 80 -j ACCEPT
 
 # ACCEPT incoming HTTPS
 iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+
+if [ "${1} " != " " ]
+then
+# ACCEPT app requests
+  iptables -A INPUT -p tcp --dport ${1} -j ACCEPT
+fi
 #####################################################
 
 # Default INPUT AND FORWARD to DROP

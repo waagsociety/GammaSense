@@ -5,7 +5,7 @@ Ansible role to setup basic iptables rules. You *SHOULD* edit the rules in `file
 This role does the following:
 
 1. Install iptables and iptables-persistent
-2. ACCEPT all loopback traffic 
+2. ACCEPT all loopback traffic
 3. ACCEPT current/established connections
 4. ACCEPT incoming SSH
 5. ACCEPT incoming HTTP
@@ -28,7 +28,7 @@ NONE
 Dependencies
 ------------
 
-NONE 
+NONE
 
 Example Playbook
 ----------------
@@ -37,7 +37,7 @@ Example Playbook
 - hosts: servers
   roles:
      - ChengLong.iptables
-  sudo: yes
+  become: yes
 ```
 
 License

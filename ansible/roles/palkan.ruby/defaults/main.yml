@@ -1,0 +1,4 @@
+ruby_version: 2.2
+ruby_name: ruby-2.2.2
+ruby_url: "http://cache.ruby-lang.org/pub/ruby/{{ ruby_version }}/{{ ruby_name }}.tar.gz"
+ruby_tmp_path: "/usr/local/src/{{ ruby_name }}"
