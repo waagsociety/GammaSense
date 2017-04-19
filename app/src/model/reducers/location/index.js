@@ -1,6 +1,6 @@
 export default {
   data: null,
-  loading: false,
+  loading: true,
   ready: false,
   error: null,
   support: !!navigator.geolocation,

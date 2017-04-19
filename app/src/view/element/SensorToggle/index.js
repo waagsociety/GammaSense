@@ -6,7 +6,7 @@ export const SensorToggle = ({ state, events }) => {
   
   const { sensor, location } = state
   const { active, measurement } = sensor
-  const { data } = location
+  const { data, loading } = location
   const { prepare, start, stop } = events
 
   const initialEvent = data ? start : prepare
@@ -16,7 +16,7 @@ export const SensorToggle = ({ state, events }) => {
     ? <button className="SensorToggle" type="button" onClick={stop}>
         {initialised ? 'Stop meting' : 'Annuleer meting'}
       </button>
-    : <button className="SensorToggle prominent start" type="button" onClick={initialEvent}>
+    : <button className="SensorToggle prominent start" type="button" onClick={initialEvent} disabled={loading}>
         {'Start meting'}
       </button>
 

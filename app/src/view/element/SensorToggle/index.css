@@ -17,3 +17,8 @@
 .SensorToggle.prominent {
   background-color: #18C880;
 }
+
+.SensorToggle[disabled] {
+  background-color: #1e5f44;
+  color: #669280;
+}

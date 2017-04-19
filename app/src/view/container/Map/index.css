@@ -27,7 +27,7 @@
 .mapboxgl-ctrl.mapboxgl-ctrl-attrib,
 .mapboxgl-ctrl.mapboxgl-ctrl-attrib a {
   color: #888;
-  font-family: system;
+  font-family: Avenir, system;
 }
 
 .mapboxgl-ctrl.mapboxgl-ctrl-attrib {

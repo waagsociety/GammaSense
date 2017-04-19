@@ -1,7 +1,8 @@
 import config from '../../../config'
-import { mean } from 'ramda'
+import { mean, last } from 'ramda'
 
 const { density } = config.monitor
+const transferCoords = transfer('longitude', 'latitude')
 
 export const sensor = {
 
@@ -18,7 +19,9 @@ export const sensor = {
 
     config.sensor(({ sample, imageData }) => {
       
-      const { active } = getState().sensor
+      const state = getState()
+      const { sensor, location } = state
+      const { active } = sensor
       const { error } = sample
 
       const measurement = update(sample)
@@ -26,14 +29,11 @@ export const sensor = {
 
       if (active) {        
         if (cycles.length && samples.length % density === 0) {
-          console.log(cycles)
+          storeData(measurement, location.data)
         }
         dispatch.sensor({ measurement, error, active: !error })
       }
-      else {
-        console.log(cycles)
-        dispatch.sensor({ measurement: null })
-      }
+      else dispatch.sensor({ measurement: null })
       
       return active
 
@@ -41,6 +41,18 @@ export const sensor = {
 
   },
 
+}
+
+function storeData({ cycles, baseline, initialized, session }, { coords }) {
+
+  const cycle = last(cycles)
+  const location = transferCoords(coords)
+
+  console.log(location)
+
+  const x = JSON.stringify({ session, cycle, baseline, initialized, location, session })
+
+  console.log(x)
 }
 
 function initialize(metadata) {
@@ -80,9 +92,13 @@ function summarizeSamples(data, { session, initialized, baseline }) {
 
 }
 
-// function summarize(samples) {
-//   const time = Date.now()
-//   const amount = samples.length
-//   const average = getAveragePercentage(samples)
-//   return { time, samples, average, amount }
-// }
+function transfer(...keys) {
+
+  return function(object) {
+    if (object) return keys.reduce(function(result, key, index) {
+      result[index] = object[key]
+      return result
+    }, [])
+  }
+
+}
