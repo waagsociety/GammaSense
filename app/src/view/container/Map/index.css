@@ -1,12 +1,14 @@
 .Map {
-  
+  transition: 250ms 67ms ease;
 }
 
-#MapBox {
-  background-image: url(map.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center; 
+.Map[hidden] {
+  display: block;
+  opacity: 0;
+  transform: scale(0.875);
+}
+
+.mapbox-gl-container {
   color: transparent;
   position: fixed;
   left: 0;
@@ -14,16 +16,22 @@
   width: 100%;
   height: 100%;
   z-index: 1;
-  transition: 200ms ease;
-  transform: scale(1);
-  opacity: 1;
 }
 
-.Map[hidden] {
-  display: block;
+.mapboxgl-canvas-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
-.Map[hidden] #MapBox {
-  opacity: 0;
-  transform: scale(0.875);
+.mapboxgl-ctrl.mapboxgl-ctrl-attrib,
+.mapboxgl-ctrl.mapboxgl-ctrl-attrib a {
+  color: #888;
+  font-family: system;
+}
+
+.mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+  background-color: transparent;
+  padding: 0.5em;
+  opacity: 0.75;
 }

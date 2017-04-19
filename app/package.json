@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "mapbox-gl-react": "^0.1.6",
     "ramda": "^0.23.0",
     "react": "15.4.2",
     "react-dom": "15.4.2",

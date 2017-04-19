@@ -24,10 +24,7 @@ const media = {
   },
 }
 
-// location
-// const { origin, pathname, search } = location
-// const root = [origin, pathname, search].join('').replace(/\/$/, '')
-
+// routes
 const routes = {
   home: '#',
   measurement: '#meting',
@@ -35,10 +32,17 @@ const routes = {
   history: '#mijn-metingen',
 }
 
-// console.log(root, routes, location)
+// mapbox
+const mapbox = {
+  accessToken: 'pk.eyJ1IjoibmF0aGFud2FhZyIsImEiOiJjajFvcjF3c2YwMDIwMzNraGQ0cXp0N3pmIn0.AtMn7ThFay9qJkv_8I85eA',
+  style: 'mapbox://styles/mapbox/dark-v9',
+  center: [0,40],
+  zoom: 2,
+}
 
 export default {
+  mapbox,
+  monitor: { interval, density },
   routes,
   sensor: sensor({ interval, media, filter, display }),
-  monitor: { interval, density },
 }

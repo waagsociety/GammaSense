@@ -6,10 +6,10 @@ import { Icon } from '../Icon/'
 export const LocationToggle = ({ events, location }) => {
   
   const { requestLocation } = events
-  const { support, loading, error } = location
-  const disabled = !support || loading
+  const { support, loading, ready } = location
+  const disabled = !ready || !support || loading
 
-  const className = classNames('LocationToggle icon', loading && 'loading', error && 'error')
+  const className = classNames('LocationToggle icon', loading && 'loading')
   
   return <button className={className} type="button" onClick={requestLocation} disabled={disabled}>
     <Icon name='location'/> Get My Location
