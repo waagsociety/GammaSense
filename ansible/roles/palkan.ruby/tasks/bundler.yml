@@ -1,3 +1,0 @@
-- name: Ruby | Install bundler
-  become: yes
-  gem: name=bundler state=present user_install=no
