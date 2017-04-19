@@ -47,12 +47,17 @@ function storeData({ cycles, baseline, initialized, session }, { coords }) {
 
   const cycle = last(cycles)
   const location = transferCoords(coords)
-
-  console.log(location)
-
-  const x = JSON.stringify({ session, cycle, baseline, initialized, location, session })
+  
+  const x = JSON.stringify({ 
+    session, 
+    cycle, 
+    baseline, 
+    initialized, 
+    location, session 
+  })
 
   console.log(x)
+  
 }
 
 function initialize(metadata) {

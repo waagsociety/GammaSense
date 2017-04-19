@@ -1,5 +1,7 @@
 .Map {
   transition: 250ms 67ms ease;
+  position: absolute;
+  height: 100%;
 }
 
 .Map[hidden] {

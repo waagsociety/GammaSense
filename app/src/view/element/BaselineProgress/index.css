@@ -1,6 +1,6 @@
 .BaselineProgress {
   height: 20em;
-  padding-top: 18em;
+  padding-top: 16em;
 }
 
 .BaselineProgress svg.progress {
@@ -11,7 +11,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  margin: 4em 0 0 -8em;
+  margin: 7.5em 0 0 -8em;
   stroke-width: 2;
 }
 

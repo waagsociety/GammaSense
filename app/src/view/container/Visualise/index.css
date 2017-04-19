@@ -1,8 +1,8 @@
 .Visualise {
   text-align: center;
-  position: relative;
+  position: absolute;
+  width: 100%;
   z-index: 100;
-  padding: 5em 2.5%;
 }
 
 .Visualise h1 {
@@ -10,6 +10,7 @@
   font-size: 250%;
   z-index: 100;
   position: relative;
+  margin-top: 2em;
 }
 
 .Visualise svg {
@@ -33,3 +34,64 @@
 .Visualise li {
   line-height: 1.5;
 }
+
+.dashboard {
+  /*background: red;*/
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 8em 0;
+}
+
+.dashboard li.primary {
+  font-size: 320%;
+  margin-top: 2em;
+}
+
+.dashboard li.primary span {
+  display: block;
+  font-size: 1rem;
+  color: #83878e;
+}
+
+.dashboard li.secondary {
+  /*background-color: blue;*/
+  width: 100%;
+  /*color: blue;*/
+  position: absolute;
+  left: 0;
+  bottom: 5em;
+}
+
+.dashboard li.secondary li {
+  font-size: 125%;
+  text-align: center;
+  display: inline-block;
+  position: relative;
+  width: 8em;
+  margin: 0.5em;
+  padding: 1em 0;
+}
+
+.dashboard li.secondary li span {
+  font-size: 1rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  color: #636569;
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -25,7 +25,6 @@ function reduceToPath(data, { width = 320, height = 240, bleed = 0 }) {
   const margin = bleed / 2
   const percent = height / 100
   const interval = width / (data.length - 1)
-  const endPoint = 'h100 V' + (height + 100) + 'H0Z'
 
   return data.map((item, index) => {
     
@@ -35,6 +34,6 @@ function reduceToPath(data, { width = 320, height = 240, bleed = 0 }) {
     
     return [kind + x, y].join()
 
-  }).concat(endPoint).join(' ')
+  }).join(' ')
 
 }

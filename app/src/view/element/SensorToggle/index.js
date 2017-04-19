@@ -10,7 +10,7 @@ export const SensorToggle = ({ state, events }) => {
   const { prepare, start, stop } = events
 
   const initialEvent = data ? start : prepare
-  const initialised = measurement && !!length(measurement.cycles)
+  const initialised = measurement && measurement.baseline != null
   
   return active
     ? <button className="SensorToggle" type="button" onClick={stop}>
