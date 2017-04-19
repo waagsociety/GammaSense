@@ -1,5 +1,4 @@
 import React from 'react'
-import { length } from 'ramda'
 import './index.css'
 
 export const SensorToggle = ({ state, events }) => {

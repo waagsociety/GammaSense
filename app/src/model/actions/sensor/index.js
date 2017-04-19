@@ -53,7 +53,7 @@ function storeData({ cycles, baseline, initialized, session }, { coords }) {
     cycle, 
     baseline, 
     initialized, 
-    location, session 
+    location,
   })
 
   console.log(x)
