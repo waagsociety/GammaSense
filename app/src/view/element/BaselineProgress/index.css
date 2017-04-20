@@ -1,6 +1,12 @@
 .BaselineProgress {
-  height: 20em;
-  padding-top: 16em;
+  height: 16em;
+  padding: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 16em;
+  height: 16em;
+  margin: -8em 0 0 -8em;
 }
 
 .BaselineProgress svg.progress {
@@ -9,17 +15,26 @@
   z-index: 10;
   display: block;
   position: absolute;
-  left: 50%;
-  top: 50%;
-  margin: 7.5em 0 0 -8em;
+  left: 0;
+  top: 0;
   stroke-width: 2;
 }
 
 .BaselineProgress h1 {
   font-size: 125%!important;
   margin: 0 0 0.75em;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  text-align: center;
 }
 
 .BaselineProgress h2 {
-  font-size: 275%;
+  font-size: 320%;
+  padding: 2em 0 0;
 }
+
+
+
+
+

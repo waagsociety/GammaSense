@@ -1,5 +1,5 @@
 import config from '../../../config'
-import { mean, last, findIndex, eqProps, comparator } from 'ramda'
+import { mean, last, findIndex, comparator } from 'ramda'
 
 const { density } = config.monitor
 const transferCoords = transfer('longitude', 'latitude')
@@ -12,7 +12,6 @@ export const sensor = {
     dispatch.sensor({ active })
 
     const initialized = Date.now()
-    const equalById = eqProps('initialized', initialized)
 
     const update = initialize({
       density,

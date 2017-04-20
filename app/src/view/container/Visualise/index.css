@@ -5,12 +5,13 @@
   z-index: 100;
 }
 
-.Visualise h1 {
+.Visualise > h1 {
   color: white;
   font-size: 250%;
   z-index: 100;
   position: relative;
   margin-top: 2em;
+  display: none;
 }
 
 .Visualise svg {
