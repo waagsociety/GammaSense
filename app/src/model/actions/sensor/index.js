@@ -67,6 +67,51 @@ function storeData({ cycles, baseline, initialized, session, samples }, { coords
     location,
   }
 
+  console.log(new Date(initialized * 1000))
+
+  const post = {
+    ts_device: "2017-04-03 18:11:00",
+    id_device: 1337,
+    id_measure: initialized,
+    mean_value: data.mean,
+    min_value: data.min,
+    max_value: data.max,
+    location,
+  }
+
+  // var data = JSON.stringify({
+  //   "ts_device": "2017-04-03 18:11:00",
+  //   "id_device": 23546445,
+  //   "id_measure": 464774,
+  //   "location": [
+  //     23.4,
+  //     4.67
+  //   ],
+  //   "measured_value": 3242,
+  //   "max_value": 343,
+  //   "min_value": 33,
+  //   "mean_value": 33,
+  //   "baseline": 3434
+  // })
+
+  var xhr = new XMLHttpRequest()
+  xhr.withCredentials = true
+
+  xhr.addEventListener("readystatechange", function () {
+    if (this.readyState === 4) {
+      console.log(this.responseText)
+    }
+  })
+
+  xhr.open("POST", "https://gammasense.org:8090/add");
+  xhr.setRequestHeader("content-type", "application/json");
+  xhr.setRequestHeader("cache-control", "no-cache");
+  xhr.setRequestHeader("postman-token", "41bb6c9f-ec69-835e-0a81-f1d28ead6825");
+
+  xhr.send(JSON.stringify(post))
+
+
+
   const summary = {
     mean: mean(samples),
     min: Math.min(...samples),
