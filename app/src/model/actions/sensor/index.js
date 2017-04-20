@@ -106,7 +106,6 @@ function storeData({ cycles, baseline, initialized, session, samples }, { coords
   xhr.open("POST", "https://gammasense.org:8090/add");
   xhr.setRequestHeader("content-type", "application/json");
   xhr.setRequestHeader("cache-control", "no-cache");
-  xhr.setRequestHeader("postman-token", "41bb6c9f-ec69-835e-0a81-f1d28ead6825");
 
   xhr.send(JSON.stringify(post))
 
