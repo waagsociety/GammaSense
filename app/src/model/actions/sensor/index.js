@@ -34,7 +34,7 @@ export const sensor = {
       if (active) {
         if (cycles.length && samples.length % density === 0) {
           
-          const entry = storeData(measurement, samples, location.data)
+          const entry = storeData(measurement, location.data)
           
           const index = findIndex(item => item.initialized === initialized, history)
           history[index < 0 ? history.length : index] = entry
@@ -56,43 +56,20 @@ export const sensor = {
 
 function storeData({ cycles, baseline, initialized, session, samples }, { coords }) {
 
-  const data = last(cycles)
+  const lastCycle = last(cycles)
   const location = transferCoords(coords)
   
   const body = {
-    session,
-    data,
-    baseline,
-    initialized, 
-    location,
-  }
-
-  console.log(new Date(initialized * 1000))
-
-  const post = {
-    ts_device: "2017-04-03 18:11:00",
+    ts_device: (new Date()).toISOString(),
     id_device: 1337,
     id_measure: initialized,
-    mean_value: data.mean,
-    min_value: data.min,
-    max_value: data.max,
+    measured_value: 1337,
+    mean_value: lastCycle.mean,
+    min_value: lastCycle.min,
+    max_value: lastCycle.max,
     location,
+    baseline,
   }
-
-  // var data = JSON.stringify({
-  //   "ts_device": "2017-04-03 18:11:00",
-  //   "id_device": 23546445,
-  //   "id_measure": 464774,
-  //   "location": [
-  //     23.4,
-  //     4.67
-  //   ],
-  //   "measured_value": 3242,
-  //   "max_value": 343,
-  //   "min_value": 33,
-  //   "mean_value": 33,
-  //   "baseline": 3434
-  // })
 
   var xhr = new XMLHttpRequest()
   xhr.withCredentials = true
@@ -107,17 +84,20 @@ function storeData({ cycles, baseline, initialized, session, samples }, { coords
   xhr.setRequestHeader("content-type", "application/json");
   xhr.setRequestHeader("cache-control", "no-cache");
 
-  xhr.send(JSON.stringify(post))
+  xhr.send(JSON.stringify(body))
 
-
-
-  const summary = {
-    mean: mean(samples),
-    min: Math.min(...samples),
-    max: Math.max(...samples),
+  return {
+    data: cycles,
+    summary: {
+      mean: mean(samples),
+      min: Math.min(...samples),
+      max: Math.max(...samples),
+    },
+    session,
+    baseline,
+    initialized, 
+    location,
   }
-
-  return Object.assign(body, { data: cycles, summary })
   
 }
 
