@@ -8,7 +8,7 @@ export function geolocation(dispatch, map) {
     dispatch.location({ data, loading: false })
     map.flyTo({
       center: transferCoords(data.coords),
-      zoom: Math.max(12, map.getZoom())
+      zoom: Math.max(12.5, map.getZoom())
     })
   }
 

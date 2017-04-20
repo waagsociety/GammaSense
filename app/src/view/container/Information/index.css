@@ -47,8 +47,15 @@
   margin: 0 auto;
   border-radius: 0.25em;
   transition: 240ms 500ms ease-in-out;
-  height: 1200px;
+  /*height: 1200px;*/
   /*position: relative;*/
+}
+
+.Information button {
+  background: #eee;
+  padding: 0.875em 1em 1em;
+  border-radius: 0.25em;
+  cursor: pointer;
 }
 
 .Information[hidden] article section {

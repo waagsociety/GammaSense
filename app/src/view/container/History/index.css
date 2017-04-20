@@ -60,3 +60,11 @@
   z-index: 10000;
 }
 
+.History button {
+  background: #eee;
+  padding: 0.875em 1em 1em;
+  border-radius: 0.25em;
+  cursor: pointer;
+  top: 0.625em;
+}
+

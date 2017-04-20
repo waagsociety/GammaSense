@@ -24,8 +24,6 @@ export default class App extends React.Component {
   render() {
 
     const { model } = this.props
-    // const { routes } = model.state.config
-
     return <div>
       <Header {...model}/>
       <Monitor {...model}/>

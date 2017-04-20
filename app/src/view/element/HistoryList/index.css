@@ -1,0 +1,15 @@
+.HistoryList li.item {
+  margin: 1em;
+  padding: 0 0 1em;
+  border-bottom: 1px solid #eaeaea;
+  line-height: 1.5;
+}
+
+.HistoryList li.item li {
+  display: inline-block;
+  margin: 0.5em 1em 0 0;
+}
+
+.History p {
+  padding: 1em;
+}

@@ -25,7 +25,7 @@ export const History = ({ state }) => {
       {
         history.length
           ? <HistoryList data={history} />
-          : <p>Hier worden afgeronde metingen (binnenkort) opgeslagen.</p>
+          : <p>Je hebt nog geen meting gedaan.</p>
       }
       
 

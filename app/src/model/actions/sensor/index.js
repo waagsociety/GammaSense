@@ -73,11 +73,8 @@ function storeData({ cycles, baseline, initialized, session, samples }, { coords
 
   var xhr = new XMLHttpRequest()
   xhr.withCredentials = true
-
   xhr.addEventListener("readystatechange", function () {
-    if (this.readyState === 4) {
-      console.log(this.responseText)
-    }
+    console.log(this.responseText)
   })
 
   xhr.open("POST", "https://gammasense.org:8090/add");
