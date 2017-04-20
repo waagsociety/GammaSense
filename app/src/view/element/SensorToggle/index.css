@@ -3,12 +3,12 @@
   background-color: #141820;
   font-size: 112.5%;
   width: 12.5em;
-  height: 3em;
-  padding: 0.875em 0.5em 1.25em;
+  height: 2.75em;
+  padding: 0.75em 0.5em 1em;
   margin: 0 0 0 -6em;
   border-radius: 2em;
   position: absolute;
-  bottom: 1.5em;
+  bottom: 1.25em;
   left: 50%;
   z-index: 100;
   cursor: pointer;

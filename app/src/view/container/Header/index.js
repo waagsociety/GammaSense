@@ -1,6 +1,9 @@
 import React from 'react'
 import { Icon } from '../../element/'
+import { route } from '../../../controller'
 import './index.css'
+
+const { push } = route.hash
 
 export const Header = ({ state }) => {
   
@@ -8,13 +11,9 @@ export const Header = ({ state }) => {
 
   return <header className="Header">
 
-    <a href={routes.information} title='Informatie'>
-      <button className="primary" type="button"><Icon name='information'/></button>
-    </a>
+    <button className="primary" type="button" onClick={push(routes.information)}><Icon name='information'/></button>
 
-    <a href={routes.history} title='Mijn Metingen'>
-      <button className="secondary" type="button"><Icon name='list'/></button>
-    </a>
+    <button className="secondary" type="button" onClick={push(routes.history)}><Icon name='list'/></button>
 
     <h1>GammaSense</h1>
 

@@ -2,6 +2,7 @@
   padding: 1em;
   transition: 167ms ease;
   background-color: white;
+  /*padding-top: 4em;*/
 }
 
 .History[hidden] {
@@ -11,3 +12,51 @@
   top: 0;
   transform-origin: center;
 }
+
+.History header {
+  background-color: white;
+  width: 100%;
+  height: 3em;
+  padding: 0.5vw 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  transition: 240ms 100ms;
+  box-shadow: 0 0 1px 0 rgba(0,0,0,.25);
+  box-sizing: content-box;
+}
+
+.History header h1 {
+  text-align: center;
+  padding: 0.625em 0;
+  font-size: 125%;
+  transform-origin: center;
+  transition: 100ms 67ms ease-out;
+}
+
+.History[hidden] header h1 {
+  opacity: 0;
+  transform: translateX(20%);
+}
+
+.History section.content {
+  background: inherit;
+  position: absolute;
+  top: 3em;
+  margin-top: 1vw;
+  bottom: 4em;
+  left: 0;
+  right: 0;
+  overflow: auto;
+}
+
+.History section.content p {
+  min-height: 1500px;
+}
+
+.History button {
+  position: absolute;
+  z-index: 10000;
+}
+

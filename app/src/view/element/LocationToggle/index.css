@@ -1,30 +1,35 @@
 .LocationToggle {
   color: #fff;
   background-color: #141820;
-  text-indent: -999em;
   font-size: 112.5%;
-  width: 3em;
-  height: 3em;
+  min-width: 12em;
+  height: 2.75em;
   padding: 0.875em 0.5em 1.25em;
-  margin: 0 0 0 0;
+  margin: 0 0.5em;
   border-radius: 1.5em;
   position: absolute;
-  bottom: 1.5em;
-  left: 1.5em;
+  bottom: 1.25em;
+  left: 1.5vw;
   z-index: 100;
   cursor: pointer;
+}
+
+.LocationToggle.icon {
+  text-indent: -999em;  
+  width: 2.75em;
+  min-width: auto; 
 }
 
 .LocationToggle .Icon {
   position: absolute;
   left: 0;
   top: 0;
-  margin: 0.5em;
+  margin: 0.4em;
 }
 
 .LocationToggle.loading .Icon {
   opacity: 0.5;
-  animation: loading 600ms infinite alternate;
+  animation: loading 750ms infinite alternate;
 }
 
 @keyframes loading {

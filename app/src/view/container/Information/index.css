@@ -1,36 +1,43 @@
 .Information {
-  transition: 67ms ease-in;
+  transition: 100ms ease-in;
   background-color: rgba(0,0,0,.5);
   height: 100%;
 }
 
 .Information header {
   background-color: white;
-  width: 100%;
-  height: 4em;
-  position: fixed;
+  height: 3em;
+  padding: 0.5vw 1.5%;
+  position: absolute;
   top: 0;
   left: 0;
+  right: 0;
   z-index: 1000;
-  transition: 240ms 67ms;
+  transition: 240ms 100ms;
+  box-shadow: 0 0 1px 0 rgba(0,0,0,.25);
+  box-sizing: content-box;
 }
 
 .Information[hidden] header {
-  transform: translateY(-200%);
+  opacity: 0;
 }
 
 .Information header h1 {
   text-align: center;
-  padding: 1em 1em;
+  padding: 0.625em 0;
   font-size: 125%;
 }
 
 .Information article {
-  padding: 5em 1em;
+  padding: 2vw 2vw 5em;
+  top: 3em;
+  margin: 1vw 0;
+  left: 0;
+  right: 0;
+  position: fixed;
   width: 100%;
   height: 100%;
-  margin: 0;
-  position: absolute;
+  overflow: scroll;
 }
 
 .Information article section {
@@ -39,7 +46,9 @@
   padding: 2em;
   margin: 0 auto;
   border-radius: 0.25em;
-  transition: 240ms 400ms ease-in-out;
+  transition: 240ms 500ms ease-in-out;
+  height: 1200px;
+  /*position: relative;*/
 }
 
 .Information[hidden] article section {

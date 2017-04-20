@@ -3,7 +3,7 @@ import { Header, History, Monitor, Information, Map } from './container/'
 
 export default class App extends React.Component {
 
-  componentDidMount() {
+  componentWillMount() {
     
     const { model } = this.props
     const { routes } = model.state.config

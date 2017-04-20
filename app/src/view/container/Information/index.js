@@ -1,5 +1,8 @@
 import React from 'react'
+import { route } from '../../../controller'
 import './index.css'
+
+const { push } = route.hash
 
 export const Information = ({ state }) => {
 
@@ -23,7 +26,7 @@ export const Information = ({ state }) => {
         </ol> 
 
         <nav>
-          <button><a href={routes.home}>Ik begrijp het</a></button>
+          <button type='button' onClick={push(routes.home)}>Ik begrijp het</button>
         </nav>
 
       </section>

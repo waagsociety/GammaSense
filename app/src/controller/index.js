@@ -1,3 +1,4 @@
-export { sensor } from './sensor'
-export { geolocation } from './geolocation'
 export { dialogue } from './dialogue'
+export { geolocation } from './geolocation'
+export { route } from './route'
+export { sensor } from './sensor'

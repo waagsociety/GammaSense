@@ -1,10 +1,18 @@
 import React from 'react'
+import { route } from '../../../controller'
 import './index.css'
+
+import { HistoryList } from '../../element/'
+
+const { push } = route.hash
 
 export const History = ({ state }) => {
 
-  const { routes } = state.config
-  const hidden = routes.history !== location.hash
+  const { sensor, config } = state
+  const { history } = sensor
+  const { routes } = config
+  const route = matchRoute(location.hash)
+  const hidden = routes.history !== route[0]
 
   return <section className='History secondary panel' hidden={hidden}>
 
@@ -12,16 +20,25 @@ export const History = ({ state }) => {
       <h1>Mijn metingen</h1>
     </header>
 
-    <article>
+    <section className='content'>
 
-      <p>Hier worden afgeronde metingen (binnenkort) opgeslagen.</p>
+      {
+        history.length
+          ? <HistoryList data={history} />
+          : <p>Hier worden afgeronde metingen (binnenkort) opgeslagen.</p>
+      }
+      
 
-    </article>
+    </section>
 
     <nav>
-      <button><a href={routes.home}>Sluit</a></button>
+      <button type='button' onClick={push(routes.home)}>Sluit</button>
     </nav>
 
   </section>
 
+}
+
+function matchRoute(path) {
+  return location.hash.split(/\/+/g) || []
 }

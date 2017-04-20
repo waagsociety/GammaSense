@@ -1,16 +1,18 @@
 .Header {
   color: white;
-  width: 100%;
-  height: 4em;
+  height: 3em;
   position: fixed;
+  padding: 0.5vw 1.5%;
   top: 0;
   left: 0;
+  right: 0;
   z-index: 1000;
+  box-sizing: content-box;
 }
 
 .Header h1 {
   text-align: center;
-  padding: 0.75em 1em;
+  padding: 0.4em 1em;
   font-size: 150%;
 }
 
@@ -19,13 +21,13 @@
   position: absolute;
   width: 3em;
   height: 3em;
-  margin: 0.5em 1em;
+  margin: 0 1.5%;
   border-radius: 0.25em;
   cursor: pointer;
 }
 
 .Header button.primary { left: 0 }
-.Header button.primary ~ h1 { margin-left: 4rem }
+.Header button.primary ~ h1 { padding-left: 3rem }
 
 .Header button.secondary { right: 0 }
-.Header button.secondary ~ h1 { margin-right: 4rem }
+.Header button.secondary ~ h1 { padding-right: 3rem }

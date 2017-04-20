@@ -1,5 +1,6 @@
 export { BaselineProgress } from './BaselineProgress/'
 export { Graph } from './Graph/'
+export { HistoryList } from './HistoryList/'
 export { Icon } from './Icon/'
 export { LocationToggle } from './LocationToggle'
 export { Modal } from './Modal/'

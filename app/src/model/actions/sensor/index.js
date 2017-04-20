@@ -1,8 +1,9 @@
 import config from '../../../config'
-import { mean, last } from 'ramda'
+import { mean, last, findIndex, eqProps, comparator } from 'ramda'
 
 const { density } = config.monitor
 const transferCoords = transfer('longitude', 'latitude')
+const compareInitialized = comparator((a, b) => a.initialized > b.initialized)
 
 export const sensor = {
 
@@ -10,26 +11,36 @@ export const sensor = {
     
     dispatch.sensor({ active })
 
+    const initialized = Date.now()
+    const equalById = eqProps('initialized', initialized)
+
     const update = initialize({
       density,
-      baseline: null,
-      initialized: Date.now(),
+      initialized,
       session: 'abcdef',
+      baseline: null,
     })
 
     config.sensor(({ sample, imageData }) => {
       
       const state = getState()
       const { sensor, location } = state
-      const { active } = sensor
+      const { active, history } = sensor
       const { error } = sample
 
       const measurement = update(sample)
       const { samples, cycles } = measurement
 
-      if (active) {        
+      if (active) {
         if (cycles.length && samples.length % density === 0) {
-          storeData(measurement, location.data)
+          
+          const entry = storeData(measurement, samples, location.data)
+          
+          const index = findIndex(item => item.initialized === initialized, history)
+          history[index < 0 ? history.length : index] = entry
+
+          dispatch.sensor({ history: history.sort(compareInitialized) })
+
         }
         dispatch.sensor({ measurement, error, active: !error })
       }
@@ -43,20 +54,26 @@ export const sensor = {
 
 }
 
-function storeData({ cycles, baseline, initialized, session }, { coords }) {
+function storeData({ cycles, baseline, initialized, session, samples }, { coords }) {
 
-  const cycle = last(cycles)
+  const data = last(cycles)
   const location = transferCoords(coords)
   
-  const x = JSON.stringify({ 
-    session, 
-    cycle, 
-    baseline, 
+  const body = {
+    session,
+    data,
+    baseline,
     initialized, 
     location,
-  })
+  }
 
-  console.log(x)
+  const summary = {
+    mean: mean(samples),
+    min: Math.min(...samples),
+    max: Math.max(...samples),
+  }
+
+  return Object.assign(body, { data: cycles, summary })
   
 }
 
