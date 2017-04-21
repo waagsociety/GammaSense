@@ -1,23 +1,34 @@
 import React from 'react'
+import { route } from '../controller'
 import { Header, History, Monitor, Information, Map } from './container/'
+
+const { hash } = route
 
 export default class App extends React.Component {
 
   componentWillMount() {
     
     const { model } = this.props
-    const { routes } = model.state.config
-
-    if (!model.state.session.informed) {
-      location.href = routes.information
-      model.dispatch.session({ informed: true })
-    }
-
-    console.log('dialog', model.state.dialog)
+    const { state, dispatch } = model
+    const { session, config } = state
+    const { support } = session
+    const { routes } = config
 
     window.onhashchange = function(event) {
-      model.dispatch.route({ hash: location.hash })
+      dispatch.route({ hash: location.hash })
     }
+
+    if (state.session.informed) hash.replace()
+    else {
+      hash.replace(routes.information)
+      dispatch.session({ informed: true })
+    }
+
+    if (support.canvas && support.webRTC && support.geolocation) {
+      dispatch.sensor({ support: true })
+    }
+
+    // console.log('dialog', model.state.dialog)
 
   }
 

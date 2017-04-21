@@ -5,6 +5,7 @@ export default {
   support: {
     canvas: hasCanvasSupport(),
     webRTC: hasWebRTCSupport(),
+    webGL: hasWebGLSupport(),
     geolocation: hasGeolocationSupport(),
   },
 }
@@ -19,4 +20,14 @@ function hasWebRTCSupport() {
 
 function hasGeolocationSupport() {
   return !!navigator.geolocation
+}
+
+function hasWebGLSupport() { 
+  try{
+    var canvas = document.createElement( 'canvas' )
+    return !!(window.WebGLRenderingContext && (canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' )))
+  }
+  catch( e ) { 
+    return false 
+  }
 }

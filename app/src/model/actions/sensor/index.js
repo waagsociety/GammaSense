@@ -9,9 +9,8 @@ export const sensor = {
 
   monitor({ dispatch, active, getState }) {
     
-    dispatch.sensor({ active })
-
     const initialized = Date.now()
+    dispatch.sensor({ active })
 
     const update = initialize({
       density,
@@ -34,7 +33,6 @@ export const sensor = {
         if (cycles.length && samples.length % density === 0) {
           
           const entry = storeData(measurement, location.data)
-          
           const index = findIndex(item => item.initialized === initialized, history)
           history[index < 0 ? history.length : index] = entry
 
@@ -110,11 +108,11 @@ function initialize(metadata) {
     const count = samples.push(sample.percentage)
 
     if (count % density === 0) {
-      if (typeof result.baseline === 'number') {
-        const data = samples.slice(-density, Infinity)
+      if (result.baseline === null) result.baseline = mean(samples.splice(0, density))
+      else {
+        const data = samples.slice(-density)
         cycles.push(summarizeSamples(data, metadata))
       }
-      else result.baseline = mean(samples.splice(0, density))
     }
 
     return result

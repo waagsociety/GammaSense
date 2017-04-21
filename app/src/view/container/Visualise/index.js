@@ -21,7 +21,7 @@ export const Visualise = ({ measurement, config }) => {
       
       <h1>Meting</h1>
 
-      { baseline 
+      { baseline !== null
         ? <div>
             <ul className='dashboard'>
               <li className='primary'>

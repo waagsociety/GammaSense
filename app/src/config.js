@@ -26,10 +26,9 @@ const media = {
 
 // routes
 const routes = {
-  home: '#',
-  measurement: '#meting',
-  information: '#informatie',
-  history: '#mijn-metingen',
+  measurement: 'meting',
+  information: 'informatie',
+  history: 'mijn-metingen',
 }
 
 // mapbox

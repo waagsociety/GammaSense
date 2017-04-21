@@ -4,4 +4,5 @@ export default {
   measurement: null,
   baseline: null,
   history: [],
+  support: false,
 }

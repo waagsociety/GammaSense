@@ -4,15 +4,19 @@ import './index.css'
 
 import { HistoryList } from '../../element/'
 
-const { push } = route.hash
+const { hash } = route
 
 export const History = ({ state }) => {
 
   const { sensor, config } = state
   const { history } = sensor
   const { routes } = config
-  const route = matchRoute(location.hash)
-  const hidden = routes.history !== route[0]
+
+  const hidden = !hash.match(routes.history)
+
+  const content = history.length
+    ? <HistoryList data={history} />
+    : <p>Je hebt nog geen meting gedaan.</p> 
 
   return <section className='History secondary panel' hidden={hidden}>
 
@@ -20,25 +24,12 @@ export const History = ({ state }) => {
       <h1>Mijn metingen</h1>
     </header>
 
-    <section className='content'>
-
-      {
-        history.length
-          ? <HistoryList data={history} />
-          : <p>Je hebt nog geen meting gedaan.</p>
-      }
-      
-
-    </section>
+    <section className='content'>{content}</section>
 
     <nav>
-      <button type='button' onClick={push(routes.home)}>Sluit</button>
+      <button type='button' onClick={hash.push()}>Sluit</button>
     </nav>
 
   </section>
 
-}
-
-function matchRoute(path) {
-  return location.hash.split(/\/+/g) || []
 }

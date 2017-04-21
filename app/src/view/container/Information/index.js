@@ -2,12 +2,12 @@ import React from 'react'
 import { route } from '../../../controller'
 import './index.css'
 
-const { push } = route.hash
+const { hash } = route
 
 export const Information = ({ state }) => {
 
   const { routes } = state.config
-  const hidden = routes.information !== location.hash
+  const hidden = !hash.match(routes.information)
 
   return <section className='Information full primary panel' hidden={hidden}>
 
@@ -26,7 +26,7 @@ export const Information = ({ state }) => {
         </ol> 
 
         <nav>
-          <button type='button' onClick={push(routes.home)}>Ik begrijp het</button>
+          <button type='button' onClick={hash.push()}>Ik begrijp het</button>
         </nav>
 
       </section>
