@@ -52,7 +52,7 @@ export const Map = ({ state, dispatch }) => {
               
               if (this.readyState === 4) {
                 const response = JSON.parse(this.responseText)
-                console.log(response)
+                // console.log(response)
                 if (response.status === 'success') {
                   
                   const body = JSON.parse(response.body)
@@ -76,9 +76,9 @@ export const Map = ({ state, dispatch }) => {
                       "type": "circle",
                       "source": "earthquakes",
                       "paint": {
-                          "circle-color": 'rgba(255,255,255,0.25)',
-                          "circle-radius": 20,
-                          "circle-blur": 1
+                        "circle-color": 'rgba(255,255,255,0.25)',
+                        "circle-radius": 20,
+                        "circle-blur": 1
                       },
                       "filter": ["!=", "cluster", true]
                   }, 'waterway-label')

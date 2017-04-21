@@ -71,7 +71,7 @@ function storeData({ cycles, baseline, initialized, session, samples }, { coords
   var xhr = new XMLHttpRequest()
   xhr.withCredentials = true
   xhr.addEventListener("readystatechange", function () {
-    console.log(this.responseText)
+    // console.log(this.responseText)
   })
 
   xhr.open("POST", "https://gammasense.org:8090/add");
@@ -108,9 +108,13 @@ function initialize(metadata) {
     const count = samples.push(sample.percentage)
 
     if (count % density === 0) {
-      if (result.baseline === null) result.baseline = mean(samples.splice(0, density))
+      if (result.baseline === null) {
+        // console.log('x')
+        result.baseline = mean(samples.splice(0, density))
+      }
       else {
-        const data = samples.slice(-density)
+        // console.log('y')
+        const data = samples.splice(-density)
         cycles.push(summarizeSamples(data, metadata))
       }
     }

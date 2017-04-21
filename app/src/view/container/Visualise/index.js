@@ -17,11 +17,13 @@ export const Visualise = ({ measurement, config }) => {
       data: [0].concat(samples.slice(-density, Infinity)),
     }]
 
+    console.log(baseline)
+
     return <section className="Visualise">
       
       <h1>Meting</h1>
 
-      { baseline !== null
+      { baseline !== null 
         ? <div>
             <ul className='dashboard'>
               <li className='primary'>
@@ -48,11 +50,3 @@ export const Visualise = ({ measurement, config }) => {
   else return null
   
 }
-
-
-// <ul>
-//   <li>Gemiddelde: {average.toFixed(2)}%</li>
-//   <li>Piek: {spike.toFixed(2)}%</li>
-//   <li>Metingen: {Math.floor(samples.length / 60)}</li>
-//   <li>Samples: {length}</li>
-// </ul>
