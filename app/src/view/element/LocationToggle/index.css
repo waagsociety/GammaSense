@@ -1,14 +1,14 @@
 .LocationToggle {
   color: #fff;
-  background-color: #141820;
+  background-color: #041015;
   font-size: 112.5%;
   min-width: 12em;
   height: 2.75em;
   padding: 0.875em 0.5em 1.25em;
-  margin: 0 0.5em;
+  margin: 0 0.5em 1vw;
   border-radius: 1.5em;
   position: absolute;
-  bottom: 1.25em;
+  bottom: 0.75em;
   left: 1.5vw;
   z-index: 100;
   cursor: pointer;

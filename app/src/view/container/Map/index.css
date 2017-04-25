@@ -28,12 +28,14 @@
 
 .mapboxgl-ctrl.mapboxgl-ctrl-attrib,
 .mapboxgl-ctrl.mapboxgl-ctrl-attrib a {
-  color: #888;
+  color: #225387;
+  opacity: 0.8;
   font-family: Avenir, system;
 }
 
 .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
   background-color: transparent;
-  padding: 0.5em;
+  padding: 4px;
+  font-size: 10px;
   opacity: 0.75;
 }

@@ -5,10 +5,10 @@
   width: 12.5em;
   height: 2.75em;
   padding: 0.75em 0.5em 1em;
-  margin: 0 0 0 -6em;
+  margin: 0 0 1vw -6em;
   border-radius: 2em;
   position: absolute;
-  bottom: 1.25em;
+  bottom: 0.75em;
   left: 50%;
   z-index: 100;
   cursor: pointer;
