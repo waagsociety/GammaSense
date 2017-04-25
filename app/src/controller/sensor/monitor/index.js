@@ -11,14 +11,10 @@ export function monitor(callback, filter, display) {
     })
 
     const imageData = getImageData(video)
-    
-    const normalised = analyse(imageData, filter)
-    const { sample } = normalised
+    const { data, sample } = analyse(imageData, filter)
 
-    const continued = callback({ sample, imageData })
-
-    display(normalised.imageData, continued)
-
+    const continued = callback(sample)
+    // display(imageData, continued, data)
     return continued
 
   }

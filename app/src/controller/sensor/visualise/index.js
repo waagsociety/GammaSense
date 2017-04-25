@@ -6,7 +6,9 @@ export function visualise(canvas) {
   const context = getContext2d(canvas)
   const initialImageData = getImageData(context, { width, height })
 
-  return function(imageData, continued) {
+  return function(imageData, continued, data) {
+
+    imageData.data.set(data)
 
     const { width, height } = imageData
     canvas.width = width
@@ -16,6 +18,7 @@ export function visualise(canvas) {
       ? putImageData(canvas, imageData)
       : putImageData(canvas, initialImageData)
 
+    return continued
 
   }
 }

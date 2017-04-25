@@ -6,18 +6,21 @@ export const route = {
 function createRouter(kind, prefix) {
 
   return {
-    push: pushRoute(kind, prefix),
-    replace: pushRoute(kind, prefix),
+    push: pushRoute(kind, 'pushState', prefix),
+    replace: pushRoute(kind, 'replaceState', prefix),
     match: matchRoute(kind, prefix),
   }
 
-  function pushRoute(kind, prefix) {
+  function pushRoute(kind, method, prefix) {
 
     prefix = prefix || ''
     return function(...path) {
       return event => {
         if (event) event.preventDefault()
-        location[kind] = prefix + path.join('/')
+        const { origin } = location
+        const route = path.length ? prefix + join(path) : ''
+        history[method](null, document.title, origin + '/' + route)
+        window.onhashchange() // hack
       }
     }
   }
@@ -40,6 +43,10 @@ function createRouter(kind, prefix) {
 
     }
 
+  }
+
+  function join(array) {
+    return array.join('/')
   }
 
 }

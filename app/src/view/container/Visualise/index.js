@@ -17,8 +17,6 @@ export const Visualise = ({ measurement, config }) => {
       data: [0].concat(samples.slice(-density, Infinity)),
     }]
 
-    console.log(baseline)
-
     return <section className="Visualise">
       
       <h1>Meting</h1>

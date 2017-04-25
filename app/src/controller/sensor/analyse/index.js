@@ -2,13 +2,14 @@ import { luma } from '../luma'
 
 export function analyse(imageData, filter) {
 
-  const data = imageData.data
+  const data = new Uint8ClampedArray(imageData.data)
+
+  console.log(data)
   const length = data.length
   let index = 0
 
   const time = Date.now()
   const resolution = length / 4
-  // const distribution = []
   let gamma = 0
   let color = 0
 
@@ -32,8 +33,6 @@ export function analyse(imageData, filter) {
 
     gamma += hasGammaRadiation
     
-    // distribution[0 | lumincance] += 1
-
   }
 
   const monochrome = (color / resolution) < 1 / 100
@@ -41,6 +40,6 @@ export function analyse(imageData, filter) {
   const percentage = (gamma / resolution) * 100
   const sample = { time, resolution, percentage, gamma, error }
 
-  return { imageData, sample }
+  return { data, sample }
 
 }

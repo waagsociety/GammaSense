@@ -19,7 +19,7 @@ export const sensor = {
       baseline: null,
     })
 
-    config.sensor(({ sample, imageData }) => {
+    config.sensor(sample => {
       
       const state = getState()
       const { sensor, location } = state
@@ -109,12 +109,10 @@ function initialize(metadata) {
 
     if (count % density === 0) {
       if (result.baseline === null) {
-        // console.log('x')
-        result.baseline = mean(samples.splice(0, density))
+        result.baseline = mean(samples.splice(-density))
       }
       else {
-        // console.log('y')
-        const data = samples.splice(-density)
+        const data = samples.slice(-density)
         cycles.push(summarizeSamples(data, metadata))
       }
     }

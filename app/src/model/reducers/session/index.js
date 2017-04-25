@@ -2,12 +2,25 @@ export default {
   id: Date.now(),
   informed: null,
   baseline: null,
+  navigator: {
+    get online() {
+      return !!navigator.onLine
+    },
+    standalone: isWebApp(),
+  },
   support: {
     canvas: hasCanvasSupport(),
     webRTC: hasWebRTCSupport(),
     webGL: hasWebGLSupport(),
     geolocation: hasGeolocationSupport(),
   },
+}
+
+
+
+function isWebApp() {
+  return window.navigator.standalone === true
+    || window.matchMedia('(display-mode: standalone)').matches
 }
 
 function hasCanvasSupport() {

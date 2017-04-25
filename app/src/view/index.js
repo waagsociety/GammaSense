@@ -14,13 +14,15 @@ export default class App extends React.Component {
     const { support } = session
     const { routes } = config
 
+    console.log(session)
+
     window.onhashchange = function(event) {
       dispatch.route({ hash: location.hash })
     }
 
-    if (state.session.informed) hash.replace()
+    if (state.session.informed) hash.replace()()
     else {
-      hash.replace(routes.information)
+      hash.replace(routes.information)()
       dispatch.session({ informed: true })
     }
 

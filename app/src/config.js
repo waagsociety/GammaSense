@@ -10,7 +10,7 @@ function radioactive(gamma) {
 
 const filter = radioactive
 const display = visualise(document.querySelector('#display'))
-const sampleTime = 1000 * 60
+const sampleTime = 1000 * 6
 const interval = 1000
 const density = sampleTime / interval
 
@@ -34,7 +34,7 @@ const routes = {
 // mapbox
 const mapbox = {
   accessToken: 'pk.eyJ1IjoibmF0aGFud2FhZyIsImEiOiJjajFvcjF3c2YwMDIwMzNraGQ0cXp0N3pmIn0.AtMn7ThFay9qJkv_8I85eA',
-  style: 'mapbox://styles/mapbox/dark-v9',
+  style: 'mapbox://styles/nathanwaag/cj1x9uw10000a2sqszy93p4hz',
   center: [0,40],
   zoom: 2,
 }
