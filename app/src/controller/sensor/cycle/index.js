@@ -12,6 +12,7 @@ export function cycle(interval) {
       }
 
       function iteration() {
+        console.log('iteration')
         if (initialised === false || callback(video) === false) {
           video.pause()
           video.srcObject.getVideoTracks().forEach(track => track.stop())

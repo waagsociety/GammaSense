@@ -35,7 +35,7 @@ export function analyse(imageData, filter) {
     
   }
 
-  const monochrome = (color / resolution) < 1 / 100
+  const monochrome = true || (color / resolution) < 1 / 100
   const error = !monochrome && { monochrome }
   const percentage = (gamma / resolution) * 100
   const sample = { time, resolution, percentage, gamma, error }

@@ -14,7 +14,7 @@ export function monitor(callback, filter, display) {
     const { data, sample } = analyse(imageData, filter)
 
     const continued = callback(sample)
-    // display(imageData, continued, data)
+    display(imageData, continued, data)
     return continued
 
   }
