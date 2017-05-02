@@ -11,7 +11,7 @@ export const createStoreModel = store => state => {
   const model = { 
     state,
     getState, 
-    dispatch 
+    dispatch,
   }
   
   return { model }

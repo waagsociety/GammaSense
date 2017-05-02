@@ -84,3 +84,14 @@
 canvas {
   pointer-events: none;
 }
+
+aside {
+  border-left: 3px solid #ddd;
+  margin: 1em 0;
+  padding: 0.5em 0 0.5em 0.5em;
+}
+
+aside img {
+  float: left;
+  margin: -0.5em 0.25em 0 0;
+}

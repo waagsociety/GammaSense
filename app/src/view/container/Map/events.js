@@ -6,8 +6,4 @@ export default dispatch => ({
     geolocation(dispatch)
   },
 
-  reset: event => {
-    dispatch.location({ data: null, loading: false, error: null})
-  },
-  
 })

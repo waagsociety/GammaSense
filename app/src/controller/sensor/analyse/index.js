@@ -2,9 +2,7 @@ import { luma } from '../luma'
 
 export function analyse(imageData, filter) {
 
-  const data = new Uint8ClampedArray(imageData.data)
-
-  console.log(data)
+  const data = imageData.data
   const length = data.length
   let index = 0
 
@@ -35,11 +33,11 @@ export function analyse(imageData, filter) {
     
   }
 
-  const monochrome = true || (color / resolution) < 1 / 100
+  const monochrome = (color / resolution) < 1 / 100
   const error = !monochrome && { monochrome }
   const percentage = (gamma / resolution) * 100
   const sample = { time, resolution, percentage, gamma, error }
 
-  return { data, sample }
+  return { imageData, sample }
 
 }

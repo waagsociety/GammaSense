@@ -1,5 +1,4 @@
 .Modal {
-  /*background-color: rgba(0,0,0,0.75);*/
   width: 100%;
   height: 100%;
   display: flex;
@@ -10,6 +9,16 @@
   top: 0;
   left: 0;
   z-index: 1000;
+  transition: opacity 200ms 200ms ease-in, transform 200ms 100ms;
+  transform-origin: center 75%;
+}
+
+.Modal[hidden] {
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.5);
+  
 }
 
 .Modal div {
@@ -29,37 +38,50 @@
 .Modal h1 {
   text-align: center;
   line-height: 1.4;
-  padding: 0.625em 1em 0.5em;
+  padding: 0.625em 0.5em 0.5em;
 }
 
 .Modal p {
   line-height: 1.4;
-  padding: 0 1em 1em;
+  padding: 0 0.5em 1em;
 }
 
 .Modal nav {
   background-color: inherit;
   width: 100%;
   height: 2.75em;
-  display: flex;
-  flex-direction: row;
+  /*display: flex;*/
+  /*flex-direction: row;*/
   position: absolute;
   bottom: 0;
   left: 0;
   border-top: 1px solid #ddd;
 }
 
-.Modal .action {
-  color: #18C880;
-  flex-grow: 1;
+.Modal nav button {
   padding: 0 0.25em 0.25em;
-  cursor: pointer;
 }
 
-.Modal a {
+.Modal a.action {
+  padding-top: 0.75em;
+}
+
+.Modal a.action button {
+  pointer-events: none;
+}
+
+.Modal .action {
+  color: #18C880;
+  width: 100%;
+  height: 100%;
+  float: right;
+  cursor: pointer;
+  text-align: center;
   text-decoration: none;
 }
 
-.Modal .action:last-child {
+.Modal .two .action { width: 50% }
+
+.Modal .action.primary {
   font-weight: 500;
 }

@@ -10,11 +10,10 @@ export function monitor(callback, filter, display) {
       height: video.videoHeight
     })
 
-    const imageData = getImageData(video)
-    const { data, sample } = analyse(imageData, filter)
+    const { imageData, sample } = analyse(getImageData(video), filter)
 
     const continued = callback(sample)
-    display(imageData, continued, data)
+    display(imageData, continued)
     return continued
 
   }

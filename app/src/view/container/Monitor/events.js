@@ -13,16 +13,6 @@ export const events = (dispatch, getState) => ({
     sensor.monitor({ dispatch, active: false, getState })
   },
 
-  restart: event => {
-    dispatch.sensor({ measurement: null, error: false })
-    console.log('start')
-    sensor.monitor({ dispatch, active: true, getState })
-  },
-
-  reset: event => {
-    dispatch.sensor({ measurement: null, error: false })
-  },
-
   prepare: event => {
     geolocation(dispatch)
   },

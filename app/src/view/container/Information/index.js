@@ -23,10 +23,15 @@ export const Information = ({ state }) => {
           <li>Dek je camera volledig af met tape dat licht blokkeert.</li>
           <li>Klik “Start Meting” om te beginnen.</li>
           <li>Wacht minimaal 2 minuten om een volledige meting te verrichten.</li>
-        </ol> 
+        </ol>
+
+        <aside className='info'>
+          <img src='./chrome-logo.png' width='32' height='32' role='presentation'/>
+          Momenteel kan een meting alleen gedaan worden in <a href='https://www.google.com/chrome/'>Google Chrome</a>.
+        </aside>
 
         <nav>
-          <button type='button' onClick={hash.push()}>Ik begrijp het</button>
+          <button type='button' onClick={hash.push()}>Ik snap het</button>
         </nav>
 
       </section>
