@@ -4,8 +4,7 @@ function analyzeImageData(imageData) {
   const timestamp = Date.now()
 
   const length = data.length
-  const resolution = length / 4
-  const deveation = [0,0,0]
+  const deveation = { r: [], g: [], b: [] }
   const hits = []
   
   let index = 0
@@ -19,16 +18,27 @@ function analyzeImageData(imageData) {
     hits.push((r + g + b) / 3)
     if (r !== g || g !== b) {
       const min = Math.min(r, g, b)
-      deveation[0] += min + r
-      deveation[1] += min + g
-      deveation[2] += min + b
+      deveation.r.push(min + r)
+      deveation.g.push(min + g)
+      deveation.b.push(min + b)
     }
 
   }
 
-  return {
-    data: { hits, timestamp, deveation }, 
-    error: false 
-  }
+  deveation.r = mean(deveation.r)
+  deveation.g = mean(deveation.b)
+  deveation.b = mean(deveation.b)
 
+  const error = null
+
+  return { hits, deveation, timestamp, error }
+
+}
+
+function mean(array) {
+  const length = array.length
+  let index = -1
+  let sum = 0
+  while (++index < length) sum += array[index]
+  return sum / length || 0
 }

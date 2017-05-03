@@ -47,10 +47,10 @@ function initialize(analize, options) {
         function iteration() {
           
           const imageData = toImageData(video, width, height)
-          const metadata = { width, height }
-          const { data, error } = analize(imageData)
+          const sensorData = analize(imageData)
+          const { error } = sensorData
 
-          if (callback(imageData, data, error) && !error) setTimeout(iteration, interval)
+          if (callback(sensorData, imageData) && !error) setTimeout(iteration, interval)
           else resolve(!!track.stop())
 
         }
