@@ -3,7 +3,7 @@ export default {
   informed: null,
   baseline: null,
   navigator: {
-    iOS: /iPhone|iPad/.test(navigator.userAgent),
+    iOS: /iPhone|iPad|iPod/.test(navigator.userAgent),
     standalone: isWebApp(),
   },
   support: {

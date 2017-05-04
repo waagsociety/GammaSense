@@ -26,26 +26,26 @@ const analyzeImageData = function() {
       const b = data[base + 2]
       const m = (r + g + b) / 3
 
-      channels.r[index] = r
-      channels.g[index] = g
-      channels.b[index] = b
+      // channels.r[index] = r
+      // channels.g[index] = g
+      // channels.b[index] = b
       channels.m[index] = m
 
-      count.r += (r > treshold)
-      count.g += (g > treshold)
-      count.b += (b > treshold)
+      // count.r += (r > treshold)
+      // count.g += (g > treshold)
+      // count.b += (b > treshold)
       count.m += (m > treshold)
       
-      const min = Math.min(r, g, b)
-      cache.deveation.r[index] = min + r
-      cache.deveation.g[index] = min + g
-      cache.deveation.b[index] = min + b
+      // const min = Math.min(r, g, b)
+      // cache.deveation.r[index] = min + r
+      // cache.deveation.g[index] = min + g
+      // cache.deveation.b[index] = min + b
 
     }
 
-    deveation.r = mean(cache.deveation.r)
-    deveation.g = mean(cache.deveation.g)
-    deveation.b = mean(cache.deveation.b)
+    // deveation.r = mean(cache.deveation.r)
+    // deveation.g = mean(cache.deveation.g)
+    // deveation.b = mean(cache.deveation.b)
 
     // console.log('monochrome count:', count.m)
     const error = null

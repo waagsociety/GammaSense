@@ -46,11 +46,14 @@ function initialize(analize, options) {
         
         function iteration() {
           
+          const now = performance.now()
           const imageData = toImageData(video, width, height)
           const sensorData = analize(imageData)
           const { error } = sensorData
 
-          if (callback(sensorData, imageData) && !error) setTimeout(iteration, interval)
+          if (callback(sensorData, imageData) && !error) {
+            setTimeout(iteration, interval - (performance.now() - now))
+          }
           else resolve(!!track.stop())
 
         }
