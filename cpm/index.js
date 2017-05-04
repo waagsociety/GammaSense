@@ -16,33 +16,31 @@ const sensor = initialize(analyzeImageData, {
 function startSensor(canvas) {
 
   const context = canvas.getContext('2d')
-  const currentData = context.getImageData(0, 0, 480, 320)
 
   return function(event) {
-  
+    
+    active = true
+    console.log('started')
+
     const media = sensor(function(sensorData, imageData) {
+      
+      const { data } = imageData
+      const { resolution, count, channels, deveation } = sensorData
+      const { m } = channels
 
-      const length = imageData.width * imageData.height * 4
-      let index = 0
-      while (index < length) {
-        
-        const r = index++
-        const g = index++
-        const b = index++
-
-        const mean = (imageData.data[r] + imageData.data[g] + imageData.data[b]) / 3
-        if (mean) {
-          imageData.data[r] = 60 - (mean / 4)
-          imageData.data[g] = 255
-          imageData.data[b] = 125 - (mean / 2)
-        }
-
-        index++
-
+      // console.log(count)
+      // console.log(channels)
+      // console.log(deveation)
+      
+      let index = -1
+      while (++index < resolution) {        
+        const pixel = index * 4
+        const value = m[index]
+        if (value) data[pixel + 1] = 255 - value
       }
 
       context.putImageData(imageData, 0, 0)
-      return true
+      return active
 
     })
 
@@ -52,6 +50,8 @@ function startSensor(canvas) {
 
 }
 
+
+
 const canvas = document.querySelector('canvas')
 
 const Start = document.createElement('button')
@@ -59,3 +59,12 @@ Start.type = 'button'
 Start.textContent = 'Start'
 Start.onclick = startSensor(canvas)
 document.body.appendChild(Start)
+
+const Stop = document.createElement('button')
+Stop.type = 'button'
+Stop.textContent = 'Stop'
+Stop.onclick = event => {
+  console.log('stopped')
+  active = false
+}
+document.body.appendChild(Stop)
