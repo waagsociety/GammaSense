@@ -31,8 +31,7 @@ export default class App extends React.Component {
     }
 
     for (const key in navigator) {
-      // if (navigator[key]) 
-        document.body.classList.add(key)
+      if (navigator[key]) document.body.classList.add(key)
     }
 
     const dispatchError = errorLog(dispatch, log.error)
