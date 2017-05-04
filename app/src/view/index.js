@@ -13,7 +13,7 @@ export default class App extends React.Component {
     const { model } = this.props
     const { state, dispatch } = model
     const { session, config, log } = state
-    const { support } = session
+    const { support, navigator } = session
     const { routes } = config
 
     window.onhashchange = function(event) {
@@ -22,14 +22,19 @@ export default class App extends React.Component {
 
     if (state.session.informed) hash.replace()()
     else {
-      hash.replace(routes.information)()
+      // hash.replace(routes.information)()
       dispatch.session({ informed: true })
     }
 
     if (support.canvas && support.webRTC && support.geolocation) {
       dispatch.sensor({ support: true })
-    } 
-    
+    }
+
+    for (const key in navigator) {
+      // if (navigator[key]) 
+        document.body.classList.add(key)
+    }
+
     const dispatchError = errorLog(dispatch, log.error)
     if (!support.webGL) dispatchError({
       title: "De kaart kon niet worden geladen",

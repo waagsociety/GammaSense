@@ -3,9 +3,7 @@ export default {
   informed: null,
   baseline: null,
   navigator: {
-    get online() {
-      return !!navigator.onLine
-    },
+    iOS: /iPhone|iPad/.test(navigator.userAgent),
     standalone: isWebApp(),
   },
   support: {
@@ -15,8 +13,6 @@ export default {
     geolocation: hasGeolocationSupport(),
   },
 }
-
-
 
 function isWebApp() {
   return window.navigator.standalone === true

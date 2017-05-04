@@ -5,6 +5,11 @@
   /*padding-top: 4em;*/
 }
 
+.iOS.standalone .History header  { top: 20px }
+.iOS.standalone .History section.content {
+  top: calc(3em + 20px);
+}
+
 .History[hidden] {
   display: block;
   opacity: 0.75;
@@ -14,7 +19,8 @@
 }
 
 .History header {
-  background-color: white;
+  color: white;
+  background-color: #061420;
   width: 100%;
   height: 3em;
   padding: 0.5vw 0;
@@ -60,14 +66,21 @@
   z-index: 10000;
 }
 
+.History nav {
+  background-color: red;
+  height: 3em;
+}
+
 .History button {
-  background: #eee;
-  padding: 0.5vw calc(0.5em + 0.5vw) 0.625vw;
-  height: 1.5em;
+  background: transparent;
+  color: #3296ff;
+  padding: 0.3vw calc(0.25em + 0.5vw);
+  height: 1.6em;
+  right: 1.25em;
   box-sizing: content-box;
-  border-radius: 0.25em;
+  border-radius: 0.125em;
   cursor: pointer;
-  top: 0.75em;
-  
+  top: 0.625em;
+  margin-top: 0.25vw;
 }
 

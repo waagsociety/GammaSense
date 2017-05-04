@@ -4,8 +4,14 @@
   height: 100%;
 }
 
+.iOS.standalone .Information header  { top: 20px }
+.iOS.standalone .Information .content {
+  top: calc(3em + 20px);
+}
+
 .Information header {
-  background-color: white;
+  color: white;
+  background-color: #061420;
   height: 3em;
   padding: 0.5vw 1.5%;
   position: absolute;
@@ -51,7 +57,7 @@
 
 .Information button {
   background: #eee;
-  padding: 0.5vw calc(0.5em + 0.5vw) 0.625vw;
+  padding: 0.25vw calc(0.5em + 0.5vw) 0.4vw;
   height: 1.5em;
   box-sizing: content-box;
   border-radius: 0.25em;
@@ -79,18 +85,14 @@
   pointer-events: none;
 }
 
-canvas {
-  pointer-events: none;
-}
-
-aside {
+.Information aside {
   border-left: 3px solid #ddd;
   margin: 1em 0;
   line-height: 1.4;
   padding: 0.5em 0 0.5em 0.5em;
 }
 
-aside img {
+.Information aside img {
   float: left;
   margin: -0.4em 0.25em 0 0;
 }

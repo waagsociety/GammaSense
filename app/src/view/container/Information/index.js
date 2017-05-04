@@ -15,7 +15,7 @@ export const Information = ({ state }) => {
       <h1>Instructies</h1>
     </header>
 
-    <article>
+    <article className="content">
 
       <section>
 
@@ -27,7 +27,8 @@ export const Information = ({ state }) => {
 
         <aside className='info'>
           <img src='./chrome-logo.png' width='32' height='32' role='presentation'/>
-          Momenteel kan een meting alleen gedaan worden in <a href='https://www.google.com/chrome/'>Google Chrome</a>.
+          Momenteel kan een meting alleen gedaan worden 
+          in <a target='_blank' href='https://www.google.com/chrome/'>Google Chrome</a>.
         </aside>
 
         <nav>

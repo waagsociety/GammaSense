@@ -21,13 +21,13 @@ export const History = ({ state }) => {
   return <section className='History secondary panel' hidden={hidden}>
 
     <header>
+      <button type='button' onClick={hash.push()}>Sluit</button>
       <h1>Mijn metingen</h1>
     </header>
 
     <section className='content'>{content}</section>
 
     <nav>
-      <button type='button' onClick={hash.push()}>Sluit</button>
     </nav>
 
   </section>
