@@ -14,6 +14,10 @@
   cursor: pointer;
 }
 
+@media (max-width: 22em) {
+  .LocationToggle { font-size: 100% }
+}
+
 .LocationToggle.icon {
   text-indent: -999em;  
   width: 2.75em;

@@ -57,13 +57,9 @@
   overflow: auto;
 }
 
-.History section.content p {
-  min-height: 1500px;
-}
-
 .History button {
   position: absolute;
-  z-index: 10000;
+  font-weight: 500;
 }
 
 .History nav {

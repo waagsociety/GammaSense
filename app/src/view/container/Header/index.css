@@ -26,6 +26,7 @@
   margin: 0 1.5%;
   border-radius: 0.25em;
   cursor: pointer;
+  font-weight: 500;
 }
 
 .Header button.primary { left: 0 }
