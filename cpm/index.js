@@ -1,78 +1,59 @@
+function createElement(tagName, properties) {
+  return Object.assign(document.createElement(tagName), properties)
+}
 
-const canvas = document.querySelector('canvas')
-const sensor = createSensor(canvas, 10, console.log)
+const body = document.body
 
-// event handler to start the sensor
-function createSensor(canvas, frameRate, callback) {
+const sensor = createSensor({
+  width: 480, 
+  height: 320, 
+  facingMode: 'user', 
+  frameRate: 2,
+})
 
-  let active = false
+function dispatch(canvas, callback) {
+  
   const context = canvas.getContext('2d')
-  const sensor = initialize(analyzeImageData, { 
-    video: {
-      width: 480, 
-      height: 320, 
-      facingMode: 'user', 
-      frameRate: frameRate,
-    },
-    audio:  false,
-  })
+  const second = []
+  const minute = []
 
-  return function(succes, failed) {
-
-    function(event) {
-
-      active = !active
-      if (active) {
-
-        const second = []
-        const minute = []
-
-        const media = sensor(function(sensorData, imageData) {
-          
-          const { data } = imageData
-          const { resolution, count, channels, deveation } = sensorData
-          const { m } = channels
-
-          second.push(count.m)
-          if (second.length >= frameRate) {
-            const countPerSecond = second.reduce((a, b) => a + b, 0)
-            minute.push(countPerSecond)
-            second.length = 0
-          }
-
-          if (minute.length >= 60) {
-            const countPerMinute = minute.reduce((a, b) => a + b, 0)
-            success({ countPerMinute, timestamp: Date.now() })
-            minute.length = 0
-          }
-          
-          let index = -1
-          while (++index < resolution) {        
-            const pixel = index * 4
-            const value = m[index]
-            if (value) data[pixel + 1] = 255 - value
-          }
-
-          context.putImageData(imageData, 0, 0)
-
-          return active
-
-        })
-
-        media.catch(failed || console.warn)
-
-      }
-
-      else console.log('stopped')
-
+  return function({ count, timestamp, frameRate }) {
+    
+    if (second.length >= frameRate) {
+      minute.push(second.reduce(add))
+      second.length = 0
     }
+
+    if (minute.length >= 5) {
+      callback(minute.reduce(add))
+      minute.length = 0
+    }
+    console.log(count)
+    second.push(count)
 
   }
 
+  function add(a, b) {
+    return a + b
+  }
+  
 }
 
-const Toggle = document.createElement('button')
-Toggle.type = 'button'
-Toggle.textContent = 'Start/Stop'
-Toggle.onclick = sensor
-document.body.appendChild(Toggle)
+const canvas = createElement('canvas', { width: 480, height: 320 })
+body.appendChild(canvas)
+
+const start = createElement('button', {
+  type: 'button',
+  textContent: 'Start',
+  onclick: event => sensor.start(dispatch(canvas, console.info), console.warn),
+})
+
+const stop = createElement('button', {
+  type: 'button',
+  textContent: 'Stop',
+  onclick: event => sensor.stop(),
+})
+
+body.appendChild(start)
+body.appendChild(stop)
+

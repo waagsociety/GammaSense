@@ -1,73 +1,107 @@
-function initialize(analize, options) {
-
-  const support = getBrowserSupport()
+function createSensor(videoOptions) {
+  
   let active = false
-
-  return function(callback) {
-
-    if (!hasBrowerSupport(support)) return Promise.reject(support)
-    else if (active) return Promise.resolve(active)
-    else active = true
-
-    return navigator.mediaDevices.getUserMedia(options)
+  const { width, height, frameRate } = videoOptions
+  const support = hasBrowserSupport()
+  const options = { video: videoOptions, audio: false }
+  
+  function start(complete, failed) {
+    
+    if (!support) failed(getBrowserSupport())
+    else if (!active) active = !!navigator.mediaDevices.getUserMedia(options)
       .then(createVideoStream)
-      .then(handleVideoStream(analize, callback, options))
-      .then(isActive => active = isActive)
+      .then(captureVideoStream(complete))
+      .catch(failed)
+  }
 
+  function stop() {
+    active = false
   }
 
   function createVideoStream(stream) {
 
-    const video = createElement('video')
-    const track = stream.getVideoTracks()[0]
+    return new Promise(function(resolve, reject) {
 
-    return new Promise((resolve, reject) => {  
-      video.srcObject = stream
+      const track = stream.getVideoTracks()[0]
+      const video = createElement('video', {
+        srcObject: stream,
+        onplay: event => resolve({ video, track }),
+        onerror: event => reject({ video, track }),
+      })
+
       video.play()
-      video.onplay  = event => resolve({ video, track })
-      video.onerror = event => reject({ error, track })
-      return video
+
     })
 
   }
 
-  function handleVideoStream(analize, callback, options) {
-  
-    const { width, height, frameRate } = options.video
-    const interval = 1000 / frameRate
-
-    const canvas = createElement('canvas', { width, height })
-    const context = canvas.getContext('2d')
-    const toImageData = renderImageData(context)
-
+  function captureVideoStream(dispatch) {
+    
     return function({ video, track }) {
 
-      return new Promise(resolve => {
-        
-        function iteration() {
-          
-          const now = performance.now()
-          const imageData = toImageData(video, width, height)
-          const sensorData = analize(imageData)
-          const { error } = sensorData
+      const { width: videoWidth, height: videoHeight } = video
+      const canvas = createElement('canvas', { width, height })
+      const context = canvas.getContext('2d')
+      
+      const frameTime = 1000 / frameRate
+      const getImageData = renderImageData({ context, width, height })
+      const getGammaData = renderGammaData({ frameRate, frameTime })
 
-          if (callback(sensorData, imageData) && !error) {
-            setTimeout(iteration, interval - (performance.now() - now))
-          }
-          else resolve(!!track.stop())
+      const cycle = setInterval(iteration, frameTime)
+      
+      const second = []
+      const minute = []
 
-        }
+      function iteration() {
+        const imageData = getImageData(video)
+        const gammaData = getGammaData(imageData, frameRate)
+        active = active && dispatch(gammaData) !== false
+        if (!active) stop(track, cycle)
+      }
 
-        return iteration()
-
-      })
+      function stop(track, cycle) {
+        clearInterval(cycle)
+        track.stop()
+        video.pause()
+      }
 
     }
 
   }
 
-  function renderImageData(context) {
-    return function(source, width, height) {
+  function add(a, b) {
+    return a + b
+  }
+
+  function renderGammaData({ frameRate, frameTime }) {
+
+    return function(imageData, frameRate) {
+
+      const timestamp = Date.now()
+      const data = imageData.data
+      const length = data.length
+      let index = 0
+      let count = 0
+
+      while (index < length) {
+
+        var r = index++
+        var g = index++
+        var b = index++
+        index++
+
+        count += (data[r] + data[g] + data[b]) > 0
+
+      }
+
+      return { count, timestamp, frameRate, frameTime }
+
+    }    
+
+  }
+
+  function renderImageData({ context, width, height }) {
+    return function(source) {
       context.drawImage(source, 0, 0, width, height)
       return context.getImageData(0, 0, width, height)
     }
@@ -75,10 +109,6 @@ function initialize(analize, options) {
 
   function createElement(tagName, properties) {
     return Object.assign(document.createElement(tagName), properties)
-  }
-  
-  function hasBrowerSupport(support) {
-    return !Object.keys(support).filter(key => !support[key]).length
   }
 
   function getBrowserSupport() {
@@ -89,9 +119,8 @@ function initialize(analize, options) {
     }
   }
 
-  function hasBrowerSupport() {
-    const support = getBrowserSupport()
-    return !Object.keys(support).filter(key => !support[key]).length
+  function hasBrowserSupport() {
+    return hasCanvasSupport() && hasVideoSupport() && hasMediaSupport()
   }
 
   function hasVideoSupport() {
@@ -107,5 +136,7 @@ function initialize(analize, options) {
   function hasMediaSupport() {
     return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)
   }
+
+  return { start, stop }
 
 }
