@@ -1,8 +1,8 @@
 export default {
   active: false,
   error: false,
-  measurement: null,
-  baseline: null,
+  cycles: [],
+  samples: [],
+  baseline: 0,
   history: [],
-  support: false,
 }

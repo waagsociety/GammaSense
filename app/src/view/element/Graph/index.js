@@ -1,18 +1,26 @@
 import React from 'react'
 
-export const Graph = ({ width, height, layers }) => {
+export const Graph = ({ samples }) => {
 
-  const viewBox = [0, 0, width, height].join(' ')
-  const strokeWidth = 4
+  const { innerWidth: width, innerHeight: height } = window
+  
+  const bleed = 4
+  const viewBox = [0, 0, width, height].join(' ')  
+  const pathProperties = { width, height, bleed } 
 
-  const pathProperties = { width, height, bleed: strokeWidth } 
+  const layers = [{
+    label: "Samples",
+    color: "#18C880",
+    data: [0].concat(samples),
+  }]
 
   const paths = layers.map(layer => {
     const { label, color, data } = layer
     const d = reduceToPath(data, pathProperties)
-    return <path key={label} stroke={color} strokeWidth={strokeWidth} d={d}/>
+    return <path key={label} stroke={color} strokeWidth={bleed} d={d}/>
   })
 
+  return ""
   return <svg className='Graph' viewBox={viewBox}>{paths}</svg>
 
 }

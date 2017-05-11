@@ -2,16 +2,21 @@ import React from 'react'
 import { events } from './events'
 
 import { Visualise } from '../'
-import { SensorToggle } from '../../element/'
+import { SensorToggle, BaselineProgress } from '../../element/'
 
-export const Monitor = ({ state, dispatch, getState }) => {
-
-  const { sensor, config } = state
-  const { measurement } = sensor
+export const Monitor = ({ state, dispatch }) => {
   
-  return <section className="Monitor">
-    <Visualise measurement={measurement} config={config}/>
-    <SensorToggle events={events(dispatch, getState)} state={state}/>
+  const { sensor } = state
+  const { active, cycles } = sensor
+
+  return  <section className="Monitor">
+    { active
+      ? cycles.length
+        ? <Visualise sensor={sensor}/>
+        : <BaselineProgress percentage={10}/>
+      : null
+    }
+    <SensorToggle events={events(dispatch)} state={state}/>
   </section>
 
 }
