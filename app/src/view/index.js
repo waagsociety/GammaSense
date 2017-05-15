@@ -49,11 +49,11 @@ export default class App extends React.Component {
     const dispatchError = errorLog(dispatch, log.error)
     
     if (sensor.error) {
-      dispatch.sensor({ measurement: null, error: false })
+      dispatch.sensor({ measurement: null, error: null })
       dispatchError({
-        title: "De meting kon niet worden voltooid",
-        message: "Controleer of webcam goed afgedekt wordt met tape.",
-        actions: [{ label: 'Ik snap het' }, { label: 'Meer informatie', route: '#informatie' }]
+        title: "Het doen van een meting is helaas niet mogelijk",
+        message: "Deze brower ondersteund niet alle technologieën om een meting te verrichten.",
+        actions: [{ label: 'Ik snap het' }, { label: 'Meer informatie', route: '#informatie/browser-support' }]
       })
     }
 
@@ -65,7 +65,6 @@ export default class App extends React.Component {
         actions: [{ label: 'Ik snap het' }, { label: 'Meer informatie', route: '#informatie' }]
       })
     }
-
     
   }
 

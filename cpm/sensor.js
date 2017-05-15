@@ -1,7 +1,7 @@
 function createSensor(videoOptions) {
   
   let active = false
-  const { width, height, frameRate } = videoOptions
+  const { frameRate } = videoOptions
   const support = hasBrowserSupport()
   const options = { video: videoOptions, audio: false }
   
@@ -39,18 +39,16 @@ function createSensor(videoOptions) {
     
     return function({ video, track }) {
 
-      const { width: videoWidth, height: videoHeight } = video
+      const { videoWidth, width, videoHeight: height } = video
       const canvas = createElement('canvas', { width, height })
       const context = canvas.getContext('2d')
       
       const frameTime = 1000 / frameRate
+      console.log(width)
       const getImageData = renderImageData({ context, width, height })
       const getGammaData = renderGammaData({ frameRate, frameTime })
 
-      const cycle = setInterval(iteration, frameTime)
-      
-      const second = []
-      const minute = []
+      const cycle = setInterval(iteration, frameTime)    
 
       function iteration() {
         const imageData = getImageData(video)
@@ -68,11 +66,7 @@ function createSensor(videoOptions) {
     }
 
   }
-
-  function add(a, b) {
-    return a + b
-  }
-
+  
   function renderGammaData({ frameRate, frameTime }) {
 
     return function(imageData, frameRate) {

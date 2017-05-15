@@ -1,39 +1,41 @@
 import React from 'react'
+import { last } from 'ramda'
 
-export const Graph = ({ width, height, layers }) => {
+export const Graph = ({ sensor }) => {
 
+  const { samples, cycles } = sensor
+  const { baseline, peak } = last(cycles)
+
+  const { innerWidth: width, innerHeight: height } = window
   const viewBox = [0, 0, width, height].join(' ')
-  const strokeWidth = 4
 
-  const pathProperties = { width, height, bleed: strokeWidth } 
+  const percentage = (height / 2) / peak
+  const data = normalizeSampleData(samples, baseline, percentage)
 
-  const paths = layers.map(layer => {
-    const { label, color, data } = layer
-    const d = reduceToPath(data, pathProperties)
-    return <path key={label} stroke={color} strokeWidth={strokeWidth} d={d}/>
-  })
-
-  return <svg className='Graph' viewBox={viewBox}>{paths}</svg>
+  return <svg className='Graph' viewBox={viewBox} width={width} height={height}>
+    <path width={width} height={height} d={createPath(data, width, height)}/>
+  </svg>
 
 }
 
-// controller things
-function reduceToPath(data, { width = 320, height = 240, bleed = 0 }) {
+function createPath(data, width, height) {
+  
+  const column = width / (data.length - 1)
+  const center = height / 2
 
-  height -= bleed
+  return data.reduce(function(path, point, index) {
+    return path + ' L' + (index * column) + ',' + (center - data[index])
+  },'M0,' + center)
 
-  const margin = bleed / 2
-  const percent = height / 100
-  const interval = width / (data.length - 1)
+}
 
-  return data.map((item, index) => {
-    
-    const kind = !!index ? 'L' : 'M'
-    const x = interval * index || 0
-    const y = height - (item * percent) + margin
-    
-    return [kind + x, y].join()
-
-  }).join(' ')
-
+function normalizeSampleData(samples, baseline, percentage) {
+  const data = []
+  const length = samples.length
+  let index = length - 60
+  while (index < length) {
+    data.push(index < 0 ? 0 : samples[index] * percentage)
+    ++index
+  }
+  return data
 }
