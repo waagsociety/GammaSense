@@ -11,7 +11,7 @@ const transferCoords = transfer('longitude', 'latitude')
 export const Map = ({ state, dispatch }) => {
 
   const { requestLocation } = events(dispatch, window._MAPBOX_)
-  const { location, config, session } = state
+  const { location, config, session, dialog } = state
   const { mapbox } = config
   const { data } = location
   const { support } = session
@@ -84,7 +84,7 @@ export const Map = ({ state, dispatch }) => {
       : <h1 style={{ margin: '4em 1em 0' }}>webGL is not supported</h1>
     }
 
-    <LocationToggle events={{ requestLocation }} location={location} />
+    <LocationToggle events={{ requestLocation }} location={location} dialog={dialog}/>
 
   </section>
 

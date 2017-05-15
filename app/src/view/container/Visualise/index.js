@@ -7,25 +7,33 @@ function getMedianCPM(cycles, baseline) {
   return Math.round(median(cycles.map(cycle => cycle.countPerMinute)) - baseline)
 }
 
-export const Visualise = ({ sensor }) => {
+function localeAmount(value) {
+  return Math.round(value / 84).toLocaleString()
+}
+
+function localeLabel(name) {
+  return <span>{name}</span>
+}
+
+export const Visualise = ({ sensor, dialog }) => {
   
   const { cycles } = sensor
   const { countPerMinute, baseline, peak } = last(cycles)
   
   return <section className="Visualise">
     
-    <h1>Meting</h1>
+    <h1>{dialog('measurement', 'title')}</h1>
 
     <ul className='dashboard'>
       <li className='primary'>
-        {(countPerMinute - baseline).toLocaleString('nl')}
-        <span>CPM Meting {cycles.length}</span>
+        {localeAmount(countPerMinute - baseline)}
+        {localeLabel(dialog('measurement', 'cpm'))}
       </li>
       <li className='secondary'>
         <ul>
-          <li><span>Nulwaarde</span> {baseline.toLocaleString('nl')}</li>
-          <li><span>Piek CPM</span> {(peak - baseline).toLocaleString('nl')}</li>
-          <li><span>Mediaan CPM</span> {getMedianCPM(cycles, baseline).toLocaleString('nl')}</li>
+          <li>{localeLabel(dialog('measurement', 'baseline'))} {localeAmount(baseline)}</li>
+          <li>{localeLabel(dialog('measurement', 'peak'))} {localeAmount(peak)}</li>
+          <li>{localeLabel(dialog('measurement', 'median'))} {localeAmount(getMedianCPM(cycles, baseline))}</li>
         </ul>
       </li>
     </ul>

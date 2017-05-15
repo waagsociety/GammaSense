@@ -6,13 +6,14 @@ const { hash } = route
 
 export const Information = ({ state }) => {
 
-  const { routes } = state.config
+  const { config, dialog } = state
+  const { routes } = config
   const hidden = !hash.match(routes.information)
 
   return <section className='Information full primary panel' hidden={hidden}>
 
     <header>
-      <h1>Instructies</h1>
+      <h1>{dialog('information', 'title')}</h1>
     </header>
 
     <article className="content">
@@ -32,7 +33,7 @@ export const Information = ({ state }) => {
         </aside>
 
         <nav>
-          <button type='button' onClick={hash.push()}>Ik snap het</button>
+          <button type='button' onClick={hash.push()}>{dialog('action', 'confirm')}</button>
         </nav>
 
       </section>

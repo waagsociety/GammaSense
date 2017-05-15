@@ -1,9 +1,8 @@
 
 // routes
 const routes = {
-  measurement: 'meting',
-  information: 'informatie',
-  history: 'mijn-metingen',
+  information: 'information',
+  history: 'history',
 }
 
 // mapbox

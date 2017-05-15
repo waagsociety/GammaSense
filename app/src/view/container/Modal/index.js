@@ -12,7 +12,8 @@ const ModalButton = event => ({ route, label }, index) => {
 
 export const Modal = ({ state, dispatch }) => {
   
-  const { error } = state.log
+  const { log } = state
+  const { error } = log
   const event = event => dispatch.log({ error: error.slice(1) })
 
   return <section className='Modal' hidden={!error.length}>

@@ -57,7 +57,9 @@ export const dialogue = function(cache, NULL, _length_, _start_, emptyString, _o
       }
     }
 
-    return cache[storageKey] = result
+    cache[storageKey] = result
+
+    return getFrom(result)
 
   }
 
@@ -106,10 +108,11 @@ export const dialogue = function(cache, NULL, _length_, _start_, emptyString, _o
 
   function getFrom(value) {
 
-    return function(path) {
+    return function() {
       
+      var path = arguments
       var result = value
-      var length = (path || [])[_length_]
+      var length = (arguments || [])[_length_]
       var index = _start_
 
       while (++index < length && !isNil(result)) {
@@ -130,8 +133,6 @@ export const dialogue = function(cache, NULL, _length_, _start_, emptyString, _o
 
     return function(content) {
       
-      // var data = content || {}
-      // var last = data[_length_]
       var result = emptyString
       for (var index = 0; index < size; index += 2) {
         var value = content[text[index + 1]]
@@ -145,18 +146,6 @@ export const dialogue = function(cache, NULL, _length_, _start_, emptyString, _o
   function normalizeLocaleKey(value) {
     return value.replace(/[^a-z]+/gi, '').toLowerCase()
   }
-
-  // function each(callback) {
-  //   return function(data, callback) {
-  //     var continued = 1
-  //     var length = data[_length_]
-  //     var index = _start_
-  //     while (++index < length && !!continued) {
-  //       continued = callback(value)
-  //     }
-  //     return continued
-  //   }
-  // }
 
   function isPrimitive(value) {
     return isNil(value) || (typeof value !== 'object' && typeof value !== 'function')

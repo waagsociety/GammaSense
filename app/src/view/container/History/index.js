@@ -8,21 +8,21 @@ const { hash } = route
 
 export const History = ({ state }) => {
 
-  const { sensor, config } = state
+  const { sensor, config, dialog } = state
   const { history } = sensor
   const { routes } = config
 
   const hidden = !hash.match(routes.history)
 
   const content = history.length
-    ? <HistoryList data={history} />
-    : <p>Je hebt nog geen meting gedaan.</p> 
+    ? <HistoryList data={history} dialog={dialog}/>
+    : <p>{dialog('history', 'empty')}</p> 
 
   return <section className='History secondary panel' hidden={hidden}>
 
     <header>
-      <button type='button' onClick={hash.push()}>Sluit</button>
-      <h1>Mijn metingen</h1>
+      <button type='button' onClick={hash.push()}>{dialog('action', 'done')}</button>
+      <h1>{dialog('history', 'title')}</h1>
     </header>
 
     <section className='content'>{content}</section>

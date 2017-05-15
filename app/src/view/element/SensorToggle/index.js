@@ -3,19 +3,18 @@ import './index.css'
 
 export const SensorToggle = ({ state, events }) => {
   
-  const { sensor, location } = state
+  const { sensor, location, dialog } = state
   const { active, cycles } = sensor
   const { data, loading } = location
   const { prepare, start, stop } = events
-
-  const initialEvent = data || 1 ? start : prepare
+  const initialEvent = data ? start : prepare
   
   return active
     ? <button className="SensorToggle" type="button" onClick={stop}>
-        {cycles.length ? 'Stop meting' : 'Annuleer meting'}
+        { cycles.length ? dialog('measurement', 'stop') : dialog('measurement', 'cancel') }
       </button>
-    : <button className="SensorToggle prominent start" type="button" onClick={initialEvent} disabled={false && loading}>
-        {'Start meting'}
+    : <button className="SensorToggle prominent start" type="button" onClick={initialEvent} disabled={loading}>
+        {dialog('measurement', 'start')}
       </button>
 
 }

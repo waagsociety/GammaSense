@@ -24,8 +24,8 @@ function createPath(data, width, height) {
   const center = height / 2
 
   return data.reduce(function(path, point, index) {
-    return path + ' L' + (index * column) + ',' + (center - data[index])
-  },'M0,' + center)
+    return path + (index ? ' L' : 'M') + (index * column) + ',' + (center - data[index])
+  }, '')
 
 }
 

@@ -1,21 +1,48 @@
 import { dialogue } from './controller'
 
 export default dialogue.create({
+
   en_GB: {
-    measure: {
+    measurement: {
+      title: "Measurement",
       start: "Start Measurement",
       stop: "Stop Measurement",
       cancel: "Cancel Measurement",
+      initializing: "One moment please...",
+      median: "Median",
+      baseline: "Baseline",
+      peak: "Peak",
+      cpm: "CPM",
       error: {
-        title: "Your measurement could not be completed",
-        message: "Check if the webcam has been properly sealed with tape.",
-        primary: "Try Again",
-        secondary: "View Instructions",
+        seal: {
+          title: "Your measurement could not be completed",
+          message: "Controleer of webcam volledig wordt afgedekt met tape.",
+        },
+        location: {
+          title: "Your location could not be found",
+          message: "Your location is required to perform a measurement",
+        },
       },
     },
+    information: {
+      title: "About",
+    },
+    history: {
+      title: "My measurements",
+      empty: "Nothing here...",
+    },
+    map: {
+      center: "Get My Location",
+    },
+    action: {
+      done: "Done",
+      confirm: "Got it",
+      discover: "More information",
+    },
   },
+
   nl_NL: {
-    measure: {
+    sensor: {
       start: "Start Meting",
       stop: "Stop Meting",
       cancel: "Anulleer Meting",
@@ -27,8 +54,9 @@ export default dialogue.create({
       },
     },
   },
+
   de_DE: {
-    measure: {
+    sensor: {
       start: "Start Measurement",
       stop: "Stop Measurement",
       cancel: "Cancel Measurement",
@@ -38,4 +66,5 @@ export default dialogue.create({
       },
     },
   },
-})(navigator.language || 'en_GB')
+
+})(navigator.language, 'en_GB')

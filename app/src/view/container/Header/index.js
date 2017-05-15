@@ -7,7 +7,8 @@ const { hash } = route
 
 export const Header = ({ state }) => {
   
-  const { routes } = state.config
+  const { config } = state
+  const { routes } = config
 
   return <header className="Header">
 

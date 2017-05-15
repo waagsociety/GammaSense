@@ -47,7 +47,7 @@ export default class App extends React.Component {
     const { state, dispatch } = model
     const { sensor, location, log } = state
     const dispatchError = errorLog(dispatch, log.error)
-    
+        
     if (sensor.error) {
       dispatch.sensor({ measurement: null, error: null })
       dispatchError({

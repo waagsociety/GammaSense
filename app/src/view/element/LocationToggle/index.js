@@ -3,7 +3,7 @@ import './index.css'
 
 import { Icon } from '../Icon/'
 
-export const LocationToggle = ({ events, location }) => {
+export const LocationToggle = ({ events, location, dialog }) => {
   
   const { requestLocation } = events
   const { support, loading, ready } = location
@@ -12,7 +12,7 @@ export const LocationToggle = ({ events, location }) => {
   const className = classNames('LocationToggle icon', loading && 'loading')
   
   return <button className={className} type="button" onClick={requestLocation} disabled={disabled}>
-    <Icon name='location'/> Get My Location
+    <Icon name='location'/> {dialog('map', 'center')}
   </button>
 
 }
