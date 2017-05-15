@@ -4,13 +4,13 @@ import { Graph } from '../../element/'
 import './index.css'
 
 function getMedianCPM(cycles, baseline) {
-  return median(cycles.map(cycle => cycle.countPerMinute)) - baseline
+  return Math.round(median(cycles.map(cycle => cycle.countPerMinute)) - baseline)
 }
 
 export const Visualise = ({ sensor }) => {
   
-  const { samples, baseline, cycles } = sensor
-  const { countPerMinute } = last(cycles)
+  const { cycles } = sensor
+  const { countPerMinute, baseline, peak } = last(cycles)
   
   return <section className="Visualise">
     
@@ -18,19 +18,19 @@ export const Visualise = ({ sensor }) => {
 
     <ul className='dashboard'>
       <li className='primary'>
-        {(countPerMinute - baseline).toLocaleString()}
-        <span>CPM</span>
+        {(countPerMinute - baseline).toLocaleString('nl')}
+        <span>CPM Meting {cycles.length}</span>
       </li>
       <li className='secondary'>
         <ul>
-          <li><span>Nulwaarde</span> {baseline.toLocaleString()}</li>
-          <li><span>Metingen</span> {cycles.length}</li>
-          <li><span>Mediaan CPM</span> {getMedianCPM(cycles, baseline).toLocaleString()}</li>
+          <li><span>Nulwaarde</span> {baseline.toLocaleString('nl')}</li>
+          <li><span>Piek CPM</span> {(peak - baseline).toLocaleString('nl')}</li>
+          <li><span>Mediaan CPM</span> {getMedianCPM(cycles, baseline).toLocaleString('nl')}</li>
         </ul>
       </li>
     </ul>
 
-    <Graph samples={samples}/>
+    <Graph sensor={sensor}/>
 
   </section>
   

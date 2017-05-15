@@ -1,21 +1,20 @@
-// import { sensor } from '../../../model'
 import { geolocation, createSensor } from '../../../controller'
 
 const sensor = createSensor({
   width: 480,
   heigth: 320,
-  frameRate: 10,
+  frameRate: 2,
 })
-
-
 
 export const events = (dispatch) => {
 
   const updateSensor = storeCPM(dispatch)
+  const onerror = error => dispatch.sensor({ error })
+
   return {
 
     start: event => {
-      dispatch.sensor({ active: sensor.start(updateSensor) })
+      dispatch.sensor({ active: sensor.start(updateSensor, onerror) })
     },
 
     stop: event => {
@@ -33,7 +32,9 @@ export const events = (dispatch) => {
 
 function storeCPM(dispatch) {
   
+  const cycleRate = 60
   let baseline = Infinity
+  let peak = 0
 
   const frames = []
   const samples = []
@@ -42,26 +43,33 @@ function storeCPM(dispatch) {
   return function({ count, frameRate, width, heigth }) {
     
     frames.push(count)
-
     if (frames.length >= frameRate) {
       
-      const countPerSecond = frames.reduce(add)      
-      samples.push(countPerSecond)
-
-      baseline = Math.min(countPerSecond * 60, baseline) 
-      dispatch.sensor({ samples, active: true, baseline })
-
+      const countPerSecond = frames.reduce(add)
+      baseline = Math.min(countPerSecond * cycleRate, baseline)     
       frames.length = 0
 
-      if (samples.length % 60 === 0) {
+      samples.push(countPerSecond)
+      
+      dispatch.sensor({ samples })
+
+      if (samples.length % cycleRate === 0) {
 
         const timestamp = Date.now()
-        const countPerMinute = samples.slice(-60).reduce(add)
+        const countPerMinute = samples.slice(-cycleRate).reduce(add)
+        peak = Math.max(countPerMinute, peak)
 
-        cycles.push({ countPerMinute, frameRate, width, heigth, timestamp })
+        cycles.push({
+          timestamp, 
+          frameRate,
+          countPerMinute, 
+          baseline,
+          peak,
+          width, 
+          heigth,
+        })
 
         dispatch.sensor({ cycles })
-        // console.log('m', countPerMinute)
 
       }
     
