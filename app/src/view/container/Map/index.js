@@ -74,7 +74,7 @@ export const Map = ({ state, dispatch }) => {
                 }
               }
             })
-            xhr.open('get', "https://gammasense.org:8090/sensordata")
+            xhr.open('get', "https://gammasense.org/app/sensordata")
             xhr.setRequestHeader("cache-control", "no-cache")
             xhr.send(data)
 
