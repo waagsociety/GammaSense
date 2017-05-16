@@ -1,7 +1,9 @@
 .Information {
+  background-color: white;
   transition: 100ms ease-in;
   background-color: rgba(0,0,0,.5);
   height: 100%;
+  width: 100%;
 }
 
 .iOS.standalone .Information header  { top: 20px }
@@ -12,6 +14,7 @@
 .Information header {
   color: white;
   background-color: #061420;
+  text-align: center;
   height: 3em;
   padding: 0.5vw 1.5%;
   position: absolute;
@@ -29,20 +32,76 @@
 }
 
 .Information header h1 {
-  text-align: center;
   padding: 0.625em 0;
   font-size: 125%;
 }
 
-.Information article {
-  padding: 2vw 2vw 5em;
-  top: 3em;
-  margin: 1vw 0;
+.Information article header {
+  text-align: left;
+  position: relative;
+  background-color: transparent;
+  color: black;
+  box-shadow: none;
+  width: auto;
+}
+
+.Information nav.index {
+  background-color: #e7faf0;
+  background-color: white;
+  box-shadow: 1px 0 0 0 rgba(0,20,60,0.2);
+  width: 20em;
   left: 0;
-  right: 0;
+  top: 3em;
+  bottom: 0;
+  margin-top: 1vw;
+  padding-bottom: 9.5em;
+  position: absolute;
+  z-index: 1;
+  overflow-x: hidden;
+}
+
+.Information nav.index li a {
+  font-size: 112.5%;
+  padding: 1em 1.5em 1.2em;
+  display: block;
+}
+
+.Information nav.index li a:hover {
+  background-color: #f8fafa;
+}
+
+.Information nav.index footer {
+  width: inherit;
   position: fixed;
+  bottom: 0;
+  background-color: white;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+  text-align: center;
+  padding: 0.75em 0 0;
+  overflow: hidden;
+}
+
+.Information nav.index footer a {
+  font-weight: normal;
+  color: #888;
+}
+
+.Information nav.index footer img { 
+  float: right;
+  margin: -4% 0 0 -5%;
   width: 100%;
-  height: 100%;
+  height: auto;
+  display: block;
+}
+
+.Information article {
+  background-color: white;
+  top: 3em;
+  margin: 1vw 0 0;
+  left: 20em;
+  right: 0;
+  bottom: 0;
+  position: fixed;
   overflow: scroll;
 }
 

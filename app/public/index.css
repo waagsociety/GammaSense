@@ -24,7 +24,7 @@ li { list-style: none }
 
 canvas { pointer-events: none }
 
-a { 
+a, button { 
   text-decoration: none;
   color: #3296ff;
 }

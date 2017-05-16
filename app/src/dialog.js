@@ -50,12 +50,9 @@ export default dialogue.create({
     location: {
       request: "Get My Location",
       error: {
-        permissions: {
-
-        },
         unknown: {
           title: "Your location could not be found",
-          message: "[Error message]",
+          message: "Location [Error message]",
         },
       }
     },

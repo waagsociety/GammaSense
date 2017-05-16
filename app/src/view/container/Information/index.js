@@ -17,31 +17,35 @@ export const Information = ({ state }) => {
       <h1>{dialog('information', 'title')}</h1>
     </header>
 
+    <nav className='index'>
+    
+      <ul>
+        <li><a href='#about/what-is-gammasense'>What is GammaSense?</a></li>
+        <li><a href='#about/gamma-radiation-explained'>Gamma Radiation Explained</a></li>
+        <li><a href='#about/measuring-gamma-radiation'>Measuring Gamma Radiation</a></li>
+        <li><a href='#about/faq'>Frequently Asked Questions</a></li>
+        <li><a href='#about/support'>Something Went Wrong</a></li>
+        <li><a href='#about/devices'>Supported Devices</a></li>
+        <li><a href='#about/privacy'>Privacy Statement</a></li>
+        <li><a href='#about/colophon'>Colophon</a></li>
+      </ul>
+
+      <footer>
+        <a className="logo" href="https://waag.org">
+          <span>An initiative by</span>
+          <img src='/logo.waag-society.jpg' target='_blank' width={320} heigth={135}/>
+        </a>
+      </footer>
+
+    </nav>
+
     <article className="content">
 
-      <section>
-
-        <ol>
-          <li>Dek je camera volledig af met tape dat licht blokkeert.</li>
-          <li>Klik “Start Meting” om te beginnen.</li>
-          <li>Wacht minimaal 2 minuten om een volledige meting te verrichten.</li>
-        </ol>
-
-        <aside className='info'>
-          <img src='./chrome-logo.png' width='32' height='32' role='presentation'/>
-          Momenteel kan een meting alleen gedaan worden 
-          in <a target='_blank' href='https://www.google.com/chrome/'>Google Chrome</a>.
-        </aside>
-
-        <nav>
-          <button type='button' onClick={hash.push()}>{dialog('action', 'confirm')}</button>
-        </nav>
-
-      </section>
+      <header>
+        <h1>Coming soon...</h1>
+      </header>
 
     </article>
-
-   
 
   </section>
 
