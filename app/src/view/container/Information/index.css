@@ -67,7 +67,7 @@
 }
 
 .Information nav.index li a:hover {
-  background-color: #f8fafa;
+  background-color: #f8f8fa;
 }
 
 .Information nav.index footer {
@@ -103,6 +103,21 @@
   bottom: 0;
   position: fixed;
   overflow: scroll;
+}
+
+.Information article section {
+  font-size: 112.5%;
+}
+
+
+.Information article section h1 {
+  margin: 0 0 0.25em;
+  line-height: 1.25;
+}
+
+
+.Information article section p {
+  line-height: 1.6;
 }
 
 .Information article section {
