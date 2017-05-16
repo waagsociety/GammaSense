@@ -29,6 +29,9 @@ export default dialogue.create({
         },
       },
     },
+    introduction: {
+      title: "How to Get Started",
+    },
     information: {
       title: "About",
     },
@@ -90,6 +93,9 @@ export default dialogue.create({
         },
       },
     },
+    introduction: {
+      title: "Aan de slag",
+    },
     information: {
       title: "Informatie",
     },
@@ -121,4 +127,4 @@ export default dialogue.create({
     },
   },
 
-})('nl', navigator.language, 'en_GB')
+})(navigator.language, 'en_GB')

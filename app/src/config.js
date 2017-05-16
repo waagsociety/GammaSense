@@ -1,7 +1,8 @@
 
 // routes
 const routes = {
-  information: 'information',
+  introduction: 'start',
+  information: 'about',
   history: 'history',
 }
 

@@ -1,6 +1,7 @@
 export { Header } from './Header'
 export { History } from './History'
 export { Monitor } from './Monitor'
+export { Tutorial } from './Tutorial'
 export { Information } from './Information'
 export { Map } from './Map'
 export { Modal } from './Modal'

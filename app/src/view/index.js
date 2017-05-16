@@ -1,6 +1,6 @@
 import React from 'react'
 import { route } from '../controller'
-import { Header, History, Monitor, Information, Map, Modal } from './container/'
+import { Header, History, Monitor, Information, Tutorial, Map, Modal } from './container/'
 
 const { hash } = route
 
@@ -20,7 +20,7 @@ export default class App extends React.Component {
 
     if (state.session.informed) hash.replace()
     else {
-      hash.replace(routes.information)
+      hash.replace(routes.introduction)()
       dispatch.session({ informed: true })
     }
 
@@ -31,7 +31,7 @@ export default class App extends React.Component {
     const dispatchError = errorLog(dispatch, log.error)
     if (!support.webGL) dispatchError({
       content: dialog('map', 'error', 'webGL'), 
-      route: '#information/browser-support',
+      route: hash.push(routes.information, 'support'),
     })
 
   }
@@ -39,14 +39,16 @@ export default class App extends React.Component {
   componentWillReceiveProps({ model }) {
 
     const { state, dispatch } = model
-    const { sensor, location, log, dialog } = state
+    const { sensor, location, log, config, dialog } = state
+    const { routes } = config
+
     const dispatchError = errorLog(dispatch, log.error)
         
     if (sensor.error) {
       dispatch.sensor({ measurement: null, error: null })
       dispatchError({
         content: dialog('sensor', 'error', 'support'), 
-        route: '#information/browser-support',
+        route: hash.push(routes.information, 'support'),
       })
     }
 
@@ -54,7 +56,7 @@ export default class App extends React.Component {
       dispatch.location({ data: null, loading: false, error: null})
       dispatchError({
         content: dialog('location', 'error', 'unknown'), 
-        route: '#information/location-data',
+        route: hash.push(routes.information, 'location'),
       })
     }
     
@@ -66,6 +68,7 @@ export default class App extends React.Component {
       <Header {...model}/>
       <Monitor {...model}/>
       <Map {...model}/>
+      <Tutorial {...model}/>
       <Modal {...model}/>
       <Information {...model}/>
       <History {...model}/>
