@@ -15,20 +15,23 @@ export const Modal = ({ state, dispatch }) => {
   const { log, dialog } = state
   const { error } = log
   const item = error[0]
-
-  const event = event => dispatch.log({ error: error.slice(1) })
   
-  const primary = dialog('action', 'confirm')
-  const secondary = dialog('action', 'information')
-  const route = item && item.route
-  const actions = [{ label: primary }, { label: secondary, route }]
+  if (item) {
+    
+    const event = event => dispatch.log({ error: error.slice(1) })
+  
+    const primary = dialog('action', 'confirm')
+    const secondary = dialog('action', 'information')
+    const route = item && item.route
+    const actions = [{ label: primary }, { label: secondary, route }]
 
-  return <section className='Modal' hidden={!error.length}>
-    { error.length
-      ? <ModalContent item={item} actions={actions} event={event}/>
-      : null
-    }
-  </section>
+    return <section className='Modal' hidden={!error.length}>
+      <ModalContent item={item} actions={actions} event={event}/>
+    </section>
+
+
+  }
+  else return null
 
 }
 
