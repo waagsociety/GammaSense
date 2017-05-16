@@ -13,7 +13,6 @@ export function geolocation(dispatch, map) {
   }
 
   function failed(error) {
-    console.log(error)
     dispatch.location({ error, loading: false })
   }
 

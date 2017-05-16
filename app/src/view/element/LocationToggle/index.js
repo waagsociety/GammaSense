@@ -12,7 +12,7 @@ export const LocationToggle = ({ events, location, dialog }) => {
   const className = classNames('LocationToggle icon', loading && 'loading')
   
   return <button className={className} type="button" onClick={requestLocation} disabled={disabled}>
-    <Icon name='location'/> {dialog('map', 'center')}
+    <Icon name='location'/> {dialog('location', 'request')}
   </button>
 
 }

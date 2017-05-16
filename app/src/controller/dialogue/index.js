@@ -53,7 +53,11 @@ export const dialogue = function(cache, NULL, _length_, _start_, emptyString, _o
       var index = locales[_length_]      
       while (index--) {
         var key = locales[index]
-        deepAssign(result, dictionary[key] || {})
+        var content = dictionary[key]
+        if (typeof content === 'string') {
+          content = dictionary[normalizeLocaleKey(content)]
+        }
+        if (content) deepAssign(result, content || {})
       }
     }
 
@@ -65,8 +69,7 @@ export const dialogue = function(cache, NULL, _length_, _start_, emptyString, _o
 
   function deepAssign(object, extension) {
     
-    for (var key in extension) if (extension.hasOwnProperty(key)) {      
-      
+    for (var key in extension) if (extension.hasOwnProperty(key)) {            
       var value = extension[key]
       if (isValidContent(value)) {
         object[key] = isPrimitive(object[key])

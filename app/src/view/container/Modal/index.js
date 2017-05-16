@@ -12,28 +12,36 @@ const ModalButton = event => ({ route, label }, index) => {
 
 export const Modal = ({ state, dispatch }) => {
   
-  const { log } = state
+  const { log, dialog } = state
   const { error } = log
+  const item = error[0]
+
   const event = event => dispatch.log({ error: error.slice(1) })
+  
+  const primary = dialog('action', 'confirm')
+  const secondary = dialog('action', 'information')
+  const route = item && item.route
+  const actions = [{ label: primary }, { label: secondary, route }]
 
   return <section className='Modal' hidden={!error.length}>
     { error.length
-      ? <ModalContent content={error[0]} event={event}/>
+      ? <ModalContent item={item} actions={actions} event={event}/>
       : null
     }
   </section>
 
 }
 
-function ModalContent({ content, event }) {
+function ModalContent({ item, actions, event }) {
   
-  const { title, message, actions } = content
+  const { content, route } = item
+  const { title, message } = content
   const className = ['one', 'two'][(actions || ' ').length - 1]
 
   return <div>
-    <h1>{title || 'Oops'}</h1>
-    <p>{message || 'Er is iets misgegaan'}</p>
-    <nav className={className}>{(actions || [{ label: 'OK' }]).map(ModalButton(event))}</nav>
+    <h1>{title}</h1>
+    <p>{message}</p>
+    <nav className={className}>{actions.map(ModalButton(event, route))}</nav>
   </div>
 
 }
