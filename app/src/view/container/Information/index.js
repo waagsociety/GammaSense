@@ -13,6 +13,7 @@ export const Information = ({ state }) => {
   return <section className='Information full primary panel' hidden={hidden}>
 
     <header>
+      <button className='primary' type='button' onClick={hash.push()}>{dialog('action', 'done')}</button>
       <h1>{dialog('information', 'title')}</h1>
     </header>
 

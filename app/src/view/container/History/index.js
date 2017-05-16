@@ -21,7 +21,7 @@ export const History = ({ state }) => {
   return <section className='History secondary panel' hidden={hidden}>
 
     <header>
-      <button type='button' onClick={hash.push()}>{dialog('action', 'done')}</button>
+      <button className='secondary' type='button' onClick={hash.push()}>{dialog('action', 'done')}</button>
       <h1>{dialog('history', 'title')}</h1>
     </header>
 

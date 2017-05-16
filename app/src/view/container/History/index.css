@@ -57,26 +57,20 @@
   overflow: auto;
 }
 
-.History button {
+.panel header button {
   position: absolute;
   font-weight: 500;
-}
-
-.History nav {
-  background-color: red;
-  height: 3em;
-}
-
-.History button {
   background: transparent;
   color: #3296ff;
   padding: 0.3vw calc(0.25em + 0.5vw);
   height: 1.6em;
-  right: 1.25em;
   box-sizing: content-box;
   border-radius: 0.125em;
   cursor: pointer;
   top: 0.625em;
-  margin-top: 0.25vw;
+  margin: 0.25vw 1.25em 0;
 }
+
+.panel header button.primary { left: 0 }
+.panel header button.secondary { right: 0 }
 
