@@ -70,10 +70,55 @@ export const Information = ({ state }) => {
       <button className='primary' type='button' onClick={hash.push()}>{dialog('action', 'done')}</button>
       <h1>{title}</h1>
     </header>
+
+    <article className="content">
+
+      <header>
+
+        <h1>Instructions</h1>
+
+      </header>
+
+      <section>
+
+        <h1>GammaSense</h1>
+
+        <p>Measure Gamma Radiation using your laptop or smartphone.</p>
+
+        <aside className="info">
+          For now only <a target="_blank" href="https://www.google.com/chrome/">Google Chrome</a> on a computer or Android phone are supported measure gamma&nbsp;radiation.
+        </aside>
+
+      </section>
+
+      <section>
+
+        <h1>Prepare Your Camera</h1>
+
+        <p>To get started, cover your (front-facing) camera using opaque black tape. Make sure the entire camera is covered with tape.</p>
+
+        <aside className="info">
+          If you have an indicator light near your camera, try to avoid covering it with tape as it may reflect light inwards.
+        </aside>
+
+      </section>
+
+      <section>
+
+        <h1>Start a Measurement</h1>
+
+        <p>It takes one minute for a baseline value to be measured. Keep your measurement going for as long as possible once the baseline reading is completed. <s title="Coming soon...">After you’re done you can find the results back under the icon in the top right</s>.
+        </p>
+
+      </section>
+
+      <button className="primary" type="button" onClick={hash.push()}>Got it</button>
+
+    </article>
     
     <InformationIndex content={sections} routes={routes}/>
 
-    <article>
+    <article hidden={!path}>
     {sections.map(function(item, index, sections) {
       const Component = item.component || InformationSection
       return <Component
