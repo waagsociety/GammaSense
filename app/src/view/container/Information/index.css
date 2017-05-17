@@ -1,15 +1,13 @@
 .Information {
   background-color: white;
   transition: 100ms ease-in;
-  background-color: rgba(0,0,0,.5);
+  background-color: white;
   height: 100%;
   width: 100%;
 }
 
 .iOS.standalone .Information header  { top: 20px }
-.iOS.standalone .Information .content {
-  top: calc(3em + 20px);
-}
+.iOS.standalone .Information .content { top: calc(3em + 20px) }
 
 .Information header {
   color: white;
@@ -66,7 +64,8 @@
   display: block;
 }
 
-.Information nav.index li a:hover {
+.Information nav.index li a:hover,
+.Information nav.index li a.active {
   background-color: #f8f8fa;
 }
 
@@ -102,7 +101,18 @@
   right: 0;
   bottom: 0;
   position: fixed;
-  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.content button.primary {
+  color: white;
+  background-color: #18C880;
+  margin: 0 auto;
+  padding: 0.625em 1.25em;
+  height: 2.75em;
+  display: block;
+  border-radius: 1.5em;
+  min-width: 8em;
 }
 
 .Information article section {
@@ -154,10 +164,23 @@
   border-left: 3px solid #ddd;
   margin: 1em 0;
   line-height: 1.4;
-  padding: 0.5em 0 0.5em 0.5em;
+  padding: 0 0.5em 0.1em;
 }
 
 .Information aside img {
   float: left;
   margin: -0.4em 0.25em 0 0;
+}
+
+@media (max-width: 720px) {
+  .Information nav.index { width: 16em }
+  .Information nav.index li a { font-size: 100% }
+  .Information article { left: 16em }
+  .Information nav.index footer { font-size: 87.5% }
+}
+
+@media (max-width: 600px) {
+  article.content {
+    opacity: 0.5
+  }
 }

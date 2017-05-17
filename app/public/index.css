@@ -27,7 +27,10 @@ canvas { pointer-events: none }
 a, button { 
   text-decoration: none;
   color: #3296ff;
+  cursor: pointer;
 }
+
+button { font-weight: 500 }
 
 .iOS.standalone header:before {
   content: '';

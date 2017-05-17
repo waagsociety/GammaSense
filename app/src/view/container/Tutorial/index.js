@@ -33,7 +33,7 @@ export const Tutorial = ({ state }) => {
         </aside>
 
         <nav>
-          <button type='button' onClick={hash.push()}>{dialog('action', 'confirm')}</button>
+          <button className='primary' type='button' onClick={hash.push()}>{dialog('action', 'confirm')}</button>
         </nav>
 
       </section>

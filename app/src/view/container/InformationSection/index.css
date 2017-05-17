@@ -1,0 +1,16 @@
+.InformationArticle div {
+  font-size: 112.5%;
+  margin: 0 auto;
+  width: 50em;
+  padding: 5%;
+}
+
+.InformationArticle div h1 {
+  font-size: 125%;
+  margin: 0 0 0.5em;
+}
+
+.InformationArticle div p {
+  line-height: 1.6;
+  margin: 0 0 1em;
+}

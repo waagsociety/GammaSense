@@ -9,6 +9,8 @@ function createRouter(kind, prefix) {
     push: pushRoute(kind, 'pushState', prefix),
     replace: pushRoute(kind, 'replaceState', prefix),
     match: matchRoute(kind, prefix),
+    list: listRoute(kind, prefix),
+    join: joinRoute(prefix),
   }
 
   function pushRoute(kind, method, prefix) {
@@ -25,24 +27,38 @@ function createRouter(kind, prefix) {
     }
   }
 
-  function matchRoute(kind, prefix) {
-
-    const prefixPattern = new RegExp('^' + prefix)
-    
-    return function(...check) {
+  function matchRoute(kind, prefix) {    
+    return function(...check) {      
       
-      const actual = location[kind].replace(prefixPattern, '').split(/\/+/g) || []
+      const path = splitLocation(kind, prefix)
       let length = check.length
-      let match = actual.length >= length
+      let match = path.length >= length
       
       if (match) while (length-- && match) {
-        match = actual[length] === check[length]
+        match = path[length] === check[length]
       }
-
       return match
 
     }
+  }
 
+  function joinRoute(prefix) {
+    return function(...path) {
+      return (prefix || '') + path.join('/')
+    }
+  }
+
+  function listRoute(kind, prefix) {
+    return function(index) {
+      const path = splitLocation(kind, prefix)
+      return index !== undefined ? path[index] : path
+    }
+  }
+
+  function splitLocation(kind, prefix) {
+    const path = location[kind]
+    const pattern = new RegExp('^' + prefix)
+    return path.replace(pattern, '').split(/\/+/g) || []
   }
 
   function join(array) {
