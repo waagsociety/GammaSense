@@ -51,7 +51,6 @@ button { font-weight: 500 }
 }
 
 section.panel {
-  color: #000;
   max-width: 32em;
   width: 100%;
   position: fixed;
