@@ -68,8 +68,8 @@ export default class App extends React.Component {
       <Header {...model}/>
       <Monitor {...model}/>
       <Map {...model}/>
-      <Tutorial {...model}/>
       <Modal {...model}/>
+      <Tutorial {...model}/>
       <Information {...model}/>
       <History {...model}/>
     </div>

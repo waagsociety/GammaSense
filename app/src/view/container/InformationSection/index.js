@@ -1,11 +1,10 @@
 import React from 'react'
 import './index.css'
 
-export const InformationSection = ({ item, path, next }) =>
-  <section id={item.path} className='InformationArticle' hidden={path !== item.slug}>
+export const InformationSection = ({ path, paragraphs }) =>
+  <section id={path} className='InformationSection'>
 
-    <h1>{item.title}</h1>
-    {(item.paragraphs || ["Nothing here"]).map(Paragraph)}
+    {(paragraphs || ["Nothing here"]).map(Paragraph)}
 
   </section>
 

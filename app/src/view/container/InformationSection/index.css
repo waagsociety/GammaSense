@@ -1,16 +1,38 @@
-.InformationArticle div {
+.InformationSection {
+  color: #000;
   font-size: 112.5%;
-  margin: 0 auto;
-  width: 50em;
-  padding: 5%;
+  top: calc(1vw + 3em);
+  width: auto;
+  padding: 2.5% 5vw 5em;
+  position: relative;
 }
 
-.InformationArticle div h1 {
-  font-size: 125%;
-  margin: 0 0 0.5em;
-}
-
-.InformationArticle div p {
+.InformationSection p {
   line-height: 1.6;
   margin: 0 0 1em;
+}
+
+@media (max-width: 40em) {
+  
+  .InformationArticle {
+    background-color: white;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0;
+  }
+
+  .InformationArticle header {
+    background: white;
+  }
+
+  .InformationArticle header button {
+    left: 0;
+    margin: 1rem 1.5rem;
+  }
+
+  .InformationSection {
+    padding: 0.5em 1.5rem;
+  }
+
 }

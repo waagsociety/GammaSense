@@ -1,12 +1,15 @@
 import React from 'react'
+import { clamp } from 'ramda'
 import { route } from '../../../controller'
-import { InformationIndex, InformationSection, InformationSupport } from '../'
+import { InformationIndex, InformationSection } from '../'
 import './index.css'
 
+
 const { hash } = route
+const clampIndex = clamp(0, Infinity)
 const sections = [
   {
-    slug: 'introduction',
+    path: 'introduction',
     title: "Introduction",
     paragraphs: [
       "Als je in de buurt van een kerncentrale woont, wil je graag op de hoogte blijven van eventueel verhoogde stralingsniveaus. Op dit moment zijn omwonenden voor deze informatie afhankelijk van instituten en overheden. Informatie over potentiële gevaren laat vaak lang op zich wachten. Wat zouden we in dit kader zelf kunnen doen met al in ons huis aanwezige apparatuur?", 
@@ -16,40 +19,46 @@ const sections = [
     references: [],
   },
   {
-    slug: 'gamma-radiation-explained',
+    path: 'gamma-radiation-explained',
     title: "Gamma Radiation Explained",
+    paragraphs: [
+      "Gammastraling (γ-straling) is onzichtbare elektromagnetische straling met een hogere energie dan ultraviolet licht en röntgenstraling.",
+      "Gammastralen zijn net zoals bijvoorbeeld licht en radiogolven een vorm van elektromagnetische straling. Ze bestaan dus uit trillende elektrische en magnetische velden. Het verschil tussen al deze vormen van elektromagnetische straling zit in de frequentie van deze trillingen, of in de energie of golflengte die gekoppeld zijn aan de frequentie.",
+      "De energie van gammastralen is zo groot dat, wanneer ze door een materiaal passeren, chemische bindingen kunnen breken en elektronen uit atomen kunnen losmaken. Men zegt ook wel dat gammastraling ‘ioniserend’ is. Dit kan zowel nuttig als gevaarlijk zijn.",
+      "Als het menselijk lichaam wordt blootgesteld aan een te grote hoeveelheid gammastraling, dan zullen er chemische bindingen in de molecules van onze cellen worden afgebroken, waardoor de levende weefsels worden beschadigd. Dit is uiteraard gevaarlijk. Op plaatsen waar gammastraling wordt geproduceerd, bijvoorbeeld in kerncentrales, moeten daarom de nodige beschermingsmaatregelen worden getroffen.",
+      "Maar gammastralen kunnen ook micro-organismen zoals bacteriën en schimmels doden. Zo kan een een dokter je bij een botinfectie bestralen met gammastralen om zo de infectie te vernietigen. Gammastraling wordt ook gebruikt om medische hulpmiddelen zoals injectienaalden te desinfecteren. Soms worden ook groenten en fruit bestraald om ongewenste micro-organismen te doden, waardoor deze langer vers blijven."
+    ]
   },
   {
-    slug: 'measuring-gamma-radiation',
+    path: 'measuring-gamma-radiation',
     title: "Measuring Gamma Radiation",
   },
+  // {
+  //   path: 'faq',
+  //   title: "Frequently Asked Questions",
+  // },
   {
-    slug: 'faq',
-    title: "Frequently Asked Questions",
-  },
-  {
-    slug: 'help',
+    path: 'help',
     title: "Something Went Wrong",
   },
   {
-    slug: 'support',
+    path: 'support',
     title: "Supported Devices",
-    component: InformationSupport,
   },
   {
-    slug: 'contribute',
+    path: 'contribute',
     title: "Get Involved",
   },
   {
-    slug: 'privacy',
+    path: 'privacy',
     title: "Privacy",
   },
   {
-    slug: 'colophon',
+    path: 'colophon',
     title: "Colophon",
   },
   {
-    slug: 'credits',
+    path: 'credits',
     title: "Credits",
   },
 ]
@@ -61,75 +70,31 @@ export const Information = ({ state }) => {
   
   const title = dialog('information', 'title')
   const hidden = !hash.match(routes.information)
-  const slug = hash.list(0)
+
+  const root = hash.list(0)
   const path = hash.list(1)
+  const index = clampIndex(sections.findIndex(item => item.path === path))
+  const item = sections[index]
 
-  return <section className='Information full primary panel' hidden={hidden}>
+  return <section className='Information' hidden={hidden}>
 
-    <header>
+    <header className='x'>
       <button className='primary' type='button' onClick={hash.push()}>{dialog('action', 'done')}</button>
       <h1>{title}</h1>
     </header>
-
-    <article className="content">
-
-      <header>
-
-        <h1>Instructions</h1>
-
-      </header>
-
-      <section>
-
-        <h1>GammaSense</h1>
-
-        <p>Measure Gamma Radiation using your laptop or smartphone.</p>
-
-        <aside className="info">
-          For now only <a target="_blank" href="https://www.google.com/chrome/">Google Chrome</a> on a computer or Android phone are supported measure gamma&nbsp;radiation.
-        </aside>
-
-      </section>
-
-      <section>
-
-        <h1>Prepare Your Camera</h1>
-
-        <p>To get started, cover your (front-facing) camera using opaque black tape. Make sure the entire camera is covered with tape.</p>
-
-        <aside className="info">
-          If you have an indicator light near your camera, try to avoid covering it with tape as it may reflect light inwards.
-        </aside>
-
-      </section>
-
-      <section>
-
-        <h1>Start a Measurement</h1>
-
-        <p>It takes one minute for a baseline value to be measured. Keep your measurement going for as long as possible once the baseline reading is completed. <s title="Coming soon...">After you’re done you can find the results back under the icon in the top right</s>.
-        </p>
-
-      </section>
-
-      <button className="primary" type="button" onClick={hash.push()}>Got it</button>
-
-    </article>
     
-    <InformationIndex content={sections} routes={routes}/>
+    <article className='InformationArticle' hidden={!path}>
 
-    <article hidden={!path}>
-    {sections.map(function(item, index, sections) {
-      const Component = item.component || InformationSection
-      return <Component
-        key={item.slug} 
-        item={item} 
-        path={path}
-        back={{ slug, title }}
-        next={sections[index + 1]} 
-      />
-    })}
+      <header className='x'>
+        <button type='button' onClick={hash.push(root)}>{title}</button>
+        <h1>{item.title}</h1>
+      </header>
+      
+      {InformationSection(item)}
+
     </article>
+
+    <InformationIndex content={sections} routes={routes}/>
 
   </section>
 

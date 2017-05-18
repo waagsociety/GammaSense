@@ -1,7 +1,7 @@
 
 // routes
 const routes = {
-  introduction: 'start',
+  instructions: 'instructions',
   information: 'about',
   history: 'history',
 }

@@ -1,17 +1,26 @@
 .Information {
   background-color: white;
+  position: absolute;
   transition: 100ms ease-in;
   background-color: white;
-  height: 100%;
-  width: 100%;
+  z-index: 1000;
+  border-radius: 0.25em;
+  overflow: hidden;
+  left: 2.5vw;
+  top: 2.5vw;
+  bottom: 2.5vw;
+  right: 2.5vw;
+}
+
+header button {
+  position: absolute;
 }
 
 .iOS.standalone .Information header  { top: 20px }
 .iOS.standalone .Information .content { top: calc(3em + 20px) }
 
 .Information header {
-  color: white;
-  background-color: #061420;
+  color: #000;
   text-align: center;
   height: 3em;
   padding: 0.5vw 1.5%;
@@ -19,125 +28,89 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
   transition: 240ms 100ms;
-  box-shadow: 0 0 1px 0 rgba(0,0,0,.25);
+  box-shadow: inset 0 -1px 0 0 rgba(0,0,0,.2);
   box-sizing: content-box;
+}
+
+.Information header button.primary {
+  left: 0;
+  margin: 1em 1.5rem;
+}
+
+.Information header h1 {
+  font-size: 125%;
+  padding: 0.625em 0;
 }
 
 .Information[hidden] header {
   opacity: 0;
 }
 
-.Information header h1 {
-  padding: 0.625em 0;
-  font-size: 125%;
-}
-
-.Information article header {
-  text-align: left;
-  position: relative;
-  background-color: transparent;
-  color: black;
-  box-shadow: none;
-  width: auto;
-}
-
-.Information nav.index {
-  background-color: #e7faf0;
-  background-color: white;
-  box-shadow: 1px 0 0 0 rgba(0,20,60,0.2);
-  width: 20em;
-  left: 0;
-  top: 3em;
-  bottom: 0;
-  margin-top: 1vw;
-  padding-bottom: 9.5em;
-  position: absolute;
-  z-index: 1;
-  overflow-x: hidden;
-}
-
-.Information nav.index li a {
-  font-size: 112.5%;
-  padding: 1em 1.5em 1.2em;
-  display: block;
-}
-
-.Information nav.index li a:hover,
-.Information nav.index li a.active {
-  background-color: #f8f8fa;
-}
-
-.Information nav.index footer {
-  width: inherit;
-  position: fixed;
-  bottom: 0;
-  background-color: white;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
-  text-align: center;
-  padding: 0.75em 0 0;
-  overflow: hidden;
-}
-
-.Information nav.index footer a {
-  font-weight: normal;
-  color: #888;
-}
-
-.Information nav.index footer img { 
-  float: right;
-  margin: -5% 0 0 -5%;
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.Information article {
-  background-color: white;
-  top: 3em;
-  margin: 1vw 0 0;
-  left: 20em;
-  right: 0;
-  bottom: 0;
-  position: fixed;
-  overflow-x: hidden;
-}
-
 .content button.primary {
   color: white;
   background-color: #18C880;
   margin: 0 auto;
-  padding: 0.625em 1.25em;
+  padding: 0.5em 1.25em 0.75em;
   height: 2.75em;
   display: block;
   border-radius: 1.5em;
   min-width: 8em;
 }
 
-.Information article section {
-  font-size: 112.5%;
+.InformationArticle {
+  position: relative;
+  margin-left: 20em;
+  overflow-y: auto;
+  z-index: 10;
+  bottom: 0;
+  top: 0;
+}
+
+@media (max-width: 40em) {
+
+  .InformationArticle {
+    transition: 200ms ease;
+  }
+
+  .InformationArticle[hidden] {
+    transform: translateX(75%);
+    opacity: 0;
+    display: block;
+  }
+
+}
+
+@media (min-width: 40em) {
+
+  .InformationArticle {
+    position: absolute;
+    top: calc(1vw + 3em);
+    z-index: 1000;
+    right: 0;
+    left: 0;
+  }
+
+  .InformationArticle[hidden] { display: block }
+
+  .InformationArticle header {
+    box-shadow: none;
+    padding: 2em 5vw;
+    text-align: left;
+  }
+
+  .InformationArticle header h1 {
+    font-size: 150%;
+    display: block;
+  }
+
+  .InformationArticle header button {
+    display: none;
+  }
+
 }
 
 
-.Information article section h1 {
-  margin: 0 0 0.25em;
-  line-height: 1.25;
-}
-
-
-.Information article section p {
-  line-height: 1.6;
-}
-
-.Information article section {
-  background-color: white;
-  max-width: 48em;
-  padding: calc(1em + 1vw);
-  margin: 0 auto;
-  border-radius: 0.25em;
-  transition: 240ms 500ms ease-in-out;
-}
 
 .Information[hidden] article section {
   transform: scale(0.875);
@@ -165,22 +138,4 @@
   margin: 1em 0;
   line-height: 1.4;
   padding: 0 0.5em 0.1em;
-}
-
-.Information aside img {
-  float: left;
-  margin: -0.4em 0.25em 0 0;
-}
-
-@media (max-width: 720px) {
-  .Information nav.index { width: 16em }
-  .Information nav.index li a { font-size: 100% }
-  .Information article { left: 16em }
-  .Information nav.index footer { font-size: 87.5% }
-}
-
-@media (max-width: 600px) {
-  article.content {
-    opacity: 0.5
-  }
 }

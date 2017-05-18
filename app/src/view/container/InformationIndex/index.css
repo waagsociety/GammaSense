@@ -1,0 +1,64 @@
+
+.InformationIndex {
+  background-color: #e7faf0;
+  background-color: white;
+  width: 20em;
+  left: 0;
+  bottom: 0;
+  z-index: 1000;
+  overflow-x: hidden;
+}
+
+.InformationIndex li a {
+  font-size: 112.5%;
+  line-height: 1.4;
+  padding: 1rem 1.5rem 1.25rem;
+  display: block;
+}
+
+.InformationIndex li a.active,
+.InformationIndex li a:hover {
+  background-color: #f8f8fa;
+}
+
+.InformationIndex ul {
+  position: absolute;
+  top: 3em;
+  margin-top: 1vw;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding-bottom: 4em;
+  overflow-y: auto;
+  max-width: 20em;
+  border-right: 1px solid #ddd;
+}
+
+.InformationIndex footer {
+  width: inherit;
+  position: absolute;
+  bottom: 0;
+  background-color: transparent;
+  text-align: center;
+  padding: 0.1em 0 0.75em;
+  overflow: hidden;
+}
+
+.InformationIndex footer button {
+  width: 9em;
+}
+
+@media (max-width: 45em) {
+  .InformationIndex { width: 16em }
+  .InformationIndex li a { font-size: 100% }
+}
+
+@media (min-width: 40em) {
+  .InformationArticle[hidden] + .InformationIndex li:first-child { background-color: #f8f8fa }
+}
+
+@media (max-width: 40em) {
+  .InformationIndex { width: 100% }
+  .InformationIndex ul { max-width: 100% }
+  .InformationIndex li a { font-size: 112.5% }
+}
