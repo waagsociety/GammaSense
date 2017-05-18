@@ -29,8 +29,8 @@ export default dialogue.create({
         },
       },
     },
-    introduction: {
-      title: "How to Get Started",
+    instructions: {
+      title: "Instructions",
     },
     information: {
       title: "About",
@@ -90,8 +90,8 @@ export default dialogue.create({
         },
       },
     },
-    introduction: {
-      title: "Aan de slag",
+    instructions: {
+      title: "Instructies",
     },
     information: {
       title: "Informatie",

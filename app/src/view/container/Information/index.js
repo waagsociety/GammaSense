@@ -10,7 +10,7 @@ const clampIndex = clamp(0, Infinity)
 const sections = [
   {
     path: 'introduction',
-    title: "Introduction",
+    title: "Wat is GammaSense?",
     paragraphs: [
       "Als je in de buurt van een kerncentrale woont, wil je graag op de hoogte blijven van eventueel verhoogde stralingsniveaus. Op dit moment zijn omwonenden voor deze informatie afhankelijk van instituten en overheden. Informatie over potentiële gevaren laat vaak lang op zich wachten. Wat zouden we in dit kader zelf kunnen doen met al in ons huis aanwezige apparatuur?", 
       "Met een smartphone, laptop of PC met webcam kun je in principe straling goed meten. Het beste werkt dit wanneer de camera wordt afgedekt met een stukje aluminiumfolie, wat weer vastgeplakt wordt met zwart tape. Camera’s en webcams kunnen hierdoor de Gammas-straling vastleggen en deze omzetten in een eenheid per minuut. Hiermee kunnen grote toenames worden vastgelegd en uitgezet op een kaart.", 
@@ -20,46 +20,45 @@ const sections = [
   },
   {
     path: 'gamma-radiation-explained',
-    title: "Gamma Radiation Explained",
+    title: " Wat is Gamma straling?",
     paragraphs: [
       "Gammastraling (γ-straling) is onzichtbare elektromagnetische straling met een hogere energie dan ultraviolet licht en röntgenstraling.",
       "Gammastralen zijn net zoals bijvoorbeeld licht en radiogolven een vorm van elektromagnetische straling. Ze bestaan dus uit trillende elektrische en magnetische velden. Het verschil tussen al deze vormen van elektromagnetische straling zit in de frequentie van deze trillingen, of in de energie of golflengte die gekoppeld zijn aan de frequentie.",
       "De energie van gammastralen is zo groot dat, wanneer ze door een materiaal passeren, chemische bindingen kunnen breken en elektronen uit atomen kunnen losmaken. Men zegt ook wel dat gammastraling ‘ioniserend’ is. Dit kan zowel nuttig als gevaarlijk zijn.",
       "Als het menselijk lichaam wordt blootgesteld aan een te grote hoeveelheid gammastraling, dan zullen er chemische bindingen in de molecules van onze cellen worden afgebroken, waardoor de levende weefsels worden beschadigd. Dit is uiteraard gevaarlijk. Op plaatsen waar gammastraling wordt geproduceerd, bijvoorbeeld in kerncentrales, moeten daarom de nodige beschermingsmaatregelen worden getroffen.",
       "Maar gammastralen kunnen ook micro-organismen zoals bacteriën en schimmels doden. Zo kan een een dokter je bij een botinfectie bestralen met gammastralen om zo de infectie te vernietigen. Gammastraling wordt ook gebruikt om medische hulpmiddelen zoals injectienaalden te desinfecteren. Soms worden ook groenten en fruit bestraald om ongewenste micro-organismen te doden, waardoor deze langer vers blijven."
-    ]
+    ],
   },
   {
     path: 'measuring-gamma-radiation',
-    title: "Measuring Gamma Radiation",
+    title: "Hoe meet ik Gamma straling?",
+    paragraphs: [
+      "De klassieke manier van het meten van nucleaire straling is met een zogenaamde Geiger-Muller buis. In deze vacuum buis botsen kleine deeltjes op geioniseerde gasmoleculen. De techniek eromheen bepaald hoe vaak per minuut dat gebeurt. Met een webcam is het ook mogelijk om te tellen hoe vaak per minuut er deeltjes worden gezien die botsen met het lichtgevoelige deel van de camera. In feite wordt dus dezelfde maat bepaald, alleen ligt de gevoeligheid van een webcam een heel stuk lager vergeleken met traditionele meetapparatuur. Dit nadeel is te ondervangen door te zorgen voor veel meer meetpunten, waardoor wetenschappers op basis van deze veelheid van onbetrouwbare data, in het geval van voldoende dichtheid toch met een hogere betrouwbaarheid uitspraken kunnen doen over de werkelijke straling vergeleken met de klassieke situatie van weinig, maar zeer betrouwbare meetpunten."
+    ],
   },
-  // {
-  //   path: 'faq',
-  //   title: "Frequently Asked Questions",
-  // },
   {
     path: 'help',
-    title: "Something Went Wrong",
+    title: "Wat betekent locatiebepaling?",
+    paragraphs: [
+      "Als het goed is kan de applicatie uitlezen waar je de meting doet. Op die manier kan de meting op de kaart worden gezet zodat deze van waarde kan worden in een groter meetnetwerk. Vind je het vervelend om je locatie te delen, dan is het helaas niet mogelijk om de meting goed uit te kunnen voeren."
+    ],
   },
   {
     path: 'support',
-    title: "Supported Devices",
+    title: "Wat is CPM?",
+    paragraphs: [
+      "CPM is een afkorting die staat voor Counts Per Minute: het aantal deeltjes dat per minuut is waargenomen. CPM is een standaard-maat die dient als input om te bepalen in welke mate iemand wordt blootgesteld aan straling."
+    ],
   },
   {
     path: 'contribute',
-    title: "Get Involved",
-  },
-  {
-    path: 'privacy',
-    title: "Privacy",
+    title: "Wat betekent de waarde in beeld?",
+     paragraphs: ["Binnenkort meer..."],
   },
   {
     path: 'colophon',
-    title: "Colophon",
-  },
-  {
-    path: 'credits',
-    title: "Credits",
+    title: "Making Sense & Waag Society",
+    paragraphs: ["Binnenkort meer..."],
   },
 ]
 
@@ -94,7 +93,7 @@ export const Information = ({ state }) => {
 
     </article>
 
-    <InformationIndex content={sections} routes={routes}/>
+    <InformationIndex content={sections} routes={routes} dialog={dialog}/>
 
   </section>
 

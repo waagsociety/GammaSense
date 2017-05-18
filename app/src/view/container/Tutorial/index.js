@@ -10,12 +10,12 @@ export const Tutorial = ({ state }) => {
   const { routes } = config
   const hidden = !hash.match(routes.instructions)
   
-  return <article className='Tutorial' hidden={hidden}>
+  return <article className='Tutorial content' hidden={hidden}>
 
     <section>
 
       <header>
-        <h1>{dialog('introduction', 'title')}</h1>
+        <h1>{dialog('instructions', 'title')}</h1>
       </header>
 
       <ol>
@@ -25,7 +25,6 @@ export const Tutorial = ({ state }) => {
       </ol>
 
       <aside className='info'>
-        <img src='./chrome-logo.png' width='32' height='32' role='presentation'/>
         Momenteel kan een meting alleen gedaan worden 
         in <a target='_blank' href='https://www.google.com/chrome/'>Google Chrome</a>.
       </aside>
