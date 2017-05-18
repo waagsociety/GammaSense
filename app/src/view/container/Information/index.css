@@ -29,7 +29,7 @@ header button {
   top: 0;
   left: 0;
   right: 0;
-  transition: 240ms 100ms;
+  /*transition: 240ms 100ms;*/
   border-bottom: 1px solid #0f1b27;
   box-sizing: content-box;
 }
@@ -45,7 +45,7 @@ header button {
 }
 
 .Information[hidden] header {
-  opacity: 0;
+  /*opacity: 0;*/
 }
 
 .content button.primary {
