@@ -25,7 +25,7 @@ function createSensor(videoOptions) {
       const track = stream.getVideoTracks()[0]
       const video = createElement('video', {
         srcObject: stream,
-        onplay: event => resolve({ video, track }),
+        onloadeddata: event => resolve({ video, track }),
         onerror: event => reject({ video, track }),
       })
 
