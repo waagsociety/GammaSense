@@ -1,6 +1,7 @@
 <html>
 <head>
   <!--<script type="text/javascript" src="../../../js/lib/ccv.js"></script>-->
+  <script type="text/javascript" src="src/FileSaver.js"></script> <!-- load before streams polyfill to detect support -->
   <!-- Load the polyfill to switch-hit between Chrome and Firefox -->
   <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
   <script type="text/javascript" src="src/js/radio.js"></script>
@@ -26,14 +27,24 @@
     <option value="invert">Invert</option>
     <option value="sepia">Sepia</option>
   </select>
+  <input id="grayscalebtn" value="Gray Scale" type="button">
+  <input id="blackwhitebtn" value="Black &amp; White" type="button">
+</div>
+<div>
   <label for="thresholdin">Threshold to detect bean</label>
   <input type="number" name="thresholdin" id="thresholdin" value="125">
   <label for="secondsin">Poll interval (seconds)</label>
   <input type="number" name="secondsin" id="secondsin" value="2">
-  <input id="grayscalebtn" value="Gray Scale" type="button">
-  <input id="blackwhitebtn" value="Black &amp; White" type="button">
+</div>
+<div>
   <label for="nrpixel">Nr. pixel above threshold / Nr. pixels</label>
   <textarea rows="1" id="nrpixel">0</textarea>
+  <label for="nrpixelsec">Nr. pixel above threshold per sec/ Nr. pixels</label>
+  <textarea rows="1" id="nrpixelsec">0</textarea>
+</div>
+<div>
+  <label for="elapsedmin">Elapsed min</label>
+  <textarea rows="1" id="elapsedmin">0</textarea>
 </div>
 </body>
 </html>
