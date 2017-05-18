@@ -17,9 +17,9 @@ header button {
   position: absolute;
 }
 
-.iOS.standalone .Information header  { top: 20px }
+/*.iOS.standalone .Information header  { top: 20px }
 .iOS.standalone .Information .content { top: calc(3em + 20px) }
-
+*/
 .Information header {
   background-color: #102649;
   text-align: center;
