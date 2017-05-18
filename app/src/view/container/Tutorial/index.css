@@ -1,14 +1,15 @@
 .Tutorial { 
-  background-color: white;
+  background-color: #1e3456;
   z-index: 1000;
-  color: #000;
+  color: white;
   position: relative;
-  padding: calc(1em + 0.5vw) calc(1em + 2vw);
+  padding: calc(1em + 0.5vw) calc(1em + 1.5vw);
   margin: 20vh auto 0;
   border-radius: 0.25em;
   width: 36em;
   max-width: 90%;
   line-height: 1.6;
+  box-shadow: 0 0.5em 6em 0 #061420;
 }
 
 .Tutorial h1 {

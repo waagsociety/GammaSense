@@ -18,7 +18,8 @@
 
 .InformationIndex li a.active,
 .InformationIndex li a:hover {
-  background-color: #f8f8fa;
+  color: white;
+  background-color: #0f1b27;
 }
 
 .InformationIndex ul {
@@ -31,7 +32,7 @@
   padding-bottom: 4em;
   overflow-y: auto;
   max-width: 20em;
-  border-right: 1px solid #ddd;
+  border-right: 1px solid #0f1b27;
 }
 
 .InformationIndex footer {
@@ -54,7 +55,10 @@
 }
 
 @media (min-width: 40em) {
-  .InformationArticle[hidden] + .InformationIndex li:first-child { background-color: #f8f8fa }
+  .InformationArticle[hidden] + .InformationIndex li:first-child { 
+    color: white;
+    background-color: #0f1b27;
+  }
 }
 
 @media (max-width: 40em) {

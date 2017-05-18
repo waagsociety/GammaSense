@@ -77,7 +77,7 @@ export const Information = ({ state }) => {
 
   return <section className='Information' hidden={hidden}>
 
-    <header className='x'>
+    <header>
       <button className='primary' type='button' onClick={hash.push()}>{dialog('action', 'done')}</button>
       <h1>{title}</h1>
     </header>
