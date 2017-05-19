@@ -20,7 +20,7 @@ const sections = [
   },
   {
     path: 'gamma-radiation-explained',
-    title: " Wat is Gamma straling?",
+    title: " Wat is Gammastraling?",
     paragraphs: [
       "Gammastraling (γ-straling) is onzichtbare elektromagnetische straling met een hogere energie dan ultraviolet licht en röntgenstraling.",
       "Gammastralen zijn net zoals bijvoorbeeld licht en radiogolven een vorm van elektromagnetische straling. Ze bestaan dus uit trillende elektrische en magnetische velden. Het verschil tussen al deze vormen van elektromagnetische straling zit in de frequentie van deze trillingen, of in de energie of golflengte die gekoppeld zijn aan de frequentie.",
@@ -31,7 +31,7 @@ const sections = [
   },
   {
     path: 'measuring-gamma-radiation',
-    title: "Hoe meet ik Gamma straling?",
+    title: "Hoe meet ik Gammastraling?",
     paragraphs: [
       "De klassieke manier van het meten van nucleaire straling is met een zogenaamde Geiger-Muller buis. In deze vacuum buis botsen kleine deeltjes op geioniseerde gasmoleculen. De techniek eromheen bepaald hoe vaak per minuut dat gebeurt. Met een webcam is het ook mogelijk om te tellen hoe vaak per minuut er deeltjes worden gezien die botsen met het lichtgevoelige deel van de camera. In feite wordt dus dezelfde maat bepaald, alleen ligt de gevoeligheid van een webcam een heel stuk lager vergeleken met traditionele meetapparatuur. Dit nadeel is te ondervangen door te zorgen voor veel meer meetpunten, waardoor wetenschappers op basis van deze veelheid van onbetrouwbare data, in het geval van voldoende dichtheid toch met een hogere betrouwbaarheid uitspraken kunnen doen over de werkelijke straling vergeleken met de klassieke situatie van weinig, maar zeer betrouwbare meetpunten."
     ],
@@ -89,11 +89,11 @@ export const Information = ({ state }) => {
     <article className='InformationArticle' hidden={!path}>
 
       <header className='x'>
-        <button type='button' onClick={hash.push(root)}>{title}</button>
+        <button className='back' type='button' onClick={hash.push(root)}>{title}</button>
         <h1>{item.title}</h1>
       </header>
-      
-      {InformationSection(item)}
+
+      <div>{InformationSection(item)}</div>
 
     </article>
 

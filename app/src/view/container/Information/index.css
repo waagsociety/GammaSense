@@ -39,7 +39,7 @@ header button {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 10;
+  z-index: 100;
   border-bottom: 1px solid #0f1b27;
   box-sizing: content-box;
 }
@@ -68,19 +68,36 @@ header button {
 .InformationArticle {
   position: relative;
   margin-left: 20em;
-  overflow-y: auto;
   z-index: 10;
   bottom: 0;
   top: 0;
+  overflow-y: auto;
+}
+
+.InformationArticle div {
+  overflow-y: auto;
+  bottom: 0;
 }
 
 @media (max-width: 40em) {
 
-  .InformationArticle {
-    transition: 200ms ease;
+  .InformationArticle header.x {
+    
   }
 
-  .InformationArticle[hidden] {
+  .InformationArticle {
+    z-index: 1000;
+    position: absolute;
+  }
+
+  .InformationArticle div {
+    top: 3em;
+    position: absolute;
+    margin-top: 1vw;
+    transition: 2000ms ease;
+  }
+
+  .InformationArticle[hidden] div {
     transform: translateX(75%);
     opacity: 0;
     display: block;
@@ -101,8 +118,10 @@ header button {
   .InformationArticle[hidden] { display: block }
 
   .InformationArticle header {
+    color: inherit;
+    background-color: inherit;
     box-shadow: none;
-    padding: 2.25vw 5vw 1.5em;
+    padding: 2.25vw 5vw 1em;
     text-align: left;
     position: relative;
   }
@@ -119,7 +138,9 @@ header button {
 
 }
 
-
+button.back {
+  /*background-color: red;*/
+}
 
 .Information[hidden] article section {
   transform: scale(0.875);
