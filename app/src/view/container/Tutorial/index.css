@@ -12,9 +12,9 @@
   box-shadow: 0 0.5em 6em 0 #061420;
 }
 
-@media (orientaion: portrait) {
+/*@media (orientaion: portrait) {*/
   .iOS.standalone .Tutorial  { top: 20px }
-}
+/*}*/
 
 .Tutorial section {
   margin: 0 0 1.5em;

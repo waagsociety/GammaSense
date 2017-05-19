@@ -3,17 +3,16 @@
   transition: 167ms ease;
   color: white;
   background-color: #1e3456;
-  /*padding-top: 4em;*/
 }
 
-@media (orientaion: portrait) {
+/*@media (orientaion: portrait) {*/
 
   .iOS.standalone .History header  { top: 20px }
   .iOS.standalone .History section.content {
     top: calc(3em + 20px);
   }
 
-}
+/*}*/
 
 .History[hidden] {
   display: block;

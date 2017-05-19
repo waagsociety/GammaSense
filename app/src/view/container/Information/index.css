@@ -25,9 +25,9 @@ header button {
   position: absolute;
 }
 
-@media (orientaion: portrait) {
+/*@media (orientaion: portrait) {*/
   .iOS.standalone .Information  { top: 20px }
-}
+/*}*/
 
 .Information header {
   background-color: #102649;

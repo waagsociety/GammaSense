@@ -54,7 +54,6 @@
 @media (max-width: 45em) {
   .InformationArticle { margin-left: 16em }
   .InformationIndex { width: 16em }
-  /*.InformationIndex li a { font-size: 100% }*/
 }
 
 @media (min-width: 40em) {
