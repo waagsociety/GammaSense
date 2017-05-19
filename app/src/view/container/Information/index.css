@@ -40,7 +40,6 @@ header button {
   left: 0;
   right: 0;
   z-index: 10;
-  /*transition: 240ms 100ms;*/
   border-bottom: 1px solid #0f1b27;
   box-sizing: content-box;
 }
@@ -53,10 +52,6 @@ header button {
 .Information header h1 {
   font-size: 125%;
   padding: 0.625em 0;
-}
-
-.Information[hidden] header {
-  /*opacity: 0;*/
 }
 
 .content button.primary {

@@ -13,27 +13,24 @@ export const Tutorial = ({ state }) => {
   return <article className='Tutorial content' hidden={hidden}>
 
     <section>
-
-      <header>
-        <h1>{dialog('instructions', 'title')}</h1>
-      </header>
-
-      <ol>
-        <li>Dek je camera volledig af met tape dat licht blokkeert.</li>
-        <li>Klik “Start Meting” om te beginnen.</li>
-        <li>Wacht minimaal 2 minuten om een volledige meting te verrichten.</li>
-      </ol>
-
+      <h1>Gammastraling meten</h1>
+      <p>Meet Gammastraling met de camera van je computer of telefoon.</p>
       <aside className='info'>
-        Momenteel kan een meting alleen gedaan worden 
-        in <a target='_blank' href='https://www.google.com/chrome/'>Google Chrome</a>.
+        Momenteel wordt alleen <a target='_blank' href='https://www.google.com/chrome/'>Google Chrome</a> op een computer ondersteund om een meting te doen.
       </aside>
-
-      <nav>
-        <button className='primary' type='button' onClick={hash.push()}>{dialog('action', 'confirm')}</button>
-      </nav>
-
     </section>
+
+    <section>
+      <h1>Plak je camera af</h1>
+      <p>Dek de camera aan de voorkant van je apparaat volledig af met zwarte tape dat licht blokkeert.</p>
+    </section>
+
+    <section>
+      <h1>Doe een meting</h1>
+      <p>Het duurt één minuut om een nulmeting te doen, dit wordt gebruikt om de verdere meting correct te interpreteren. Na een meting te hebben voltooid is deze (binnenkort) terug te vinden in het menu rechtsboven.</p> 
+    </section>
+
+    <button className='primary' type='button' onClick={hash.push()}>{dialog('action', 'confirm')}</button>
 
   </article>
 }
