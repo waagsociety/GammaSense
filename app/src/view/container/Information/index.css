@@ -18,14 +18,16 @@
   right: 0;
   height: 20px;
   position: fixed;
-  z-index: 10000;
+  z-index: -1;
 }
 
 header button {
   position: absolute;
 }
 
-.iOS.standalone .Information  { top: 20px }
+@media (orientaion: portrait) {
+  .iOS.standalone .Information  { top: 20px }
+}
 
 .Information header {
   background-color: #102649;
@@ -136,8 +138,18 @@ header button {
 
 }
 
+button.back:before {
+  content: '❮ ';
+  float: right;
+  text-indent: 0;
+}
+
 button.back {
-  /*background-color: red;*/
+  text-indent: -999em;
+  padding: 1em;
+  margin: 0 0 0 -1em;
+  top: -0.875em;
+  position: absolute;
 }
 
 .Information[hidden] article section {

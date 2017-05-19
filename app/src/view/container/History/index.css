@@ -6,9 +6,13 @@
   /*padding-top: 4em;*/
 }
 
-.iOS.standalone .History header  { top: 20px }
-.iOS.standalone .History section.content {
-  top: calc(3em + 20px);
+@media (orientaion: portrait) {
+
+  .iOS.standalone .History header  { top: 20px }
+  .iOS.standalone .History section.content {
+    top: calc(3em + 20px);
+  }
+
 }
 
 .History[hidden] {
