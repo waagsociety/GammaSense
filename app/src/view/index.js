@@ -20,7 +20,7 @@ export default class App extends React.Component {
 
     if (state.session.informed) hash.replace()
     else {
-      // hash.replace(routes.instructions)()
+      hash.replace(routes.instructions)()
       dispatch.session({ informed: true })
     }
 
