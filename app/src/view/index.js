@@ -31,7 +31,7 @@ export default class App extends React.Component {
     const dispatchError = errorLog(dispatch, log.error)
     if (!support.webGL) dispatchError({
       content: dialog('map', 'error', 'webGL'), 
-      route: hash.push(routes.information, 'support'),
+      route: hash.push(routes.information, 'help'),
     })
 
   }
@@ -47,8 +47,8 @@ export default class App extends React.Component {
     if (sensor.error) {
       dispatch.sensor({ measurement: null, error: null })
       dispatchError({
-        content: dialog('sensor', 'error', 'support'), 
-        route: hash.push(routes.information, 'support'),
+        content: dialog('measurement', 'error', 'support'), 
+        route: hash.push(routes.information, 'help'),
       })
     }
 
@@ -56,7 +56,7 @@ export default class App extends React.Component {
       dispatch.location({ data: null, loading: false, error: null})
       dispatchError({
         content: dialog('location', 'error', 'unknown'), 
-        route: hash.push(routes.information, 'location'),
+        route: hash.push(routes.information, 'help'),
       })
     }
     

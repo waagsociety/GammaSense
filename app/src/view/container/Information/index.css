@@ -1,26 +1,37 @@
 .Information {
-  color: white;
-  background-color: #1e3456;
+  background-color: white;
+  color: #1e3456;
   position: absolute;
   transition: 100ms ease-in;
   z-index: 1000;
-  border-radius: 0.25em;
   overflow: hidden;
-  left: 4vw;
-  top: 4vw;
-  bottom: 4vw;
-  right: 4vw;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
   box-shadow: 0 0.5em 6em 0 #061420;
+}
+
+.Information:before {
+  content: '';
+  background-color: #102649;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  position: fixed;
+  z-index: -1;
 }
 
 header button {
   position: absolute;
 }
 
-.iOS.standalone .Information  { top: calc(20px + 4vw) }
+.iOS.standalone .Information  { top: 20px }
 
 .Information header {
   background-color: #102649;
+  color: white;
   text-align: center;
   height: 3em;
   padding: 0.5vw 1.5%;
@@ -28,6 +39,7 @@ header button {
   top: 0;
   left: 0;
   right: 0;
+  z-index: 10;
   /*transition: 240ms 100ms;*/
   border-bottom: 1px solid #0f1b27;
   box-sizing: content-box;

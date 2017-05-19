@@ -48,11 +48,12 @@
 }
 
 .History section.content {
-  background: inherit;
+  color: #000;
+  background: white;
   position: absolute;
   top: 3em;
   margin-top: 1vw;
-  bottom: 4em;
+  bottom: 0;
   left: 0;
   right: 0;
   overflow: auto;
