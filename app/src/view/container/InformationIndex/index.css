@@ -30,7 +30,7 @@
   left: 0;
   padding-bottom: 4em;
   overflow-y: auto;
-  max-width: 20em;
+  width: inherit;
   border-right: 1px solid #d8d8da;
 }
 
@@ -49,8 +49,9 @@
 }
 
 @media (max-width: 45em) {
+  .InformationArticle { margin-left: 16em }
   .InformationIndex { width: 16em }
-  .InformationIndex li a { font-size: 100% }
+  /*.InformationIndex li a { font-size: 100% }*/
 }
 
 @media (min-width: 40em) {

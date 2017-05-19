@@ -1,8 +1,7 @@
 .InformationSection {
   font-size: 112.5%;
-  top: calc(1vw + 3em);
   width: auto;
-  padding: 2.5% 5vw 5em;
+  padding: 1em 5vw 5em;
   position: relative;
   max-width: 48em;
   margin: 0 auto;
@@ -50,6 +49,7 @@ header.x {
 
   .InformationSection {
     padding: 0.5em 1.5rem;
+    top: calc(1vw + 3em);
   }
 
 }

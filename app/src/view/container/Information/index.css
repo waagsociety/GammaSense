@@ -102,12 +102,14 @@ header button {
 
   .InformationArticle header {
     box-shadow: none;
-    padding: 2em 5vw;
+    padding: 2.25vw 5vw 1.5em;
     text-align: left;
+    position: relative;
   }
 
   .InformationArticle header h1 {
     font-size: 150%;
+    line-height: 1.2;
     display: block;
   }
 
