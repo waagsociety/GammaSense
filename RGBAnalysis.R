@@ -1,28 +1,45 @@
+#v data files are generated with an additional comma that might be removed with the following script
+# (but we take care of this in the code):
+#
+# for i in frameData*.csv; do cat $i | sed 's/\(.*\),$/\1/g' > filt${i};done
+#
+
 library(data.table)
 library(ggplot2)
 library(scales)
 
-fileName="/Users/SB/Downloads/filtframeData2017-05-17T16-17-07.665Z.csv"
+dataDir <- "/Users/SB/Downloads/Gamma"
+dataFile <- "frameData2017-05-23T08-54-15.093Z.csv"
+fileName <- paste(dataDir,dataFile,sep = "/")
 
 dimX <- 640
 dimY <- 480
 
 ylabel <- ""
 
-func <- function(arg){
-  assign("ylabel", "hits (log10)", envir = .GlobalEnv)
-  return(log10(arg))
+# This is used for the scale of values (log or not)
+scaleValue <- function(arg,isLog){
+  if ( isLog){
+    assign("ylabel", "hits (log10)", envir = .GlobalEnv)
+    return(log10(arg))  
+  }else{
+    assign("ylabel", "hits", envir = .GlobalEnv)
+    return(arg) 
+  }
 }
 
-#func <- function(arg){
-#  assign("ylabel", "hits", envir = .GlobalEnv)
-#  return(arg)
-#}
+meanFrame <- function(arg){
+  
+  print(paste("Mean:",mean(arg[,get(colnames(arg)[2])]),"SD:",sd(arg[,get(colnames(arg)[2])]),"quantile:"))
+  print(quantile(arg[,get(colnames(arg)[2])]))
+  return (ggplot(data=arg, aes(x=frameNR,y=get(colnames(arg)[2]))) + geom_line() + ylab("value"))
 
-# for i in frameData*.csv; do cat $i | sed 's/\(.*\),$/\1/g' > filt${i};done
-
+}
 
 pixels <- data.table(read.csv(fileName))
+
+# remove last column which is just an error of the dump
+pixels <- pixels[, (colnames(pixels)[ncol(pixels)]):= NULL]
 
 colnames(pixels) <- c("frameNR",colnames(pixels)[-1])
 
@@ -42,12 +59,13 @@ for (j in names(RGBpixels)){
   set(RGBpixels,which( is.na(RGBpixels[[j]]) ),j,0)
 }
 
-plot <- ggplot(data = RGBpixels, aes(x=value)) + geom_line(aes(y=func(nr.R)), colour="red") + 
-                                         geom_line(aes(y=func(nr.G)),colour="green") +
-                                         geom_line(aes(y=func(nr.B)),colour="blue") + 
+bLog <- TRUE
+RGBpixelsPlot <- ggplot(data = RGBpixels, aes(x=value)) + geom_line(aes(y=scaleValue(nr.R,bLog)), colour="red") + 
+                                         geom_line(aes(y=scaleValue(nr.G,bLog)),colour="green") +
+                                         geom_line(aes(y=scaleValue(nr.B,bLog)),colour="blue") + 
                                          xlab("Value") 
 
-plot <- plot + ylab(ylabel)
+RGBpixelsPlot <- RGBpixelsPlot + ylab(ylabel)
 
 
 coordX <- ((pixels[,"index"]-1)%/%4)%%dimX + 1
@@ -89,23 +107,23 @@ for (i in 1:total){
   
 }
 
-heatProp <- ggplot(data = heatmapProp, aes(x = coordX, y = coordY))
+heatPropPlot <- ggplot(data = heatmapProp, aes(x = coordX, y = coordY))
 
-heatPropR <- heatProp + geom_raster(aes(fill = R)) + scale_fill_gradientn(colours=c("white","red"))
+heatPropRPlot <- heatPropPlot + geom_raster(aes(fill = R)) + scale_fill_gradientn(colours=c("white","red"))
 
-heatPropG <- heatProp + geom_raster(aes(fill = G)) + scale_fill_gradientn(colours=c("white","green"))
+heatPropGPlot <- heatPropPlot + geom_raster(aes(fill = G)) + scale_fill_gradientn(colours=c("white","green"))
 
-heatPropB <- heatProp + geom_raster(aes(fill = B)) + scale_fill_gradientn(colours=c("white","blue"))
+heatPropBPlot <- heatPropPlot + geom_raster(aes(fill = B)) + scale_fill_gradientn(colours=c("white","blue"))
 
-heatPropRGB <- heatProp + geom_raster(aes(fill = R+G+B)) + scale_fill_gradientn(colours=c("white","black"))
+heatPropRGBPlot <- heatPropPlot + geom_raster(aes(fill = R+G+B)) + scale_fill_gradientn(colours=c("white","black"))
 
-heatBinRGB <- ggplot(data = heatmapBin, aes(x = coordX, y = coordY)) +
+heatBinRGBPlot <- ggplot(data = heatmapBin, aes(x = coordX, y = coordY)) +
               geom_raster(aes(fill = RGB)) + scale_fill_gradientn(colours=c("white","black"))
 
-heatBinAllRGB <- ggplot(data = heatmapBinAll, aes(x = coordX, y = coordY)) +
+heatBinAllRGBPlot <- ggplot(data = heatmapBinAll, aes(x = coordX, y = coordY)) +
   geom_raster(aes(fill = RGB)) + scale_fill_gradientn(colours=c("white","black"))
 
-print(heatBinAllRGB)
+#print(heatBinAllRGBPlot)
 
 for (threshold in 1:10*10){
 
@@ -118,22 +136,14 @@ for (threshold in 1:10*10){
   print(paste("Threshold:",threshold,"indexes x:",x,"y:",y))
 }
 
-ggplot(data=pixels[,sum(R)+sum(G)+sum(B),by=frameNR], aes(x=frameNR,y=V1)) + geom_line()
 
-tmp <-pixels[,sum(R)+sum(G)+sum(B),by=frameNR][,V1]
-print(paste("Mean:",mean(tmp),"SD:",sd(tmp),"quantile:"))
-quantile(tmp)
 
-ggplot(data=pixels[,.N,by=frameNR], aes(x=frameNR,y=N)) + geom_line()
+tmp <-pixels[,sum(R)+sum(G)+sum(B),by=frameNR]
+SumValuesFramePlot <- meanFrame(tmp)
 
-tmp <-pixels[,.N,by=frameNR][,N]
-print(paste("Mean:",mean(tmp),"SD:",sd(tmp),"quantile:"))
-quantile(tmp)
+tmp <-pixels[,.N,by=frameNR]
+SumHitsFramePlot <- meanFrame(tmp)
 
-ggplot(data=pixels[R>0 & G>0 & B>0,.N,by=frameNR], aes(x=frameNR,y=N)) + geom_line()
-
-tmp <-pixels[R>0 & G>0 & B>0,.N,by=frameNR][,N]
-print(paste("Mean:",mean(tmp),"SD:",sd(tmp),"quantile:"))
-quantile(tmp)
-
-ggplot(data=pixels[R>0 & G>0 & B>0 & (R+B+G)>50,.N,by=frameNR], aes(x=frameNR,y=N)) + geom_point()
+threshold <- 10
+tmp <- pixels[R>0 & G>0 & B>0 & (R+B+G)>threshold,.N,by=frameNR]
+SumHitsNotZeroThresholdFramePlot <- meanFrame(tmp)
