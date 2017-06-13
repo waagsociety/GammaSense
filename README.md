@@ -10,3 +10,8 @@ Media Capture and Streams: W3C Editor's Draft 05 February 2017 https://w3c.githu
 
 
 Library with Flash fallback (not working on most browsers): https://github.com/addyosmani/getUserMedia.js
+
+## Reference for algorithm
+Using CMOS Sensors in a Cellphone for Gamma Detection and Classification https://arxiv.org/abs/1401.0766
+
+
