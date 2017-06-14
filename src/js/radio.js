@@ -8,6 +8,11 @@ var countdown = 0;
 var cpm = 0;
 var elapsedMin = 0;
 var storageMatrix = ["frameNR,index,R,G,B"];
+var videoWidth = 1;
+var videoHeight = 1;
+var inputCanvasContext;
+var outputCanvasContext;
+
 // ConstrainLong      width;
 // ConstrainLong      height;
 // ConstrainDouble    aspectRatio;
@@ -87,8 +92,7 @@ var initialize = function() {
       var grayscalebtn = document.getElementById('grayscalebtn');
       grayscalebtn.addEventListener('click', grayscaleHandler);
 
-      // transformFunction = poll;
-      transformFunction = grayscale;
+      transformFunction = blackwhite;
     //trace("Requested access to local media");
     } catch (e) {
       alert("getUserMedia error " + e);
@@ -102,10 +106,36 @@ var initialize = function() {
 var onGotStream = function(stream) {
   localVideo.style.opacity = 1;
   localVideo.srcObject = stream;
+  if (localVideo.videoWidth == 0 || localVideo.videoHeight == 0){
+      setTimeout(GotValidVideo, 2000);
+      return;
+  }else{
+    GotValidVideo();
+  }
+}
+
+var GotValidVideo = function() {
+
+  videoWidth = localVideo.videoWidth;
+  videoHeight = localVideo.videoHeight;
+
 
   filterSelect.onchange = function() {
     localVideo.className = filterSelect.value;
   };
+
+  var canvas = document.createElement('canvas');
+  canvas.width  = videoWidth;
+  canvas.height = videoHeight;
+  inputCanvasContext = canvas.getContext('2d');
+
+  localCanvas.width = videoWidth;
+  localCanvas.height = videoHeight;
+  localCanvas.className = filterSelect.value;
+
+  outputCanvasContext = localCanvas.getContext('2d', {alpha: false});
+  outputCanvasContext.lineWidth = 2;
+  outputCanvasContext.lineJoin = "round";
 
   // localStream = stream;
 
@@ -130,28 +160,12 @@ var grayscaleHandler = function() {
 
 var poll = function() {
 
-  var w = localVideo.videoWidth;
-  var h = localVideo.videoHeight;
+  inputCanvasContext.drawImage(localVideo, 0, 0, videoWidth, videoHeight);
 
-  var secPoll = document.getElementById("secondsin").value;
+  var inImageData = inputCanvasContext.getImageData(0, 0, videoWidth, videoHeight);
 
-  var canvas = document.createElement('canvas');
-  canvas.width  = w;
-  canvas.height = h;
-  var ctx = canvas.getContext('2d');
-  ctx.drawImage(localVideo, 0, 0, w, h);
-
-  var inImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-  localCanvas.width = w;
-  localCanvas.height = h;
-  localCanvas.className = filterSelect.value;
-
-  var ctx2 = localCanvas.getContext('2d', {alpha: false});
-  ctx2.lineWidth = 2;
-  ctx2.lineJoin = "round";
-  ctx2.clearRect (0, 0, localCanvas.width,localCanvas.height);
-  var outImageData = ctx2.getImageData(0, 0, localCanvas.width,localCanvas.height);
+  outputCanvasContext.clearRect (0, 0, videoWidth,videoHeight);
+  var outImageData = outputCanvasContext.getImageData(0, 0, videoWidth,videoHeight);
 
   if ( ! started ){
     buffer = outImageData.data;
@@ -162,11 +176,13 @@ var poll = function() {
 
   /* draw detected area */
 
-  ctx2.putImageData(outImageData, 0, 0);
+  outputCanvasContext.putImageData(outImageData, 0, 0);
 
   countdown = countdown + 1;
 
-  storeData(countdown,inImageData.data);
+  storeRawData(countdown,inImageData.data);
+
+  var secPoll = document.getElementById("secondsin").value;
 
   if (countdown > (60 / secPoll) ){
     elapsedMin = elapsedMin + 1;
@@ -180,11 +196,13 @@ var poll = function() {
     storageMatrix = ["frameNR,index,R,G,B"];
   }
 
+
   setTimeout(poll, secPoll * 1000);
 };
 
 
-var storeData = function (frameNr, pixels){
+// save non-zero values to matrix
+var storeRawData = function (frameNr, pixels){
 
   for (var i = 0; i < pixels.length; i += 4) {
     if( pixels[i] != 0 ||
@@ -196,6 +214,7 @@ var storeData = function (frameNr, pixels){
   }
 };
 
+// Save matrix to disk
 var saveCVS = function(){
 
   var blob = new Blob([storageMatrix], {type: "text/csv;charset=utf-8"});
@@ -203,6 +222,7 @@ var saveCVS = function(){
 
 };
 
+// Possible averaging functions for thresholding
 var lumaRGB = function(R,G,B) {
   return R * 0.2126 + G * 0.7152 + B * 0.0722;
 };
@@ -211,6 +231,7 @@ var meanRGB = function(R,G,B) {
   return (R + G + B) / 3;
 };
 
+// transform values to greyscale
 var grayscale = function(inPixels,outImageData) {
 
   for (var i = 0; i < inPixels.length; i += 4) {
@@ -222,6 +243,7 @@ var grayscale = function(inPixels,outImageData) {
   }
 };
 
+// transform values to black or white with threshold
 var blackwhite = function(inPixels,outImageData) {
 
    var threshold = document.getElementById("thresholdin").value;
@@ -230,15 +252,17 @@ var blackwhite = function(inPixels,outImageData) {
   for (var i = 0; i < inPixels.length; i += 4) {
       var avg = lumaRGB(inPixels[i], inPixels[i + 1], inPixels[i + 2]);
       if( avg > threshold){
-        avg = 255;
         counter = counter + 1;
         cpm = cpm + 1;
+        outImageData.data[i]     = 255; // red
+        outImageData.data[i + 1] = 255; // green
+        outImageData.data[i + 2] = 255; // blue
       }else{
-        avg = 0;
+        outImageData.data[i]     = buffer[i]; // red
+        outImageData.data[i + 1] = buffer[i + 1]; // green
+        outImageData.data[i + 2] = buffer[i + 2]; // blue
       }
-      outImageData.data[i]     = Math.max(avg,buffer[i]); // red
-      outImageData.data[i + 1] = Math.max(avg,buffer[i + 1]); // green
-      outImageData.data[i + 2] = Math.max(avg,buffer[i + 2]); // blue
+
       outImageData.data[i + 3] = Math.max(inPixels[i + 3],buffer[i]); // alpha
 
       buffer[i] = outImageData.data[i];
