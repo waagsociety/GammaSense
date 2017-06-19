@@ -19,7 +19,7 @@ export const InformationIndex = ({ content, dialog, routes }) =>
 
 function ListItem(root) {
   const active = hash.list(1)
-  return ({ title, path }) => <li key={path}>
-    <a className={active === path ? 'active' : ''} href={hash.join(root, path)}>{title}</a>
+  return ({ metadata, hash: path }) => <li key={path}>
+    <a className={active === path ? 'active' : ''} href={hash.join(root, path)}>{metadata.title}</a>
   </li>
 }

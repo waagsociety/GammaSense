@@ -1,0 +1,5 @@
+---
+title: Hoe meet ik Gammastraling?
+---
+
+De klassieke manier van het meten van nucleaire straling is met een zogenaamde Geiger-Muller buis. In deze vacuum buis botsen kleine deeltjes op geioniseerde gasmoleculen. De techniek eromheen bepaald hoe vaak per minuut dat gebeurt. Met een webcam is het ook mogelijk om te tellen hoe vaak per minuut er deeltjes worden gezien die botsen met het lichtgevoelige deel van de camera. In feite wordt dus dezelfde maat bepaald, alleen ligt de gevoeligheid van een webcam een heel stuk lager vergeleken met traditionele meetapparatuur. Dit nadeel is te ondervangen door te zorgen voor veel meer meetpunten, waardoor wetenschappers op basis van deze veelheid van onbetrouwbare data, in het geval van voldoende dichtheid toch met een hogere betrouwbaarheid uitspraken kunnen doen over de werkelijke straling vergeleken met de klassieke situatie van weinig, maar zeer betrouwbare meetpunten.

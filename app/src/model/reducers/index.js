@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import config from '../../config'
+import content from './content'
 import dialog from '../../dialog'
 import location from './location'
 import log from './log'
@@ -10,6 +11,7 @@ import session from  './session'
 export default createCombinedReducers({
   config,
   dialog,
+  content,
   location,
   log,
   route,

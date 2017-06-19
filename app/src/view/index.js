@@ -21,10 +21,11 @@ export default class App extends React.Component {
     if (state.session.informed) hash.replace()
     else {
       hash.replace(routes.instructions)()
+      localStorage.setItem('informed', true)
       dispatch.session({ informed: true })
     }
 
-    console.log(navigator)
+    // console.log(navigator)
     for (const key in navigator) {
       if (navigator[key]) document.body.classList.add(key)
     }

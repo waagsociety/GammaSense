@@ -1,7 +1,7 @@
 export default {
   id: Date.now(),
-  informed: null,
   baseline: null,
+  informed: localStorage.getItem('informed'),
   navigator: {
     iOS: /iPhone|iPad|iPod/.test(navigator.userAgent),
     standalone: isWebApp(),
