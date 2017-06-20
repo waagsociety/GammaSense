@@ -1,3 +1,6 @@
 ansible.log
 nginx.retry
 gammasense.retry
+.Rproj.user
+.RData
+.Rhistory

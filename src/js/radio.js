@@ -116,6 +116,11 @@ var onGotStream = function(stream) {
 
 var GotValidVideo = function() {
 
+  if (localVideo.videoWidth == 0 || localVideo.videoHeight == 0){
+      setTimeout(GotValidVideo, 2000);
+      return;
+  }
+
   videoWidth = localVideo.videoWidth;
   videoHeight = localVideo.videoHeight;
 
