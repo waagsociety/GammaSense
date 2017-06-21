@@ -19,7 +19,6 @@ fileName <- paste(dataDir,dataFile,sep = "/")
 dimX <- 640
 dimY <- 480
 
-ylabel <- ""
 
 ###################################################################################################
 # FUNCTIONS
@@ -28,10 +27,8 @@ ylabel <- ""
 # This is used for the scale of values (log or not)
 scaleValue <- function(arg,isLog){
   if ( isLog){
-    assign("ylabel", "hits (log10)", envir = .GlobalEnv)
     return(log10(arg))  
   }else{
-    assign("ylabel", "hits", envir = .GlobalEnv)
     return(arg) 
   }
 }
@@ -44,9 +41,20 @@ meanFrame <- function(arg){
 
 }
 
+putMsg <- function(msg){
+  writeLines("\n***************************************************")
+  writeLines(paste(msg))
+  writeLines("***************************************************\n")
+  readline(prompt="Press ENTER to continue")
+}
 ###################################################################################################
 # START CODE
 ###################################################################################################
+
+############################
+# Calculate occurrences of 
+# values per channel
+############################
 
 # Read the "frameNR,index,R,G,B" file
 pixels <- data.table(read.csv(fileName))
@@ -74,14 +82,25 @@ for (j in names(RGBpixels)){
   set(RGBpixels,which( is.na(RGBpixels[[j]]) ),j,0)
 }
 
-# this creates a logartimic scale if TRUE
-bLog <- TRUE
-RGBpixelsPlot <- ggplot(data = RGBpixels, aes(x=value)) + geom_line(aes(y=scaleValue(nr.R,bLog)), colour="red") + 
-                                         geom_line(aes(y=scaleValue(nr.G,bLog)),colour="green") +
-                                         geom_line(aes(y=scaleValue(nr.B,bLog)),colour="blue") + 
-                                         xlab("Value") 
+# this creates a logartimic scale
+RGBLogpixelsPlot <- ggplot(data = RGBpixels, aes(x=value)) + geom_line(aes(y=scaleValue(nr.R,TRUE)), colour="red") + 
+                                         geom_line(aes(y=scaleValue(nr.G,TRUE)),colour="green") +
+                                         geom_line(aes(y=scaleValue(nr.B,TRUE)),colour="blue") + 
+                                         xlab("Value") +
+                                         ylab("Hits (log10)")
 
-RGBpixelsPlot <- RGBpixelsPlot + ylab(ylabel)
+
+# this creates a linear scale
+RGBLinpixelsPlot <- ggplot(data = RGBpixels, aes(x=value)) + geom_line(aes(y=scaleValue(nr.R,FALSE)), colour="red") + 
+                                         geom_line(aes(y=scaleValue(nr.G,FALSE)),colour="green") +
+                                         geom_line(aes(y=scaleValue(nr.B,FALSE)),colour="blue") + 
+                                         xlab("Value") +
+                                         ylab("Hits")
+
+############################
+# Calculate heatpmaps of 
+# pixels > 0
+############################
 
 # Transform the sequential index of the pixel data structure in X,Y coordinates from (0,0) to (dimX-1,dimY-1)
 # x %% y	is modulus (x mod y), e.g. 5%%2 is 1
@@ -112,7 +131,8 @@ colnames(heatmapBinAll) <- c(colnames(heatmapBinAll)[1:2],"RGB")
 # Do the plotting
 
 # Heatmaps per colour of the real values
-heatPropPlot <- ggplot(data = heatmapProp, aes(x = coordX, y = coordY))
+heatPropPlot <- ggplot(data = heatmapProp, aes(x = coordX, y = coordY)) + 
+                coord_cartesian(xlim = c(0, dimX), ylim = c(0,dimY)) 
 
 heatPropRPlot <- heatPropPlot + geom_raster(aes(fill = R)) + scale_fill_gradientn(colours=c("white","red"))
 
@@ -125,14 +145,46 @@ heatPropRGBPlot <- heatPropPlot + geom_raster(aes(fill = R+G+B)) + scale_fill_gr
 
 # Heatmap of any value > 0
 heatBinRGBPlot <- ggplot(data = heatmapBin, aes(x = coordX, y = coordY)) +
-              geom_raster(aes(fill = RGB)) + scale_fill_gradientn(colours=c("white","black"))
+              geom_raster(aes(fill = RGB)) + scale_fill_gradientn(colours=c("white","black")) +
+              coord_cartesian(xlim = c(0, dimX), ylim = c(0,dimY)) 
 
 # Heatmap of all values > 0
 heatBinAllRGBPlot <- ggplot(data = heatmapBinAll, aes(x = coordX, y = coordY)) +
-  geom_raster(aes(fill = RGB)) + scale_fill_gradientn(colours=c("white","black"))
+              geom_raster(aes(fill = RGB)) + scale_fill_gradientn(colours=c("white","black")) +
+              coord_cartesian(xlim = c(0, dimX), ylim = c(0,dimY)) 
 
+############################
+# Show above plots
+############################
 
-# Border calculations
+print(RGBLogpixelsPlot)
+putMsg("Logaritmic scale of occurrences of values per channel")
+
+print(RGBLinpixelsPlot)
+putMsg("Liner scale of occurrences of values per channel")
+
+print(heatPropRPlot)
+putMsg("Heatmap of Red channel values")
+
+print(heatPropGPlot)
+putMsg("Heatmap of Green channel values")
+
+print(heatPropBPlot)
+putMsg("Heatmap of Blue channel values")
+
+print(heatPropRGBPlot)
+putMsg("Heatmap of sum of all channel values")
+
+print(heatBinRGBPlot)
+putMsg("Heatmap of hits when at least one channel value is > 0")
+
+print(heatBinAllRGBPlot)
+putMsg("Heatmap of hits when all channel values are > 0")
+
+############################
+# Calculate noisy borders
+############################
+
 for (threshold in 1:10*10){
 
   for (y in 1:(dimY/2) - 1){
@@ -146,6 +198,10 @@ for (threshold in 1:10*10){
   print(paste("Threshold:",threshold,"indexes x:",x,"y:",y))
 }
 
+############################
+# Calculate values per frame
+############################
+
 tmp <-pixels[,sum(R)+sum(G)+sum(B),by=frameNR]
 SumValuesFramePlot <- meanFrame(tmp)
 
@@ -155,3 +211,4 @@ SumHitsFramePlot <- meanFrame(tmp)
 threshold <- 10
 tmp <- pixels[R>0 & G>0 & B>0 & (R+B+G)>threshold,.N,by=frameNR]
 SumHitsNotZeroThresholdFramePlot <- meanFrame(tmp)
+
