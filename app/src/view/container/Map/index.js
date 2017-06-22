@@ -21,6 +21,8 @@ export const Map = ({ state, dispatch }) => {
 
   return <section className='Map full content' hidden={state.sensor.active}>
 
+    console.log('xoxo')
+
     { support.webGL 
       ? <MapComponent id='MapBox' 
         accessToken={mapbox.accessToken}
@@ -40,9 +42,9 @@ export const Map = ({ state, dispatch }) => {
             xhr.addEventListener("readystatechange", function () {
               
               if (this.readyState === 4) {
+                console.log('readystatechange 4', this)
                 const response = JSON.parse(this.responseText)
                 if (response.status === 'success') {
-                  
                   const body = JSON.parse(response.body)
                   const features = body.reduce(function(result, item) {
                     return result.concat({
@@ -76,7 +78,7 @@ export const Map = ({ state, dispatch }) => {
             })
             xhr.open('get', "https://gammasense.org/app/sensordata")
             xhr.setRequestHeader("cache-control", "no-cache")
-            if (0) xhr.send(data)
+            xhr.send(data)
 
           }
         }}
