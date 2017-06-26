@@ -1,9 +1,9 @@
 ---
-title: Wat is GammaSense?
+title: What is GammaSense?
 ---
 
-Als je in de buurt van een kerncentrale woont, wil je graag op de hoogte blijven van eventueel verhoogde stralingsniveaus. Op dit moment zijn omwonenden voor deze informatie afhankelijk van instituten en overheden. Informatie over potentiële gevaren laat vaak lang op zich wachten. Wat zouden we in dit kader zelf kunnen doen met al in ons huis aanwezige apparatuur?
+If you live near a nuclear power plant, you would like to stay informed on potentially increased radiation levels. At this moment, residents are dependent on institutions and governments for this information. Information about potential hazards or incidents often takes  a long time to reach theas people. What could we do in this context with all the equipment in our home?
 
-Met een smartphone, laptop of PC met webcam kun je in principe straling goed meten. Het beste werkt dit wanneer de camera wordt afgedekt met een stukje aluminiumfolie, wat weer vastgeplakt wordt met zwart tape. Camera’s en webcams kunnen hierdoor de Gammas-straling vastleggen en deze omzetten in een eenheid per minuut. Hiermee kunnen grote toenames worden vastgelegd en uitgezet op een kaart.
+With a smartphone, laptop or PC with webcam you can measure radiation quite well. When you cover your camera with a piece of aluminum foil, which is  covered with black tape, you can start measuring. Cameras and webcams can thus capture the Gammas radiation and convert them into one unit per minute. This allows large increases to be captured and plotted on a map.
 
-Momenteel wordt er hard gewerkt aan de ontwikkeling van dit experimentele platform. Waarden die worden gemeten zijn niet absoluut. Er wordt momenteel dan ook gekeken naar de kalibratie en gevoeligheid van verschillende camera's die worden gebruikt. Daarnaast is het goed om te weten dat de meting grote verschillen in kaart probeert te brengen, als een kanarie in de kolenmijn.
+Currently, this experimental platform is in full development. Values ​​that are measured are not absolute. The calibration and sensitivity of different cameras used is currently being looked into. In addition, it is good to know that the measurement tries to bring big differences into the map, as a canary in the coal mine.
