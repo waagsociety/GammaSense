@@ -1,13 +1,13 @@
 ---
-title: Wat is Gammastraling?
+title: What is Gamma radiaiton?
 ---
 
-Gammastraling (γ-straling) is onzichtbare elektromagnetische straling met een hogere energie dan ultraviolet licht en röntgenstraling.
+Gamma radiation (γ radiation) is an invisible electromagnetic radiation with higher energy than ultraviolet light and x-ray.
 
-Gammastralen zijn net zoals bijvoorbeeld licht en radiogolven een vorm van elektromagnetische straling. Ze bestaan dus uit trillende elektrische en magnetische velden. Het verschil tussen al deze vormen van elektromagnetische straling zit in de frequentie van deze trillingen, of in de energie of golflengte die gekoppeld zijn aan de frequentie.
+Gamma rays, just as light and radio waves, are a form of electromagnetic radiation. They therefore consist of vibrating electric and magnetic fields. The difference between all these types of electromagnetic radiation is in the frequency of these vibrations, or in the energy or wavelength that are coupled to the frequency.
 
-De energie van gammastralen is zo groot dat, wanneer ze door een materiaal passeren, chemische bindingen kunnen breken en elektronen uit atomen kunnen losmaken. Men zegt ook wel dat gammastraling ‘ioniserend’ is. Dit kan zowel nuttig als gevaarlijk zijn.
+The energy of gamma rays is so large that when they pass through a material, chemical bonds can break and electrons can be detached from atoms. It is also said that gamma radiation is 'ionizing'. This can be both useful and dangerous.
 
-Als het menselijk lichaam wordt blootgesteld aan een te grote hoeveelheid gammastraling, dan zullen er chemische bindingen in de molecules van onze cellen worden afgebroken, waardoor de levende weefsels worden beschadigd. Dit is uiteraard gevaarlijk. Op plaatsen waar gammastraling wordt geproduceerd, bijvoorbeeld in kerncentrales, moeten daarom de nodige beschermingsmaatregelen worden getroffen.
+If the human body is exposed to excessive amount of gamma radiation, then chemical bonds in the molecules of our cells will break down, causing the living tissues to be damaged. This is obviously dangerous. In places where gamma radiation is produced, for example in nuclear power plants, the necessary protective measures must be taken.
 
-Maar gammastralen kunnen ook micro-organismen zoals bacteriën en schimmels doden. Zo kan een een dokter je bij een botinfectie bestralen met gammastralen om zo de infectie te vernietigen. Gammastraling wordt ook gebruikt om medische hulpmiddelen zoals injectienaalden te desinfecteren. Soms worden ook groenten en fruit bestraald om ongewenste micro-organismen te doden, waardoor deze langer vers blijven.
+But gamma rays can also kill microorganisms such as bacteria and fungi. For example, a doctor may irradiate your infections with gamma rays to destroy the infection. Gamma radiation is also used to disinfect medical devices such as injection needles. Sometimes fruits and vegetables are also irradiated to kill unwanted microorganisms, as a method of preserving.
