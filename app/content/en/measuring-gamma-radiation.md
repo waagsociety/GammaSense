@@ -1,5 +1,7 @@
 ---
-title: Hoe meet ik Gammastraling?
+title: How do I measure gamma radiation?
 ---
 
-De klassieke manier van het meten van nucleaire straling is met een zogenaamde Geiger-Muller buis. In deze vacuum buis botsen kleine deeltjes op geioniseerde gasmoleculen. De techniek eromheen bepaald hoe vaak per minuut dat gebeurt. Met een webcam is het ook mogelijk om te tellen hoe vaak per minuut er deeltjes worden gezien die botsen met het lichtgevoelige deel van de camera. In feite wordt dus dezelfde maat bepaald, alleen ligt de gevoeligheid van een webcam een heel stuk lager vergeleken met traditionele meetapparatuur. Dit nadeel is te ondervangen door te zorgen voor veel meer meetpunten, waardoor wetenschappers op basis van deze veelheid van onbetrouwbare data, in het geval van voldoende dichtheid toch met een hogere betrouwbaarheid uitspraken kunnen doen over de werkelijke straling vergeleken met de klassieke situatie van weinig, maar zeer betrouwbare meetpunten.
+The classic way of measuring nuclear radiation is with a so-called Geiger-Muller tube. In this vacuum tube, small particles collide on ionized gas molecules. The technique around it determines how often per minute that happens. With a webcam it is also possible to count how often per minute particles are seen that collide with the photosensitive part of the camera. In fact, the same size is determined, only the sensitivity of a webcam is much lower compared to traditional measuring equipment. This disadvantage can be overcome by providing many more measurement points, which allows scientists to make statements about the actual radiation. 
+
+The classic situation with a few but reliable datapoints can be expanded, in the case of sufficient density, with many more measurements which can increase the overal reliability.
