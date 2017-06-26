@@ -1,5 +1,5 @@
 ---
-title: Wat betekent de waarde in beeld?
+title: What does the output value mean? 
 ---
 
-Binnenkort meer...
+More, coming soon! 
