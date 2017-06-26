@@ -78,51 +78,7 @@ createPixelsXY <- function(pixels){
   return(pixelsXY)
 }
 
-###################################################################################################
-# START CODE
-###################################################################################################
-
-files <- list.files(path=dataDir,recursive=TRUE,pattern="csv$")
-
-for (myfileindex in 1:length(files)){
-  dataFile <- files[myfileindex]
-
-  fileName <- paste(dataDir,dataFile,sep = "")
-  
-  putMsg(paste("Process file:",dataFile),doStop=TRUE)
-  
-  ############################
-  # Read and create pixel
-  # structures
-  ############################
-  
-  # Read the "frameNR,index,R,G,B" file
-  pixels <- readPixels(fileName)
-  
-  isFiltered <- FALSE
-  
-  filterZero <- readline(prompt="Filter out pixels with zero values in at least one of the channel[y/N] ? ")
-  if (filterZero == 'y'){
-    isFiltered <- TRUE
-    pixels <- pixels[R>0 & B>0 & G>0,]
-  }
-  
-  # Transform the sequential index of the pixel data structure in X,Y coordinates from (0,0) to (dimX-1,dimY-1)
-  pixelsXY <- createPixelsXY(pixels)
-  
-  # print pearson correlation of the channels
-  putMsg("Pearson correlation",FALSE)
-  print(cor(pixels[,3:5],use="all.obs",method="pearson" ))
-  putMsg(NULL,TRUE)
-  
-  thresholdMatrix <- doDelta(pixelsXY)
-  
-  #stop("ciao")
-  ############################
-  # Calculate occurrences of 
-  # values per channel
-  ############################
-  
+countOccurrences <- function(pixels){
   # Count occurrences per value of each type of pixel 
   redPixels <- data.table(pixels[,.N,by=R], key="R")
   
@@ -142,24 +98,29 @@ for (myfileindex in 1:length(files)){
   
   # this creates a logartimic scale
   RGBLogpixelsPlot <- ggplot(data = RGBpixels, aes(x=value)) + geom_line(aes(y=scaleValue(nr.R,TRUE)), colour="red") + 
-                                           geom_line(aes(y=scaleValue(nr.G,TRUE)),colour="green") +
-                                           geom_line(aes(y=scaleValue(nr.B,TRUE)),colour="blue") + 
-                                           xlab("Value") +
-                                           ylab("Hits (log10)")
+    geom_line(aes(y=scaleValue(nr.G,TRUE)),colour="green") +
+    geom_line(aes(y=scaleValue(nr.B,TRUE)),colour="blue") + 
+    xlab("Value") +
+    ylab("Hits (log10)")
   
   
   # this creates a linear scale
   RGBLinpixelsPlot <- ggplot(data = RGBpixels, aes(x=value)) + geom_line(aes(y=scaleValue(nr.R,FALSE)), colour="red") + 
-                                           geom_line(aes(y=scaleValue(nr.G,FALSE)),colour="green") +
-                                           geom_line(aes(y=scaleValue(nr.B,FALSE)),colour="blue") + 
-                                           xlab("Value") +
-                                           ylab("Hits")
+    geom_line(aes(y=scaleValue(nr.G,FALSE)),colour="green") +
+    geom_line(aes(y=scaleValue(nr.B,FALSE)),colour="blue") + 
+    xlab("Value") +
+    ylab("Hits")
   
-  ############################
-  # Calculate heatpmaps of 
-  # pixels > 0
-  ############################
+  print(RGBLogpixelsPlot)
+  putMsg("Logaritmic scale of occurrences of values per channel",doStop=FALSE)
   
+  print(RGBLinpixelsPlot)
+  putMsg("Liner scale of occurrences of values per channel",doStop=TRUE)
+  
+  return(RGBpixels)
+}
+
+calculateHeatMaps <- function(pixelsXY){
   # Calculate values across frames (by grouping per indexes)
   
   # Keep each value
@@ -178,7 +139,7 @@ for (myfileindex in 1:length(files)){
   
   # Heatmaps per colour of the real values
   heatPropPlot <- ggplot(data = heatmapProp, aes(x = coordX, y = coordY)) + 
-                  coord_cartesian(xlim = c(0, dimX), ylim = c(0,dimY)) 
+    coord_cartesian(xlim = c(0, dimX), ylim = c(0,dimY)) 
   
   heatPropRPlot <- heatPropPlot + geom_raster(aes(fill = R)) + scale_fill_gradientn(colours=c("white","red"))
   
@@ -191,21 +152,43 @@ for (myfileindex in 1:length(files)){
   
   # Heatmap of any value > 0
   heatBinRGBPlot <- ggplot(data = heatmapBin, aes(x = coordX, y = coordY)) +
-                geom_raster(aes(fill = RGB)) + scale_fill_gradientn(colours=c("white","black")) +
-                coord_cartesian(xlim = c(0, dimX), ylim = c(0,dimY)) 
+    geom_raster(aes(fill = RGB)) + scale_fill_gradientn(colours=c("white","black")) +
+    coord_cartesian(xlim = c(0, dimX), ylim = c(0,dimY)) 
   
   # Heatmap of all values > 0
   heatBinAllRGBPlot <- ggplot(data = heatmapBinAll, aes(x = coordX, y = coordY)) +
-                geom_raster(aes(fill = RGB)) + scale_fill_gradientn(colours=c("white","black")) +
-                coord_cartesian(xlim = c(0, dimX), ylim = c(0,dimY)) 
+    geom_raster(aes(fill = RGB)) + scale_fill_gradientn(colours=c("white","black")) +
+    coord_cartesian(xlim = c(0, dimX), ylim = c(0,dimY))
   
-  ############################
-  # Calculate noisy borders
-  ############################
+  print(heatPropRPlot)
+  putMsg("Heatmap of Red channel values",doStop=TRUE)
+  
+  print(heatPropGPlot)
+  putMsg("Heatmap of Green channel values",doStop=TRUE)
+  
+  print(heatPropBPlot)
+  putMsg("Heatmap of Blue channel values",doStop=TRUE)
+  
+  print(heatPropRGBPlot)
+  putMsg("Heatmap of sum of all channel values",doStop=TRUE)
+  
+  print(heatBinRGBPlot)
+  putMsg("Heatmap of hits when at least one channel value is > 0",doStop=TRUE)
+  
+  print(heatBinAllRGBPlot)
+  putMsg("Heatmap of hits when all channel values are > 0",doStop=TRUE)
+  
+}
+
+calculateNoisyBorders <- function(pixelsXY){
+  
+  # Only count occurrences of all(R,G,B) > 0
+  heatmapBinAll <- pixelsXY[R>0 & G>0 & B>0,.N,by=c("coordX","coordY")]
+  colnames(heatmapBinAll) <- c(colnames(heatmapBinAll)[1:2],"RGB")
   
   tot_msg <- "Border calculation for different thresholds, based on hits = all(R,G,B) > 0"
   for (threshold in 1:10*10){
-  
+    
     for (y in 1:(dimY/2) - 1){
       # maintain proportions of screen
       x <- (y/dimY*dimX)%/%1
@@ -218,10 +201,9 @@ for (myfileindex in 1:length(files)){
   }
   
   putMsg(tot_msg)
-  
-  ############################
-  # Calculate values per frame
-  ############################
+}
+
+calculateFrameEnergy <- function(pixels){
   
   tmp <-pixels[,sum(R)+sum(G)+sum(B),by=frameNR]
   statsFrame(tmp,"Sum of all pixel values per frame")
@@ -241,47 +223,165 @@ for (myfileindex in 1:length(files)){
   
   SumHitsNotZeroThresholdFramePlot <- ggplot(data=tmp, aes(x=frameNR,y=N)) + geom_line() + ylab("value")
   
+  print(SumValuesFramePlot)
+  putMsg("Plot of sum of all pixel values per frame",doStop=TRUE)
+  
+  print(SumHitsFramePlot)
+  putMsg("Plot of sum of all pixel > 0 per frame",doStop=TRUE)
+  
+  print(SumHitsNotZeroThresholdFramePlot)
+  putMsg(paste("Plot of sum of all pixel with all channels > 0 and sum(RGB) >", threshold,"per frame"),doStop=TRUE)
+  
+}
+###################################################################################################
+# START CODE
+###################################################################################################
+
+isInteractive <- readline(prompt="Interactive mode[y/N] ? ")
+isFirstTimeSignal <- TRUE
+isFirstTimeNoSignal <- TRUE
+
+files <- list.files(path=dataDir,recursive=TRUE,pattern="csv$")
+
+for (myfileindex in 1:length(files)){
+  dataFile <- files[myfileindex]
+
+  fileName <- paste(dataDir,dataFile,sep = "")
+  
+  putMsg(paste("Process file:",dataFile),doStop=isInteractive == 'y')
   
   ############################
-  # Show above plots
+  # Read and create pixel
+  # structures
   ############################
   
-  print(RGBLogpixelsPlot)
-  putMsg("Logaritmic scale of occurrences of values per channel",doStop=FALSE)
+  # Read the "frameNR,index,R,G,B" file
+  pixels <- readPixels(fileName)
   
-  showPlots <- readline(prompt="Show remaining plots[y/N] ? ")
+  isFiltered <- FALSE
   
-  if ( showPlots == 'y' ){
+  if (isInteractive == 'y'){
+    filterZero <- readline(prompt="Filter out pixels with zero values in at least one of the channel[y/N] ? ")
+  }else{
+    filterZero <- 'n'
+  }
   
-    print(RGBLinpixelsPlot)
-    putMsg("Liner scale of occurrences of values per channel",doStop=TRUE)
-    
-    print(heatPropRPlot)
-    putMsg("Heatmap of Red channel values",doStop=TRUE)
-    
-    print(heatPropGPlot)
-    putMsg("Heatmap of Green channel values",doStop=TRUE)
-    
-    print(heatPropBPlot)
-    putMsg("Heatmap of Blue channel values",doStop=TRUE)
-    
-    print(heatPropRGBPlot)
-    putMsg("Heatmap of sum of all channel values",doStop=TRUE)
-    
-    print(heatBinRGBPlot)
-    putMsg("Heatmap of hits when at least one channel value is > 0",doStop=TRUE)
-    
-    print(heatBinAllRGBPlot)
-    putMsg("Heatmap of hits when all channel values are > 0",doStop=TRUE)
-    
-    print(SumValuesFramePlot)
-    putMsg("Plot of sum of all pixel values per frame",doStop=TRUE)
-    
-    print(SumHitsFramePlot)
-    putMsg("Plot of sum of all pixel > 0 per frame",doStop=TRUE)
-    
-    print(SumHitsNotZeroThresholdFramePlot)
-    putMsg(paste("Plot of sum of all pixel with all channels > 0 and sum(RGB) >", threshold,"per frame"),doStop=TRUE)
+  if (filterZero == 'y'){
+    isFiltered <- TRUE
+    pixels <- pixels[R>0 & B>0 & G>0,]
+  }
   
+  # Transform the sequential index of the pixel data structure in X,Y coordinates from (0,0) to (dimX-1,dimY-1)
+  pixelsXY <- createPixelsXY(pixels)
+  
+  # print pearson correlation of the channels
+  putMsg("Pearson correlation",FALSE)
+  print(cor(pixels[,3:5],use="all.obs",method="pearson" ))
+  putMsg(NULL,isEnd=TRUE)
+  
+  thresholdMatrix <- doDelta(pixelsXY,isInteractive)
+  
+  setnames(thresholdMatrix,old = "hits", new = paste("hits",dataFile,sep = "."))
+  
+  if (nrow(thresholdMatrix) > 50){
+    putMsg(paste("File:",dataFile,"seems to contain signal"),doStop=isInteractive == 'y')
+    if (isFirstTimeSignal){
+      isFirstTimeSignal <- FALSE
+      signalThresholdMatrix <- thresholdMatrix
+    }else{
+      signalThresholdMatrix <- thresholdMatrix[signalThresholdMatrix]
+    }
+    
+  }else{
+    putMsg(paste("File:",dataFile,"does not seem to contain signal"),doStop=isInteractive == 'y')
+    if (isFirstTimeNoSignal){
+      isFirstTimeNoSignal <- FALSE
+      noSignalThresholdMatrix <- thresholdMatrix
+    }else{
+      noSignalThresholdMatrix <- thresholdMatrix[noSignalThresholdMatrix]
+    }
+  }
+  
+  #stop("ciao")
+  ############################
+  # Calculate occurrences of 
+  # values per channel
+  ############################
+  
+  if (isInteractive == 'y'){
+    question <- readline(prompt="Calculate occurrences of RGB values[y/N] ? ")
+  }else{
+    question <- 'n'
+  }
+  
+  if ( question == 'y' ){
+    RGBpixels <- countOccurrences(pixels)
+  }
+
+  ############################
+  # Calculate heatpmaps of 
+  # pixels > 0
+  ############################
+  
+  
+  if (isInteractive == 'y'){
+    question <- readline(prompt="Calculate heatmaps of RGB values[y/N] ? ")
+  }else{
+    question <- 'n'
+  }
+  
+  if ( question == 'y' ){
+    calculateHeatMaps(pixelsXY)
+  }
+  
+  ############################
+  # Calculate noisy borders
+  ############################
+  
+  if (isInteractive == 'y'){
+    question <- readline(prompt="Calculate noisy borders[y/N] ? ")
+  }else{
+    question <- 'n'
+  }
+  
+  if ( question == 'y' ){
+    calculateNoisyBorders(pixelsXY)
+  }
+  
+  ############################
+  # Calculate values per frame
+  ############################
+  
+  if (isInteractive == 'y'){
+    question <- readline(prompt="Calculate frame energy[y/N] ? ")
+  }else{
+    question <- 'n'
+  }
+  
+  if ( question == 'y' ){
+    calculateFrameEnergy(pixels)
   }
 }
+
+for (j in seq_len(ncol(signalThresholdMatrix))){
+  set(signalThresholdMatrix,which(is.na(signalThresholdMatrix[[j]])),j,0)
+}
+
+stretchedTable <- melt(signalThresholdMatrix,id.vars="threshold",variable.name="filename",value.name="hits",
+                       variable.factor=FALSE)
+print(ggplot(data=stretchedTable,aes(x=threshold,y=hits)) + 
+  geom_line(aes(colour=filename)) + coord_cartesian(xlim = c(30, 80), ylim = c(0,100)))
+
+putMsg("Plot of hits versus signal in case of signal", doStop=TRUE)
+
+for (j in seq_len(ncol(noSignalThresholdMatrix))){
+  set(noSignalThresholdMatrix,which(is.na(noSignalThresholdMatrix[[j]])),j,0)
+}
+
+stretchedTable <- melt(noSignalThresholdMatrix,id.vars="threshold",variable.name="filename",value.name="hits",
+                       variable.factor=FALSE)
+print(ggplot(data=stretchedTable,aes(x=threshold,y=hits)) + 
+  geom_line(aes(colour=filename)) + coord_cartesian(xlim = c(0, 50), ylim = c(0,100)))
+
+putMsg("Plot of hits versus signal in case of NO signal", doStop=TRUE)
+

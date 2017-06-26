@@ -1,4 +1,4 @@
-doDelta <- function (pixelsXY){
+doDelta <- function (pixelsXY,isInteractive){
   
   my_pixelXY <- pixelsXY[,c(3:7)]
   firstValue <- my_pixelXY[,max(R),by=c("coordX","coordY")]
@@ -29,22 +29,27 @@ doDelta <- function (pixelsXY){
   maxDiff <- max(diffOccur$value)
   minDiff <- max(min(diffOccur$value),1)
   
-  thresholdMatrix <- data.table(threshold=rep(0,maxDiff-minDiff+1),hits=rep(0,maxDiff-minDiff+1),key="threshold")
+  thresholdMatrix <- data.table(threshold=rep(0,maxDiff-minDiff+1),hits=rep(0,maxDiff-minDiff+1))
   
   for (i in minDiff:maxDiff){
-    thresholdMatrix[i,1] <- i
-    thresholdMatrix[i,2] <- diffOccur[value>=i,sum(N)]
+    thresholdMatrix[i, threshold := i]
+    thresholdMatrix[i, hits := diffOccur[value>=i,sum(N)] ]
   }
   
-  my_title <- paste("Thresholds versus hits for file ",dataFile,", filter is ",isFiltered, sep="")
-  
-  thresholdPlot <- ggplot(data=thresholdMatrix,aes(x=threshold)) + 
-    geom_line(aes(y=hits)) + xlab("Threshold") + ylab("Hits") +
-    ggtitle(my_title) + coord_cartesian(xlim = c(0, 100), ylim = c(0,100)) 
-  
-  print(thresholdPlot)
-  
-  putMsg(my_title,doStop=TRUE)
+  setkey(thresholdMatrix,threshold)
+
+# Rene/frameData2017-06-15T08-47-05.398Z.csv
+  if (isInteractive == 'y'){
+    my_title <- paste("Thresholds versus hits for file ",dataFile,", filter is ",isFiltered, sep="")
+    
+    thresholdPlot <- ggplot(data=thresholdMatrix,aes(x=threshold)) + 
+      geom_line(aes(y=hits)) + xlab("Threshold") + ylab("Hits") +
+      ggtitle(my_title) + coord_cartesian(xlim = c(0, 100), ylim = c(0,100)) 
+    
+    print(thresholdPlot)
+    
+    putMsg(my_title,doStop=TRUE)
+  }
   
   return(thresholdMatrix)
   
