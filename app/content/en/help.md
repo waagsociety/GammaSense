@@ -1,5 +1,5 @@
 ---
-title: Wat betekent locatiebepaling?
+title: What does location mean?
 ---
 
-Als het goed is kan de applicatie uitlezen waar je de meting doet. Op die manier kan de meting op de kaart worden gezet zodat deze van waarde kan worden in een groter meetnetwerk. Vind je het vervelend om je locatie te delen, dan is het helaas niet mogelijk om de meting goed uit te kunnen voeren.
+If the application works correctly, it can read where you do the measurement. This way the measurement can be placed on the map so that it can become valuable in a larger measurement network. If you're not comfertable to share your location, then unfortunately it's not yet possible to perform the measurement.
