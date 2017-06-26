@@ -1,5 +1,5 @@
 ---
-title: Wat is CPM?
+title: What is CPM?
 ---
 
-CPM is een afkorting die staat voor Counts Per Minute: het aantal deeltjes dat per minuut is waargenomen. CPM is een standaard-maat die dient als input om te bepalen in welke mate iemand wordt blootgesteld aan straling.
+CPM stands for Counts Per Minute: The number of particles observed per minute. CPM is a standard size that serves as an input to determine to what extent someone is exposed to radiation.
