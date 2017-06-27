@@ -26,7 +26,8 @@ doDelta <- function (pixelsXY,isInteractive){
   # Create a data.table from a vector form of the differences and immediately count the occurrences of each difference
   diffOccur <- data.table(value=auxTable[, c(R1-R2,G1-G2,B1-B2)],key="value")[,.N,by=value]
   
-  maxDiff <- max(diffOccur$value)
+  # get also a terminating zero value adding 1 to maxDiff
+  maxDiff <- max(diffOccur$value) + 1
   minDiff <- max(min(diffOccur$value),1)
   
   thresholdMatrix <- data.table(threshold=rep(0,maxDiff-minDiff+1),hits=rep(0,maxDiff-minDiff+1))

@@ -112,7 +112,7 @@ countOccurrences <- function(pixels){
     ylab("Hits")
   
   print(RGBLogpixelsPlot)
-  putMsg("Logaritmic scale of occurrences of values per channel",doStop=FALSE)
+  putMsg("Logaritmic scale of occurrences of values per channel",doStop=TRUE)
   
   print(RGBLinpixelsPlot)
   putMsg("Liner scale of occurrences of values per channel",doStop=TRUE)
@@ -237,11 +237,24 @@ calculateFrameEnergy <- function(pixels){
 # START CODE
 ###################################################################################################
 
+
+question <- readline(prompt="Scan all files[y/N] ? ")
+if ( question == 'y' ){
+  files <- list.files(path=dataDir,recursive=TRUE,pattern="csv$")
+}else{
+  files <- c("Rene/frameData2017-06-15T08-43-46.495Z.csv","Stefano/frameData2017-06-15T08-57-11.636Z.csv","Nathan/frameData2017-06-15T09-09-26.753Z.csv")
+}
+
+question <- readline(prompt="Threshold value[50]? ")
+if ( question == '' ){
+  signalThreshold <- 50
+}else{
+  signalThreshold <- as.integer(question)
+}
+
 isInteractive <- readline(prompt="Interactive mode[y/N] ? ")
 isFirstTimeSignal <- TRUE
 isFirstTimeNoSignal <- TRUE
-
-files <- list.files(path=dataDir,recursive=TRUE,pattern="csv$")
 
 for (myfileindex in 1:length(files)){
   dataFile <- files[myfileindex]
@@ -283,13 +296,13 @@ for (myfileindex in 1:length(files)){
   
   setnames(thresholdMatrix,old = "hits", new = paste("hits",dataFile,sep = "."))
   
-  if (nrow(thresholdMatrix) > 50){
-    putMsg(paste("File:",dataFile,"seems to contain signal"),doStop=isInteractive == 'y')
+  if (nrow(thresholdMatrix) > signalThreshold){
+    putMsg(paste("File:",dataFile,"seems to contain signal"),doStop=(isInteractive == 'y'))
     if (isFirstTimeSignal){
       isFirstTimeSignal <- FALSE
       signalThresholdMatrix <- thresholdMatrix
     }else{
-      signalThresholdMatrix <- thresholdMatrix[signalThresholdMatrix]
+      signalThresholdMatrix <- merge(thresholdMatrix,signalThresholdMatrix,all=TRUE)
     }
     
   }else{
@@ -298,7 +311,7 @@ for (myfileindex in 1:length(files)){
       isFirstTimeNoSignal <- FALSE
       noSignalThresholdMatrix <- thresholdMatrix
     }else{
-      noSignalThresholdMatrix <- thresholdMatrix[noSignalThresholdMatrix]
+      noSignalThresholdMatrix <- merge(thresholdMatrix,noSignalThresholdMatrix,all=TRUE)
     }
   }
   
@@ -363,25 +376,34 @@ for (myfileindex in 1:length(files)){
   }
 }
 
-for (j in seq_len(ncol(signalThresholdMatrix))){
-  set(signalThresholdMatrix,which(is.na(signalThresholdMatrix[[j]])),j,0)
+############################
+# Show threshold vs hits
+############################
+
+if (exists("signalThresholdMatrix")){
+  
+  for (j in seq_len(ncol(signalThresholdMatrix))){
+    set(signalThresholdMatrix,which(is.na(signalThresholdMatrix[[j]])),j,0)
+  }
+  
+  stretchedTable <- melt(signalThresholdMatrix,id.vars="threshold",variable.name="filename",value.name="hits",
+                         variable.factor=FALSE)
+  print(ggplot(data=stretchedTable,aes(x=threshold,y=hits)) + 
+    geom_line(aes(colour=filename)) + coord_cartesian(xlim = c(signalThreshold-15, 200), ylim = c(0,100)))
+  
+  putMsg("Plot of hits versus signal in case of signal", doStop=TRUE)
 }
 
-stretchedTable <- melt(signalThresholdMatrix,id.vars="threshold",variable.name="filename",value.name="hits",
-                       variable.factor=FALSE)
-print(ggplot(data=stretchedTable,aes(x=threshold,y=hits)) + 
-  geom_line(aes(colour=filename)) + coord_cartesian(xlim = c(30, 80), ylim = c(0,100)))
-
-putMsg("Plot of hits versus signal in case of signal", doStop=TRUE)
-
-for (j in seq_len(ncol(noSignalThresholdMatrix))){
-  set(noSignalThresholdMatrix,which(is.na(noSignalThresholdMatrix[[j]])),j,0)
+if (exists("noSignalThresholdMatrix")){
+    
+  for (j in seq_len(ncol(noSignalThresholdMatrix))){
+    set(noSignalThresholdMatrix,which(is.na(noSignalThresholdMatrix[[j]])),j,0)
+  }
+  
+  stretchedTable <- melt(noSignalThresholdMatrix,id.vars="threshold",variable.name="filename",value.name="hits",
+                         variable.factor=FALSE)
+  print(ggplot(data=stretchedTable,aes(x=threshold,y=hits)) + 
+    geom_line(aes(colour=filename)) + coord_cartesian(xlim = c(0, signalThreshold), ylim = c(0,100)))
+  
+  putMsg("Plot of hits versus signal in case of NO signal", doStop=TRUE)
 }
-
-stretchedTable <- melt(noSignalThresholdMatrix,id.vars="threshold",variable.name="filename",value.name="hits",
-                       variable.factor=FALSE)
-print(ggplot(data=stretchedTable,aes(x=threshold,y=hits)) + 
-  geom_line(aes(colour=filename)) + coord_cartesian(xlim = c(0, 50), ylim = c(0,100)))
-
-putMsg("Plot of hits versus signal in case of NO signal", doStop=TRUE)
-
