@@ -4,6 +4,10 @@
 # for i in frameData*.csv; do cat $i | sed 's/\(.*\),$/\1/g' > filt${i};done
 #
 
+# 120 CPM on the meter (for Cs137) is about 1 uSv/hr (microSievert per hour).
+# http://modernsurvivalblog.com/nuclear/radiation-geiger-counter-the-radiation-network/
+# see also http://4.bp.blogspot.com/-71gJP3qW5M0/T3qhrNSyryI/AAAAAAAAHvI/7dXRfXPFrGU/s1600/Rad+CPM+table.png
+
 library(data.table)
 library(ggplot2)
 library(scales)
