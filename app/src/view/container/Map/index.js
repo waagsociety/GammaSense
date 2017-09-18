@@ -21,8 +21,6 @@ export const Map = ({ state, dispatch }) => {
 
   return <section className='Map full content' hidden={state.sensor.active}>
 
-    console.log('xoxo')
-
     { support.webGL 
       ? <MapComponent id='MapBox' 
         accessToken={mapbox.accessToken}

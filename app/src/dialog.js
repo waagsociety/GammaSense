@@ -52,7 +52,7 @@ export default dialogue.create({
       error: {
         unknown: {
           title: "Your location could not be found",
-          message: "Location [Error message]",
+          message: "Location data is required to inquire where a measurements has been done.",
         },
       }
     },
