@@ -21,8 +21,6 @@ export const Map = ({ state, dispatch }) => {
 
   return <section className='Map full content' hidden={state.sensor.active}>
 
-    console.log('xoxo')
-
     { support.webGL 
       ? <MapComponent id='MapBox' 
         accessToken={mapbox.accessToken}
@@ -36,7 +34,7 @@ export const Map = ({ state, dispatch }) => {
             dispatch.location({ ready: true })
 
             // TEMP LOAD MAP DATA
-            var data = null
+            // var data = null
             var xhr = new XMLHttpRequest()
             xhr.withCredentials = true
             xhr.addEventListener("readystatechange", function () {
@@ -76,14 +74,14 @@ export const Map = ({ state, dispatch }) => {
                 }
               }
             })
-            xhr.open('get', "https://gammasense.org/app/sensordata?after=1494800000")
-            xhr.setRequestHeader("cache-control", "no-cache")
-            xhr.send(data)
+            // xhr.open('get', "https://gammasense.org/app/sensordata")
+            // xhr.setRequestHeader("cache-control", "no-cache")
+            // xhr.send(data)
 
           }
         }}
       />
-      : <h1 style={{ margin: '4em 1em 0' }}>webGL is not supported</h1>
+      : <h1 style={{ margin: '4em 1em 0' }}>WebGL is not supported</h1>
     }
 
     <LocationToggle events={{ requestLocation }} location={location} dialog={dialog}/>

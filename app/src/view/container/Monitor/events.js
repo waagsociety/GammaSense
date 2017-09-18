@@ -1,84 +1,83 @@
-import { geolocation, createSensor } from '../../../controller'
+import { geolocation } from '../../../controller'
+import gammaMonitor from 'gamma-monitor'
 
-const sensor = createSensor({
-  width: 480,
-  heigth: 320,
-  frameRate: 2,
-})
+const monitor = gammaMonitor()
 
 export const events = (dispatch) => {
-
-  const updateSensor = storeCPM(dispatch)
-  const onerror = error => dispatch.sensor({ error })
+  
+  monitor
+    .onStart(m => console.info('started', m))
+    .onUpdate(m => {
+      // console.log(JSON.stringify(m, null, 2))
+      dispatch.sensor(m)
+    })
+    .onStop(m => {
+      console.info(JSON.stringify(m, null, 2))
+      dispatch.sensor(m)
+    })
+    .catch(error => dispatch.sensor({ error }))
 
   return {
-
-    start: event => {
-      dispatch.sensor({ active: sensor.start(updateSensor, onerror) })
-    },
-
+    start: event => monitor.start(),
     stop: event => {
-      sensor.stop(dispatch.sensor)
-      dispatch.sensor({ cycles: [], samples: [], baseline: 0,  active: false })
+      monitor.stop()
     },
-
     prepare: event => {
       geolocation(dispatch)
     },
-  
   }
 
 }
 
-function storeCPM(dispatch) {
+// function storeCPM(dispatch) {
   
-  const cycleRate = 60
-  let baseline = Infinity
-  let peak = 0
+//   const cycleRate = 60
+//   let baseline = Infinity
+//   let peak = 0
 
-  const frames = []
-  const samples = []
-  const cycles = []
+//   const frames = []
+//   const samples = []
+//   const cycles = []
 
-  return function({ count, frameRate, width, heigth }) {
+//   return function({ count, frameRate, width, heigth }) {
     
-    frames.push(count)
-    if (frames.length >= frameRate) {
+//     frames.push(count)
+//     if (frames.length >= frameRate) {
       
-      const countPerSecond = frames.reduce(add)
-      baseline = Math.min(countPerSecond * cycleRate, baseline)     
-      frames.length = 0
+//       const countPerSecond = frames.reduce(add)
+//       baseline = Math.min(countPerSecond * cycleRate, baseline)     
+//       frames.length = 0
 
-      samples.push(countPerSecond)
+//       samples.push(countPerSecond)
       
-      dispatch.sensor({ samples })
+//       dispatch.sensor({ samples })
 
-      if (samples.length % cycleRate === 0) {
+//       if (samples.length % cycleRate === 0) {
 
-        const timestamp = Date.now()
-        const countPerMinute = samples.slice(-cycleRate).reduce(add)
-        peak = Math.max(countPerMinute, peak)
+//         const timestamp = Date.now()
+//         const countPerMinute = samples.slice(-cycleRate).reduce(add)
+//         peak = Math.max(countPerMinute, peak)
 
-        cycles.push({
-          timestamp, 
-          frameRate,
-          countPerMinute, 
-          baseline,
-          peak,
-          width, 
-          heigth,
-        })
+//         cycles.push({
+//           timestamp, 
+//           frameRate,
+//           countPerMinute, 
+//           baseline,
+//           peak,
+//           width, 
+//           heigth,
+//         })
 
-        dispatch.sensor({ cycles })
+//         dispatch.sensor({ cycles })
 
-      }
+//       }
     
-    }
+//     }
 
-  }
+//   }
 
-  function add(a, b) {
-    return a + b
-  }
+//   function add(a, b) {
+//     return a + b
+//   }
   
-}
+// }
