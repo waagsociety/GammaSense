@@ -210,9 +210,9 @@ var poll = function() {
 var storeRawData = function (frameNr, pixels){
 
   for (var i = 0; i < pixels.length; i += 4) {
-    if( pixels[i] != 0 ||
-        pixels[i+1] != 0 ||
-        pixels[i+2] != 0
+    if( pixels[i] > 0 ||
+        pixels[i+1] > 0 ||
+        pixels[i+2] > 0
     ){
       storageMatrix.push("\n" + frameNr + "," + i + "," + pixels[i] + "," + pixels[i+1] + "," + pixels[i+2]);
     }
