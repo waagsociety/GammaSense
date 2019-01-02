@@ -117,7 +117,9 @@ RadCount <-data.table(RadCount,key="time")
 p <- ggplot(data=RadCount,aes(x=time)) + 
   geom_line(aes(y = cpm, colour = "cpm")) + 
   geom_line(aes(y = cpm.n.1, colour = "cpm.n.1")) + 
-  geom_line(aes(y = cpm.n.2, colour = "cpm.n.2")) 
+  geom_line(aes(y = cpm.n.2, colour = "cpm.n.2")) +
+  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+
 
 # + scale_colour_manual(values=c("black", "orange"))
 
@@ -138,7 +140,9 @@ colnames(RefLogValues) <- c("time","nSvh")
 RefLogValues <- data.table(RefLogValues,key="time" )
 
 p <- ggplot(data=RefLogValues,aes(x=time)) + 
-  geom_line(aes(y = nSvh, colour = "nSvh"))
+  geom_line(aes(y = nSvh, colour = "nSvh")) +
+  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+
 
 print(p)
 
@@ -167,7 +171,9 @@ RadCountRefLogInterp <- merge(RadCountInterp,RefLogValuesInterp,all=TRUE)
 
 p <- ggplot(data=RadCountRefLogInterp,aes(x=time)) + 
   geom_line(aes(y = cpm, colour = "cpm")) + 
-  geom_line(aes(y = nSvh, colour = "nSvh"))
+  geom_line(aes(y = nSvh, colour = "nSvh")) +
+  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+
 
 print(p)
 
@@ -189,7 +195,8 @@ for (i in 1:len){
 
 p <- ggplot(data=step_data,aes(x=time)) + 
   geom_line(aes(y = radcount, colour = "radcount")) + 
-  geom_line(aes(y = ref, colour = "ref"))
+  geom_line(aes(y = ref, colour = "ref")) +
+  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
 
 print(p)
 
@@ -236,7 +243,9 @@ names(RadMon123) <- c("time", "CPM.1", "CPM.2", "CPM.3")
 p <- ggplot(data=RadMon123,aes(x=time)) + 
   geom_line(aes(y = CPM.1, colour = "CPM.1")) +
   geom_line(aes(y = CPM.2, colour = "CPM.2")) +
-  geom_line(aes(y = CPM.3, colour = "CPM.3"))
+  geom_line(aes(y = CPM.3, colour = "CPM.3")) +
+  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+
 
 print(p)
 
@@ -256,7 +265,9 @@ linInterp(RadMon123Interp,"CPM.3","time")
 p <- ggplot(data=RadMon123Interp,aes(x=time)) + 
   geom_line(aes(y = CPM.1, colour = "CPM.1")) +
   geom_line(aes(y = CPM.2, colour = "CPM.2")) +
-  geom_line(aes(y = CPM.3, colour = "CPM.3"))
+  geom_line(aes(y = CPM.3, colour = "CPM.3")) +
+  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+
 
 print(p)
 
@@ -288,7 +299,9 @@ p <- ggplot(data=all_RadMon,aes(x=time)) +
   geom_line(aes(y = CPM.3, colour = "CPM.3")) +
   geom_line(aes(y = SBM20, colour = "SBM20")) +
   geom_line(aes(y = SI.29BG, colour = "SI.29BG")) + 
-  geom_line(aes(y = VOLTCRAFT, colour = "VOLTCRAFT"))
+  geom_line(aes(y = VOLTCRAFT, colour = "VOLTCRAFT")) +
+  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+
 
 print(p)
 
@@ -301,7 +314,9 @@ p <- ggplot(data=all_data,aes(x=time)) +
   geom_line(aes(y = nSvh, colour = "nSvh")) +
   geom_line(aes(y = CPM.1, colour = "CPM.1")) +
   geom_line(aes(y = CPM.2, colour = "CPM.2")) +
-  geom_line(aes(y = CPM.3, colour = "CPM.3"))
+  geom_line(aes(y = CPM.3, colour = "CPM.3")) +
+  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+
 
 print(p)
 
@@ -349,7 +364,9 @@ p <- ggplot(data=all_Lode_exp_avrg,aes(x=time)) +
   geom_line(aes(y = CPM.3, colour = "CPM.3")) +
   geom_line(aes(y = SBM20, colour = "SBM20")) +
   geom_line(aes(y = SI.29BG, colour = "SI.29BG")) +
-  geom_line(aes(y = VOLTCRAFT, colour = "VOLTCRAFT"))
+  geom_line(aes(y = VOLTCRAFT, colour = "VOLTCRAFT")) +
+  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+
 
 print(p)
 
@@ -358,7 +375,9 @@ putMsg("Plot of all average RadMon and notes data from Lodewijk sensors", doStop
 p <- ggplot(data=all_Lode_exp_avrg,aes(x=time)) + 
   geom_line(aes(y = CPM.1, colour = "CPM.1")) +
   geom_line(aes(y = CPM.2, colour = "CPM.2")) +
-  geom_line(aes(y = CPM.3, colour = "CPM.3"))
+  geom_line(aes(y = CPM.3, colour = "CPM.3")) +
+  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+
 
 print(p)
 

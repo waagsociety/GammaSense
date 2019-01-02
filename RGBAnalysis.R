@@ -18,7 +18,8 @@ if(!exists("doDelta", mode="function")) source("delta.R")
 ###################################################################################################
 dimX <- 640
 dimY <- 480
-dataDir <- "/Users/SB/Documents/Waag/OO 171 Making Sense/Uitvoering/GAMMASENSE/Pilot III/ExperimentData/RIVM15-06-17/"
+#dataDir <- "/Users/SB/Documents/Waag/OO 171 Making Sense/Uitvoering/GAMMASENSE/Pilot III/ExperimentData/RIVM15-06-17/"
+dataDir <- "/Users/SB/Documents/Waag/OO 226 GammaSense/05 Uitvoering/RIVM Veldbezoek 11 Dec 2018/Data/"
 
 ###################################################################################################
 # FUNCTIONS
@@ -244,9 +245,20 @@ calculateFrameEnergy <- function(pixels){
 
 question <- readline(prompt="Scan all files[y/N] ? ")
 if ( question == 'y' ){
-  files <- list.files(path=dataDir,recursive=TRUE,pattern="csv$")
+  files <- list.files(path=dataDir,recursive=TRUE,pattern="^frameData.*csv$")
 }else{
-  files <- c("Rene/frameData2017-06-15T08-43-46.495Z.csv","Stefano/frameData2017-06-15T08-57-11.636Z.csv","Nathan/frameData2017-06-15T09-09-26.753Z.csv")
+  #files <- c("Rene/frameData2017-06-15T08-43-46.495Z.csv","Stefano/frameData2017-06-15T08-57-11.636Z.csv","Nathan/frameData2017-06-15T09-09-26.753Z.csv")
+  files <- c("frameData2018-12-11T14_01_12.247Z.csv", "frameData2018-12-11T14_02_25.057Z.csv", "frameData2018-12-11T14_03_38.171Z.csv",
+             "frameData2018-12-11T14_04_51.170Z.csv", "frameData2018-12-11T14_06_06.619Z.csv", "frameData2018-12-11T14_07_20.639Z.csv",
+             "frameData2018-12-11T14_08_34.790Z.csv", "frameData2018-12-11T14_09_48.837Z.csv", "frameData2018-12-11T14_11_02.869Z.csv",
+             "frameData2018-12-11T14_12_16.965Z.csv", "frameData2018-12-11T14_13_31.198Z.csv", "frameData2018-12-11T14_14_45.204Z.csv",
+             "frameData2018-12-11T14_15_59.326Z.csv", "frameData2018-12-11T14_17_13.517Z.csv", "frameData2018-12-11T14_18_27.486Z.csv",
+             "frameData2018-12-11T14_19_41.404Z.csv")
+             
+  files <- c("frameData2018-12-11T14_20_55.415Z.csv", "frameData2018-12-11T14_22_09.630Z.csv",
+             "frameData2018-12-11T14_23_23.900Z.csv", "frameData2018-12-11T14_24_38.036Z.csv", "frameData2018-12-11T14_25_52.064Z.csv",
+             "frameData2018-12-11T14_27_06.095Z.csv", "frameData2018-12-11T14_28_20.050Z.csv", "frameData2018-12-11T14_29_34.093Z.csv",
+             "frameData2018-12-11T14_30_48.177Z.csv")
 }
 
 question <- readline(prompt="Threshold value[50]? ")
@@ -260,9 +272,16 @@ isInteractive <- readline(prompt="Interactive mode[y/N] ? ")
 isFirstTimeSignal <- TRUE
 isFirstTimeNoSignal <- TRUE
 
-for (myfileindex in 1:length(files)){
+# create data structure to record max thresholds per hits
+lf <- length(files)
+maxThrshdOnTime <- data.table(time=rep(as.POSIXct("2000-01-01 00:00:00",format="%Y-%m-%d %H:%M:%S", tz="GMT"),lf),threshold=rep(0,lf))
+                           
+for (myfileindex in 1:lf){
   dataFile <- files[myfileindex]
 
+  filedate <- stri_match_all(dataFile,regex = "frameData(20[0-9]{2}?-[0-9]{2}?-[0-9]{2}?)T([0-9]{2}?_[0-9]{2}?_[0-9]{2}?).*")
+  maxThrshdOnTime[myfileindex,"time"] <- as.POSIXct(paste(filedate[[1]][2]," ",filedate[[1]][3],sep=""),format="%Y-%m-%d %H_%M_%S", tz="GMT")
+  
   fileName <- paste(dataDir,dataFile,sep = "")
   
   putMsg(paste("Process file:",dataFile),doStop=isInteractive == 'y')
@@ -299,6 +318,9 @@ for (myfileindex in 1:length(files)){
   thresholdMatrix <- doDelta(pixelsXY,isInteractive)
   
   setnames(thresholdMatrix,old = "hits", new = paste("hits",dataFile,sep = "."))
+  
+  # record max threshold to have hits
+  maxThrshdOnTime[myfileindex,"threshold"] <- nrow(thresholdMatrix)
   
   if (nrow(thresholdMatrix) > signalThreshold){
     putMsg(paste("File:",dataFile,"seems to contain signal"),doStop=(isInteractive == 'y'))
@@ -411,3 +433,8 @@ if (exists("noSignalThresholdMatrix")){
   
   putMsg("Plot of hits versus signal in case of NO signal", doStop=TRUE)
 }
+
+attributes(maxThrshdOnTime$time)$tzone <- "CET"
+print(ggplot(data=maxThrshdOnTime,aes(x=time,y=threshold)) + geom_line())
+
+putMsg("Plot of max threshold on time", doStop=TRUE)
