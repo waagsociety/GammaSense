@@ -11,6 +11,7 @@
 library(data.table)
 library(ggplot2)
 library(scales)
+library(stringi)
 if(!exists("doDelta", mode="function")) source("delta.R")
 
 ###################################################################################################
@@ -279,8 +280,11 @@ maxThrshdOnTime <- data.table(time=rep(as.POSIXct("2000-01-01 00:00:00",format="
 for (myfileindex in 1:lf){
   dataFile <- files[myfileindex]
 
-  filedate <- stri_match_all(dataFile,regex = "frameData(20[0-9]{2}?-[0-9]{2}?-[0-9]{2}?)T([0-9]{2}?_[0-9]{2}?_[0-9]{2}?).*")
-  maxThrshdOnTime[myfileindex,"time"] <- as.POSIXct(paste(filedate[[1]][2]," ",filedate[[1]][3],sep=""),format="%Y-%m-%d %H_%M_%S", tz="GMT")
+  filedate <- stri_match_all(dataFile,
+                    regex = ".*frameData(20[0-9]{2}?-[0-9]{2}?-[0-9]{2}?)T([0-9]{2}?)[_|-]([0-9]{2}?)[_|-]([0-9]{2}?).*")
+  maxThrshdOnTime[myfileindex,"time"] <- as.POSIXct(
+    paste(filedate[[1]][2]," ",filedate[[1]][3],":",filedate[[1]][4],":",filedate[[1]][5], sep=""),
+    format="%Y-%m-%d %H:%M:%S", tz="GMT")
   
   fileName <- paste(dataDir,dataFile,sep = "")
   
@@ -415,7 +419,10 @@ if (exists("signalThresholdMatrix")){
   stretchedTable <- melt(signalThresholdMatrix,id.vars="threshold",variable.name="filename",value.name="hits",
                          variable.factor=FALSE)
   print(ggplot(data=stretchedTable,aes(x=threshold,y=hits)) + 
-    geom_line(aes(colour=filename)) + coord_cartesian(xlim = c(signalThreshold-15, 200), ylim = c(0,100)))
+          geom_line(aes(colour=filename)) + 
+          coord_cartesian(xlim = c(signalThreshold-15, max(stretchedTable$threshold) + 10), ylim = c(0,100)) +
+          geom_vline(xintercept=signalThreshold, linetype="dashed", color = "red")
+        )
   
   putMsg("Plot of hits versus signal in case of signal", doStop=TRUE)
 }
@@ -429,12 +436,15 @@ if (exists("noSignalThresholdMatrix")){
   stretchedTable <- melt(noSignalThresholdMatrix,id.vars="threshold",variable.name="filename",value.name="hits",
                          variable.factor=FALSE)
   print(ggplot(data=stretchedTable,aes(x=threshold,y=hits)) + 
-    geom_line(aes(colour=filename)) + coord_cartesian(xlim = c(0, signalThreshold), ylim = c(0,100)))
+          geom_line(aes(colour=filename)) + 
+          coord_cartesian(xlim = c(0, max(stretchedTable$threshold) + 10), ylim = c(0,100)) +
+          geom_vline(xintercept=signalThreshold, linetype="dashed", color = "red")
+        )
   
   putMsg("Plot of hits versus signal in case of NO signal", doStop=TRUE)
 }
 
 attributes(maxThrshdOnTime$time)$tzone <- "CET"
-print(ggplot(data=maxThrshdOnTime,aes(x=time,y=threshold)) + geom_line())
+print(ggplot(data=maxThrshdOnTime,aes(x=time,y=threshold)) + geom_line() + geom_hline(yintercept=signalThreshold, linetype="dashed", color = "red"))
 
 putMsg("Plot of max threshold on time", doStop=TRUE)
