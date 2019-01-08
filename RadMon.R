@@ -1,6 +1,7 @@
 library(data.table)
 library(ggplot2)
 library(Hmisc)
+library(scales)
 
 ## FUNCTIONS ##
 
@@ -52,7 +53,7 @@ linInterp <- function(my_table,my_field,my_time){
   while( !is.na(low_pivot <- min(my_table[!is.na(get(my_field)) & get(my_time) >= high_pivot,get(my_time)]))){
     
     
-    high_pivot <- min(my_table[!is.na(get(my_field)) & get(my_time) > low_pivot, get(my_time)])
+    suppressWarnings(high_pivot <- min(my_table[!is.na(get(my_field)) & get(my_time) > low_pivot, get(my_time)]))
     
     if(is.infinite(high_pivot)){
       #browser()
@@ -72,6 +73,7 @@ linInterp <- function(my_table,my_field,my_time){
   }
 }
 
+# function used to see whether with a time shift there is a better correlation between reference and SMB20
 findOffset <- function(){
   ll <- length(all_data$nSvh)
   jumps <- ll - max(which((!is.na(all_data$nSvh))))
@@ -93,6 +95,29 @@ findOffset <- function(){
   return(which(result$corr == max(result$corr)))
 }
 
+# Add graphical items to plot
+addPlotItems <- function(g,min,xlb,ylb,tlt){
+  return( g + 
+            scale_x_datetime(date_breaks = paste(min,"min"), labels = date_format("%H:%M")) +
+            theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0)) +
+            xlab(xlb) + ylab(ylb) +
+            ggtitle(tlt) +  theme(plot.title = element_text(size = 11, face = "bold", hjust=.5))
+  )
+}
+
+# Create the (a,b) linear coefficients for scaling
+createScale <- function(x,y){
+  x_max <- max(x,na.rm=TRUE)
+  x_min <- min(x,na.rm=TRUE)
+  y_max <- max(y,na.rm=TRUE)
+  y_min <- min(y,na.rm=TRUE)
+    
+  a <- (y_max - y_min) / (x_max - x_min)
+  b <- (y_min * x_max - y_max * x_min) / (x_max - x_min)
+  return(c(a,b))      
+}
+
+
 ## CONSTANTS ##
 file_dir <- "/Users/SB/Documents/Waag/OO 226 GammaSense/05 Uitvoering/RIVM Veldbezoek 11 Dec 2018/Data/"
 
@@ -100,6 +125,7 @@ exp_START <- as.POSIXct("11/12/2018 14:35:00",format="%d/%m/%Y %H:%M:%S", tz="CE
 exp_END   <- as.POSIXct("11/12/2018 16:30:00",format="%d/%m/%Y %H:%M:%S", tz="CET")
 exp_minutes <- timeSlots(exp_START,exp_END,60)
 exp_minutes_ln <- length(exp_minutes)
+
 
 ## PROCESS RADIATION COUNTER DATA ##
 
@@ -114,18 +140,18 @@ RadCount[,"time"] <- as.POSIXct(paste(RadCount[,"date"],RadCount[,"time"]),forma
 
 RadCount <-data.table(RadCount,key="time")
 
+tlt <- "Plot of Radiation Counter data"
 p <- ggplot(data=RadCount,aes(x=time)) + 
-  geom_line(aes(y = cpm, colour = "cpm")) + 
-  geom_line(aes(y = cpm.n.1, colour = "cpm.n.1")) + 
-  geom_line(aes(y = cpm.n.2, colour = "cpm.n.2")) +
-  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+  geom_line(aes(y = cpm, colour = "cpm"),na.rm=TRUE) + geom_point(aes(y = cpm, colour = "cpm"),size=1,na.rm=TRUE) +
+  geom_line(aes(y = cpm.n.1, colour = "cpm.n.1"),na.rm=TRUE) + geom_point(aes(y = cpm.n.1, colour = "cpm.n.1"),size=1,na.rm=TRUE) + 
+  geom_line(aes(y = cpm.n.2, colour = "cpm.n.2"),na.rm=TRUE) + geom_point(aes(y = cpm.n.2, colour = "cpm.n.2"),size=1,na.rm=TRUE)
 
 
-# + scale_colour_manual(values=c("black", "orange"))
+p <- addPlotItems(p,5,"time","cpm",tlt)
 
 print(p)
 
-putMsg("Plot of Radiation Counter data", doStop=TRUE)
+putMsg(tlt, doStop=TRUE)
 
 ## PROCESS REFERENCE DATA ##
 
@@ -139,14 +165,16 @@ colnames(RefLogValues) <- c("time","nSvh")
 #RefLogValues[,"time"] <- RefLogValues[,"time"] + 12*60
 RefLogValues <- data.table(RefLogValues,key="time" )
 
+tlt <- "Plot of Reference data"
 p <- ggplot(data=RefLogValues,aes(x=time)) + 
-  geom_line(aes(y = nSvh, colour = "nSvh")) +
-  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+  geom_line(aes(y = nSvh, colour = "nSvh"),na.rm=TRUE) + geom_point(aes(y = nSvh, colour = "nSvh"),size=1,na.rm=TRUE)
 
+p <- addPlotItems(p,5,"time","nSv/h",tlt)
 
 print(p)
 
-putMsg("Plot of Reference data", doStop=TRUE)
+putMsg(tlt, doStop=TRUE)
+
 
 ## PUT TOGETHER REFERENCE DATA AND RADIATION COUNTER DATA ##
 
@@ -169,15 +197,21 @@ linInterp(RefLogValuesInterp,"nSvh","time")
 
 RadCountRefLogInterp <- merge(RadCountInterp,RefLogValuesInterp,all=TRUE)
 
-p <- ggplot(data=RadCountRefLogInterp,aes(x=time)) + 
-  geom_line(aes(y = cpm, colour = "cpm")) + 
-  geom_line(aes(y = nSvh, colour = "nSvh")) +
-  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+# scale Ref count
 
+radCountScale <- createScale(RadCountInterp$cpm,RefLogValuesInterp$nSvh)
+
+tlt <- "Plot of Reference data and Scaled Radiation Counter data with interpolation"
+p <- ggplot(data=RadCountRefLogInterp,aes(x=time)) + 
+  geom_line(aes(y = cpm * radCountScale[1] + radCountScale[2], colour = "cpm"),na.rm=TRUE) +
+  geom_line(aes(y = nSvh, colour = "nSvh"),na.rm=TRUE)
+
+p <- addPlotItems(p,5,"time","scaled cpm & nSv/h",tlt)
 
 print(p)
 
-putMsg("Plot of Reference data and Radiation Counter data with interpolation", doStop=TRUE)
+putMsg(tlt, doStop=TRUE)
+
 
 ## DIVIDE IN SLOTS ACCORDING TO THE CHANGE OF SOURCES IN THE LOG FILE ##
 
@@ -193,14 +227,18 @@ for (i in 1:len){
   
 }
 
+radCountAvrScale <- createScale(step_data$radcount,step_data$ref)
+
+tlt <- "Plot of Reference data and Scaled Radiation Counter data WITH slot averaging"
 p <- ggplot(data=step_data,aes(x=time)) + 
-  geom_line(aes(y = radcount, colour = "radcount")) + 
-  geom_line(aes(y = ref, colour = "ref")) +
-  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+  geom_line(aes(y = radcount * radCountAvrScale[1] + radCountAvrScale[2], colour = "radcount"),na.rm=TRUE) + geom_point(aes(y = radcount * radCountAvrScale[1] + radCountAvrScale[2], colour = "radcount"),size=1,na.rm=TRUE) + 
+  geom_line(aes(y = ref, colour = "ref"),na.rm=TRUE) + geom_point(aes(y = ref, colour = "ref"),size=1,na.rm=TRUE)
+
+p <- addPlotItems(p,5,"time","average scaled(cpm) & nSv/h",tlt)
 
 print(p)
 
-putMsg("Plot of Reference data and Radiation Counter data WITH slot averaging", doStop=TRUE)
+putMsg(tlt, doStop=TRUE)
 
 
 RadMon1 <- read.csv(paste(file_dir,"lodewijk.csv",sep=""), skip=1, stringsAsFactors = FALSE)
@@ -240,16 +278,17 @@ RadMon123 <- merge(RadMon123,RadMon3,all=TRUE)
 
 names(RadMon123) <- c("time", "CPM.1", "CPM.2", "CPM.3")
 
+tlt <- "Plot of all Radiation Monitor data with NO interpolation"
 p <- ggplot(data=RadMon123,aes(x=time)) + 
-  geom_line(aes(y = CPM.1, colour = "CPM.1")) +
-  geom_line(aes(y = CPM.2, colour = "CPM.2")) +
-  geom_line(aes(y = CPM.3, colour = "CPM.3")) +
-  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+  geom_line(aes(y = CPM.1, colour = "CPM.1"),na.rm=TRUE) + geom_point(aes(y = CPM.1, colour = "CPM.1"),size=1,na.rm=TRUE) +
+  geom_line(aes(y = CPM.2, colour = "CPM.2"),na.rm=TRUE) + geom_point(aes(y = CPM.2, colour = "CPM.2"),size=1,na.rm=TRUE) +
+  geom_line(aes(y = CPM.3, colour = "CPM.3"),na.rm=TRUE) + geom_point(aes(y = CPM.3, colour = "CPM.3"),size=1,na.rm=TRUE)
 
+p <- addPlotItems(p,5,"time","cpm",tlt)
 
 print(p)
 
-putMsg("Plot of all RadMon data with NO interopolation", doStop=TRUE)
+putMsg(tlt, doStop=TRUE)
 
 RadMon123Interp <- data.table(time=exp_minutes,CPM.1=as.numeric(rep(NA,exp_minutes_ln)),
                                CPM.2=as.numeric(rep(NA,exp_minutes_ln)),
@@ -262,16 +301,18 @@ linInterp(RadMon123Interp,"CPM.2","time")
 valuesPerMin(RadMon123,RadMon123Interp,"CPM.3","time")
 linInterp(RadMon123Interp,"CPM.3","time")
 
+tlt <- "Plot of all Radiation Monitor data with interpolation"
 p <- ggplot(data=RadMon123Interp,aes(x=time)) + 
-  geom_line(aes(y = CPM.1, colour = "CPM.1")) +
-  geom_line(aes(y = CPM.2, colour = "CPM.2")) +
-  geom_line(aes(y = CPM.3, colour = "CPM.3")) +
-  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+  geom_line(aes(y = CPM.1, colour = "CPM.1"),na.rm=TRUE) +
+  geom_line(aes(y = CPM.2, colour = "CPM.2"),na.rm=TRUE) +
+  geom_line(aes(y = CPM.3, colour = "CPM.3"),na.rm=TRUE)
 
+
+p <- addPlotItems(p,5,"time","interpolated cpm",tlt)
 
 print(p)
 
-putMsg("Plot of all RadMon data with interopolation", doStop=TRUE)
+putMsg(tlt, doStop=TRUE)
 #browser()
 
 # read the notes from Lodewijk
@@ -293,41 +334,72 @@ linInterp(RadMonLogInterp,"VOLTCRAFT","time")
 
 all_RadMon <- merge(RadMon123Interp,RadMonLogInterp,all=TRUE)
 
+tlt <- "Plot of all Radiation Monitor data and notes with interpolation"
+
 p <- ggplot(data=all_RadMon,aes(x=time)) + 
-  geom_line(aes(y = CPM.1, colour = "CPM.1")) +
-  geom_line(aes(y = CPM.2, colour = "CPM.2")) +
-  geom_line(aes(y = CPM.3, colour = "CPM.3")) +
-  geom_line(aes(y = SBM20, colour = "SBM20")) +
-  geom_line(aes(y = SI.29BG, colour = "SI.29BG")) + 
-  geom_line(aes(y = VOLTCRAFT, colour = "VOLTCRAFT")) +
-  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+  geom_line(aes(y = CPM.1, colour = "CPM.1"),na.rm=TRUE) +
+  geom_line(aes(y = CPM.2, colour = "CPM.2"),na.rm=TRUE) +
+  geom_line(aes(y = CPM.3, colour = "CPM.3"),na.rm=TRUE) +
+  geom_line(aes(y = SBM20, colour = "CPM.1"),linetype = "dashed",na.rm=TRUE) + 
+  geom_line(aes(y = SI.29BG, colour = "CPM.2"),linetype = "dashed",na.rm=TRUE) + 
+  geom_line(aes(y = VOLTCRAFT, colour = "CPM.3"),linetype = "dashed",na.rm=TRUE) 
 
-
+p <- addPlotItems(p,5,"time","interpolated cpm",tlt)
 print(p)
 
-putMsg("Plot of all RadMon data and notes with interpolation", doStop=TRUE)
+putMsg(tlt, doStop=TRUE)
+
 
 all_data <- merge(RadCountRefLogInterp,RadMon123Interp,all=TRUE)
 
+radMonScale <- createScale(RadMon123Interp$CPM.1,RefLogValuesInterp$nSvh)
+
+corrFields <- c("cpm","cpm.n.1","cpm.n.2","CPM.1","CPM.2","CPM.3","nSvh")
+
+tlt <- "Plot of Reference and scaled(Radiation Monitor and Radiation Counter) with interpolation"
+
 p <- ggplot(data=all_data,aes(x=time)) + 
-  geom_line(aes(y = cpm, colour = "cpm")) + 
-  geom_line(aes(y = nSvh, colour = "nSvh")) +
-  geom_line(aes(y = CPM.1, colour = "CPM.1")) +
-  geom_line(aes(y = CPM.2, colour = "CPM.2")) +
-  geom_line(aes(y = CPM.3, colour = "CPM.3")) +
-  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
-
-
-print(p)
-
-putMsg("Plot of Reference data, Radiation Counter and Radiation Monitor data with interpolation", doStop=TRUE)
-
-
-p <- rcorr(as.matrix(all_data[,c("cpm","cpm.n.1","cpm.n.2","CPM.1","CPM.2","CPM.3","nSvh")]),type="pearson")
+  geom_line(aes(y = cpm * radCountScale[1] + radCountScale[2], colour = "cpm"),na.rm=TRUE) +
+  geom_line(aes(y = nSvh, colour = "nSvh"),na.rm=TRUE) +
+  geom_line(aes(y = CPM.1 * radMonScale[1] + radMonScale[2], colour = "CPM.1"),na.rm=TRUE)
+  # geom_line(aes(y = CPM.2 * radMonScale, colour = "CPM.2"),na.rm=TRUE) +
+  # geom_line(aes(y = CPM.3 * radMonScale, colour = "CPM.3"),na.rm=TRUE)
+  
+p <- addPlotItems(p,5,"time","scaled(cpm) & nSv/h",tlt)
 
 print(p)
 
-putMsg("Correlation between all measures", doStop=TRUE)
+putMsg(tlt, doStop=TRUE)
+
+if(exists("maxThrshdOnTime")){
+  maxThrshdOnTimeInterp <- data.table(time=exp_minutes,threshold=as.numeric(rep(NA,exp_minutes_ln)),key="time")
+  valuesPerMin(maxThrshdOnTime,maxThrshdOnTimeInterp,"threshold","time")
+  linInterp(maxThrshdOnTimeInterp,"threshold","time")
+  
+  thresholdScale <- createScale(maxThrshdOnTimeInterp$threshold,RefLogValuesInterp$nSvh)
+  
+  all_data <- merge(all_data,maxThrshdOnTimeInterp)
+  corrFields <- c("cpm","cpm.n.1","cpm.n.2","CPM.1","CPM.2","CPM.3","nSvh","threshold")
+  
+  tlt <- "Plot of Reference and scaled(threshold) with interpolation"
+  
+  p <- ggplot(data=all_data,aes(x=time)) + 
+    # geom_line(aes(y = cpm * radCountScale[1] + radCountScale[2], colour = "cpm"),na.rm=TRUE) +
+    geom_line(aes(y = nSvh, colour = "nSvh"),na.rm=TRUE) +
+    # geom_line(aes(y = CPM.1 * radMonScale[1] + radMonScale[2], colour = "CPM.1"),na.rm=TRUE) +
+    #    geom_line(aes(y = CPM.2 * radMonScale, colour = "CPM.2"),na.rm=TRUE) +
+    #    geom_line(aes(y = CPM.3 * radMonScale, colour = "CPM.3"),na.rm=TRUE) +
+    geom_line(aes(y = threshold * thresholdScale[1] + thresholdScale[2], colour = "threshold"),na.rm=TRUE)
+  
+  p <- addPlotItems(p,5,"time","nSv/h & scaled(threshold)",tlt)
+  
+  print(p)
+  
+  putMsg(tlt, doStop=TRUE)
+  
+  
+}
+
 
 # calculate average over a certain time
 
@@ -342,48 +414,115 @@ if (slots[len] != exp_END){
   len <- len + 1
 }
 
+
 # allocate table
-all_Lode_exp_avrg <- data.table(time=rep(exp_START,len-1),CPM.1=rep(0,len-1),CPM.2=rep(0,len-1),CPM.3=rep(0,len-1),
-                                SBM20=rep(0,len-1),SI.29BG=rep(0,len-1),VOLTCRAFT=rep(0,len-1))
+all_data_avrg <- data.table(time=rep(exp_START,len-1),
+                            cpm=rep(0,len-1),
+                            cpm.n.1=rep(0,len-1),
+                            cpm.n.2=rep(0,len-1),
+                            nSvh=rep(0,len-1),
+                            CPM.1=rep(0,len-1),
+                            CPM.2=rep(0,len-1),
+                            CPM.3=rep(0,len-1),
+                            SBM20=rep(0,len-1),
+                            SI.29BG=rep(0,len-1),
+                            VOLTCRAFT=rep(0,len-1))
 
 
 # assign averages to intervals
 for (i in 1:(len-1)) {
-  all_Lode_exp_avrg$time[i] <- slots[i]
-  all_Lode_exp_avrg$CPM.1[i] <- all_RadMon[time >= slots[i] & time < slots[i+1] & !is.na(CPM.1), mean(CPM.1),]
-  all_Lode_exp_avrg$CPM.2[i] <- all_RadMon[time >= slots[i] & time < slots[i+1] & !is.na(CPM.2), mean(CPM.2),]
-  all_Lode_exp_avrg$CPM.3[i] <- all_RadMon[time >= slots[i] & time < slots[i+1] & !is.na(CPM.3), mean(CPM.3),]
-  all_Lode_exp_avrg$SBM20[i] <- all_RadMon[time >= slots[i] & time < slots[i+1] & !is.na(SBM20), mean(SBM20),]
-  all_Lode_exp_avrg$SI.29BG[i] <- all_RadMon[time >= slots[i] & time < slots[i+1] & !is.na(SI.29BG), mean(SI.29BG),]
-  all_Lode_exp_avrg$VOLTCRAFT[i] <- all_RadMon[time >= slots[i] & time < slots[i+1] & !is.na(VOLTCRAFT), mean(VOLTCRAFT),]
+  all_data_avrg$time[i] <- slots[i]
+  all_data_avrg$cpm[i] <- RadCount[time >= slots[i] & time < slots[i+1] & !is.na(cpm), mean(cpm),]
+  all_data_avrg$cpm.n.1[i] <- RadCount[time >= slots[i] & time < slots[i+1] & !is.na(cpm.n.1), mean(cpm.n.1),]
+  all_data_avrg$cpm.n.2[i] <- RadCount[time >= slots[i] & time < slots[i+1] & !is.na(cpm.n.2), mean(cpm.n.2),]
+  all_data_avrg$nSvh[i] <- RefLogValues[time >= slots[i] & time < slots[i+1] & !is.na(nSvh), mean(nSvh),]
+  
+  all_data_avrg$CPM.1[i] <- all_RadMon[time >= slots[i] & time < slots[i+1] & !is.na(CPM.1), mean(CPM.1),]
+  all_data_avrg$CPM.2[i] <- all_RadMon[time >= slots[i] & time < slots[i+1] & !is.na(CPM.2), mean(CPM.2),]
+  all_data_avrg$CPM.3[i] <- all_RadMon[time >= slots[i] & time < slots[i+1] & !is.na(CPM.3), mean(CPM.3),]
+  all_data_avrg$SBM20[i] <- all_RadMon[time >= slots[i] & time < slots[i+1] & !is.na(SBM20), mean(SBM20),]
+  all_data_avrg$SI.29BG[i] <- all_RadMon[time >= slots[i] & time < slots[i+1] & !is.na(SI.29BG), mean(SI.29BG),]
+  all_data_avrg$VOLTCRAFT[i] <- all_RadMon[time >= slots[i] & time < slots[i+1] & !is.na(VOLTCRAFT), mean(VOLTCRAFT),]
 }
 
-p <- ggplot(data=all_Lode_exp_avrg,aes(x=time)) + 
-  geom_line(aes(y = CPM.1, colour = "CPM.1")) +
-  geom_line(aes(y = CPM.2, colour = "CPM.2")) +
-  geom_line(aes(y = CPM.3, colour = "CPM.3")) +
-  geom_line(aes(y = SBM20, colour = "SBM20")) +
-  geom_line(aes(y = SI.29BG, colour = "SI.29BG")) +
-  geom_line(aes(y = VOLTCRAFT, colour = "VOLTCRAFT")) +
-  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+# tlt <- paste("Plot of all average Radiation Monitor and notes data, slot duration (min):", int_min)
+# 
+# p <- ggplot(data=all_data_avrg,aes(x=time)) + 
+#   geom_line(aes(y = CPM.1, colour = "CPM.1"),na.rm=TRUE) + geom_point(aes(y = CPM.1, colour = "CPM.1"),size=1,na.rm=TRUE) +
+#   geom_line(aes(y = CPM.2, colour = "CPM.2"),na.rm=TRUE) + geom_point(aes(y = CPM.2, colour = "CPM.2"),size=1,na.rm=TRUE) + 
+#   geom_line(aes(y = CPM.3, colour = "CPM.3"),na.rm=TRUE) + geom_point(aes(y = CPM.3, colour = "CPM.3"),size=1,na.rm=TRUE) +
+#   geom_line(aes(y = SBM20, colour = "CPM.1"),linetype = "dashed",na.rm=TRUE) + 
+#   geom_line(aes(y = SI.29BG, colour = "CPM.2"),linetype = "dashed",na.rm=TRUE) + 
+#   geom_line(aes(y = VOLTCRAFT, colour = "CPM.3"),linetype = "dashed",na.rm=TRUE) 
+# 
+# p <- addPlotItems(p,int_min,"time","averaged cpm",tlt)
+# 
+# print(p)
+# 
+# putMsg(tlt, doStop=TRUE)
 
+radCountAvrScale <- createScale(all_data_avrg$cpm,all_data_avrg$nSvh)
+radMonAvrScale <- createScale(all_data_avrg$CPM.1,all_data_avrg$nSvh)
+
+tlt <- paste("Plot of average Reference and scaled(Radiation Counter,Radiation Monitor), slot duration (min):", int_min)
+
+p <- ggplot(data=all_data_avrg,aes(x=time)) + 
+  geom_line(aes(y = cpm * radCountAvrScale[1] + radCountAvrScale[2], colour = "cpm"),na.rm=TRUE) + geom_point(aes(y = cpm * radCountAvrScale[1] + radCountAvrScale[2], colour = "cpm"),size=1,na.rm=TRUE) +
+  geom_line(aes(y = nSvh, colour = "nSvh"),na.rm=TRUE) + geom_point(aes(y = nSvh, colour = "nSvh"),size=1,na.rm=TRUE) +
+  geom_line(aes(y = CPM.1 * radMonAvrScale[1] + radMonAvrScale[2], colour = "CPM.1"),na.rm=TRUE) + geom_point(aes(y = CPM.1 * radMonAvrScale[1] + radMonAvrScale[2], colour = "CPM.1"),size=1,na.rm=TRUE)
+# geom_line(aes(y = CPM.2, colour = "CPM.2"),na.rm=TRUE) + geom_point(aes(y = CPM.2, colour = "CPM.2"),size=1,na.rm=TRUE) +
+# geom_line(aes(y = CPM.3, colour = "CPM.3"),na.rm=TRUE) + geom_point(aes(y = CPM.3, colour = "CPM.3"),size=1,na.rm=TRUE)
+
+p <- addPlotItems(p,int_min,"time","average cpm (scaled for RadCount) & nSv/h",tlt)
 
 print(p)
 
-putMsg("Plot of all average RadMon and notes data from Lodewijk sensors", doStop=TRUE)
+putMsg(tlt, doStop=TRUE)
 
-p <- ggplot(data=all_Lode_exp_avrg,aes(x=time)) + 
-  geom_line(aes(y = CPM.1, colour = "CPM.1")) +
-  geom_line(aes(y = CPM.2, colour = "CPM.2")) +
-  geom_line(aes(y = CPM.3, colour = "CPM.3")) +
-  scale_x_datetime(date_breaks = "5 min", labels = date_format("%H:%M")) + theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0))
+if(exists("maxThrshdOnTime")){
+  # allocate table
+  all_data_avrg <- data.table(all_data_avrg,
+                              threshold=rep(0,len-1))
+  
+  
+  # assign averages to intervals
+  for (i in 1:(len-1)) {
+    all_data_avrg$threshold[i] <- maxThrshdOnTimeInterp[time >= slots[i] & time < slots[i+1] & !is.na(threshold), mean(threshold),]
+  }
+  
+  thresholdAvrScale <- createScale(all_data_avrg$threshold,all_data_avrg$nSvh)
+  
+  tlt <- paste("Plot of average Reference, scaled(threshold), slot duration (min):", int_min)
+  
+  p <- ggplot(data=all_data_avrg,aes(x=time)) + 
+    # geom_line(aes(y = cpm * radCountAvrScale[1] + radCountAvrScale[2], colour = "cpm"),na.rm=TRUE) + geom_point(aes(y = cpm * radCountAvrScale[1] + radCountAvrScale[2], colour = "cpm"),size=1,na.rm=TRUE) +
+    geom_line(aes(y = nSvh, colour = "nSvh"),na.rm=TRUE) + geom_point(aes(y = nSvh, colour = "nSvh"),size=1,na.rm=TRUE) +
+    # geom_line(aes(y = CPM.1 * radMonAvrScale[1] + radMonAvrScale[2], colour = "CPM.1"),na.rm=TRUE) + geom_point(aes(y = CPM.1 * radMonAvrScale[1] + radMonAvrScale[2], colour = "CPM.1"),size=1,na.rm=TRUE) +
+    # geom_line(aes(y = CPM.2, colour = "CPM.2"),na.rm=TRUE) + geom_point(aes(y = CPM.2, colour = "CPM.2"),size=1,na.rm=TRUE) +
+    # geom_line(aes(y = CPM.3, colour = "CPM.3"),na.rm=TRUE) + geom_point(aes(y = CPM.3, colour = "CPM.3"),size=1,na.rm=TRUE) +
+    geom_line(aes(y = threshold * thresholdAvrScale[1] + thresholdAvrScale[2], colour = "threshold"),na.rm=TRUE) + geom_point(aes(y = threshold * thresholdAvrScale[1] + thresholdAvrScale[2], colour = "threshold"),size=1,na.rm=TRUE)
+  
+  p <- addPlotItems(p,int_min,"time","average scaled(threshold) & nSv/h",tlt)
+  
+  print(p)
+  
+  putMsg(tlt, doStop=TRUE)
+  
+  
+}
 
+p <- rcorr(as.matrix(all_data[,corrFields,with=FALSE]),type="pearson")
+#p <- rcorr(as.matrix(all_data[,c("cpm","cpm.n.1","cpm.n.2","CPM.1","CPM.2","CPM.3","nSvh")]),type="pearson")
 
 print(p)
 
-putMsg("Plot of all average RadMon data from Lodewijk sensors", doStop=TRUE)
+putMsg("Correlation between all measures", doStop=TRUE)
 
+p <- rcorr(as.matrix(all_data_avrg[,corrFields,with=FALSE]),type="pearson")
+#p <- rcorr(as.matrix(all_data[,c("cpm","cpm.n.1","cpm.n.2","CPM.1","CPM.2","CPM.3","nSvh")]),type="pearson")
 
+print(p)
 
+putMsg("Correlation between all average measures", doStop=TRUE)
 
-
+putMsg("The (happy) end!!!!", doStop=FALSE)
