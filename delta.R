@@ -1,6 +1,6 @@
 doDelta <- function (pixelsXY,isInteractive){
   
-  my_pixelXY <- pixelsXY[,c(3:7)]
+  my_pixelXY <- pixelsXY[,c("coordX","coordY","R","G","B")]
   firstValue <- my_pixelXY[,max(R),by=c("coordX","coordY")]
   firstValue <- firstValue[my_pixelXY[,max(G),by=c("coordX","coordY")]]
   firstValue <- firstValue[my_pixelXY[,max(B),by=c("coordX","coordY")]]

@@ -119,7 +119,7 @@ createScale <- function(x,y){
 
 
 ## CONSTANTS ##
-file_dir <- "/Users/SB/Documents/Waag/OO 226 GammaSense/05 Uitvoering/RIVM Veldbezoek 11 Dec 2018/Data/"
+file_dir <- "/Users/SB/Documents/Waag/OO 226 GammaSense/05 Research/RIVM Veldbezoek 11 Dec 2018/Data/"
 
 exp_START <- as.POSIXct("11/12/2018 14:35:00",format="%d/%m/%Y %H:%M:%S", tz="CET")
 exp_END   <- as.POSIXct("11/12/2018 16:30:00",format="%d/%m/%Y %H:%M:%S", tz="CET")
@@ -439,7 +439,7 @@ if(exists("maxThrshdOnTime")){
 
 # calculate average over a certain time
 
-int_min <- 4
+int_min <- 15
 slots <- timeSlots(min(all_RadMon[,time]),max(all_RadMon[,time]),int_min*60)
 
 len <- length(slots)
@@ -533,9 +533,9 @@ if(exists("maxThrshdOnTime")){
   tlt <- paste("Plot of average Reference, scaled(threshold), slot duration (min):", int_min)
   
   p <- ggplot(data=all_data_avrg,aes(x=time)) + 
-    # geom_line(aes(y = cpm * radCountAvrScale[1] + radCountAvrScale[2], colour = "cpm"),na.rm=TRUE) + geom_point(aes(y = cpm * radCountAvrScale[1] + radCountAvrScale[2], colour = "cpm"),size=1,na.rm=TRUE) +
+    geom_line(aes(y = cpm * radCountAvrScale[1] + radCountAvrScale[2], colour = "cpm"),na.rm=TRUE) + geom_point(aes(y = cpm * radCountAvrScale[1] + radCountAvrScale[2], colour = "cpm"),size=1,na.rm=TRUE) +
     geom_line(aes(y = nSvh, colour = "nSvh"),na.rm=TRUE) + geom_point(aes(y = nSvh, colour = "nSvh"),size=1,na.rm=TRUE) +
-    # geom_line(aes(y = CPM.1 * radMonAvrScale[1] + radMonAvrScale[2], colour = "CPM.1"),na.rm=TRUE) + geom_point(aes(y = CPM.1 * radMonAvrScale[1] + radMonAvrScale[2], colour = "CPM.1"),size=1,na.rm=TRUE) +
+    geom_line(aes(y = CPM.1 * radMonAvrScale[1] + radMonAvrScale[2], colour = "CPM.1"),na.rm=TRUE) + geom_point(aes(y = CPM.1 * radMonAvrScale[1] + radMonAvrScale[2], colour = "CPM.1"),size=1,na.rm=TRUE) +
     # geom_line(aes(y = CPM.2, colour = "CPM.2"),na.rm=TRUE) + geom_point(aes(y = CPM.2, colour = "CPM.2"),size=1,na.rm=TRUE) +
     # geom_line(aes(y = CPM.3, colour = "CPM.3"),na.rm=TRUE) + geom_point(aes(y = CPM.3, colour = "CPM.3"),size=1,na.rm=TRUE) +
     geom_line(aes(y = threshold * thresholdAvrScale[1] + thresholdAvrScale[2], colour = "threshold"),na.rm=TRUE) + geom_point(aes(y = threshold * thresholdAvrScale[1] + thresholdAvrScale[2], colour = "threshold"),size=1,na.rm=TRUE) +

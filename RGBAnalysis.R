@@ -20,7 +20,7 @@ if(!exists("doDelta", mode="function")) source("delta.R")
 dimX <- 640
 dimY <- 480
 #dataDir <- "/Users/SB/Documents/Waag/OO 171 Making Sense/Uitvoering/GAMMASENSE/Pilot III/ExperimentData/RIVM15-06-17/"
-dataDir <- "/Users/SB/Documents/Waag/OO 226 GammaSense/05 Uitvoering/RIVM Veldbezoek 11 Dec 2018/Data/"
+dataDir <- "/Users/SB/Documents/Waag/OO 226 GammaSense/05 Research/RIVM Veldbezoek 11 Dec 2018/Data/"
 
 ###################################################################################################
 # FUNCTIONS
@@ -70,14 +70,15 @@ readPixels <- function(fileName){
 
 createPixelsXY <- function(pixels){
   # Transform the sequential index of the pixel data structure in X,Y coordinates from (0,0) to (dimX-1,dimY-1)
+  # There are 4 values per pixel, R,G,B and alpha
   # x %% y	is modulus (x mod y), e.g. 5%%2 is 1
   # x %/% y	integer division, e.g. 5%/%2 is 2
   
   coordX <- ( pixels[,"index"] %/%4 ) %% dimX 
   coordY <- ( pixels[,"index"] %/%4 ) %/% dimX
   
-  # pixelsXY will have columns frameNR,index,coordX,coordY,R,G,B
-  pixelsXY <- data.table(pixels[,1:2],coordX=coordX[,index],coordY=coordY[,index],pixels[,3:5])
+  # pixelsXY will have columns frameNR,coordX,coordY,R,G,B
+  pixelsXY <- data.table(pixels[,1],coordX=coordX[,index],coordY=coordY[,index],pixels[,3:5])
   
   setkeyv(pixelsXY,cols=c("coordX","coordY"))
   
@@ -276,15 +277,37 @@ isFirstTimeNoSignal <- TRUE
 # create data structure to record max thresholds per hits
 lf <- length(files)
 maxThrshdOnTime <- data.table(time=rep(as.POSIXct("2000-01-01 00:00:00",format="%Y-%m-%d %H:%M:%S", tz="GMT"),lf),threshold=rep(0,lf))
-                           
+
+totalPixelsXY <- data.table(samplenr=integer(),frameNR=integer(),coordX=integer(),coordY=integer(),R=integer(),G=integer(),B=integer())
+setkeyv(totalPixelsXY,cols=c("coordX","coordY"))
+
+start_tube <- RadMon123Interp[!is.na(CPM.2),min(time),]
+end_tube <- RadMon123Interp[!is.na(CPM.2),max(time),]
+
+total_cpm <- sum(RadMon123Interp$CPM.2,na.rm=TRUE)
+
+min_cmos <- as.POSIXct("2100-01-01 16:42:18", format="%Y-%m-%d %H:%M:%S",tz="CET")
+max_cmos <- as.POSIXct("2000-01-01 16:42:18", format="%Y-%m-%d %H:%M:%S",tz="CET")
+
 for (myfileindex in 1:lf){
   dataFile <- files[myfileindex]
 
   filedate <- stri_match_all(dataFile,
                     regex = ".*frameData(20[0-9]{2}?-[0-9]{2}?-[0-9]{2}?)T([0-9]{2}?)[_|-]([0-9]{2}?)[_|-]([0-9]{2}?).*")
-  maxThrshdOnTime[myfileindex,"time"] <- as.POSIXct(
+  
+  
+  tmp_time <- as.POSIXct(
     paste(filedate[[1]][2]," ",filedate[[1]][3],":",filedate[[1]][4],":",filedate[[1]][5], sep=""),
     format="%Y-%m-%d %H:%M:%S", tz="GMT")
+  
+  if (tmp_time < min_cmos){ 
+    min_cmos <- tmp_time
+  }
+  if (tmp_time > max_cmos){ 
+    max_cmos <- tmp_time
+  }
+  
+  maxThrshdOnTime[myfileindex,"time"] <- tmp_time
   
   fileName <- paste(dataDir,dataFile,sep = "")
   
@@ -314,9 +337,11 @@ for (myfileindex in 1:lf){
   # Transform the sequential index of the pixel data structure in X,Y coordinates from (0,0) to (dimX-1,dimY-1)
   pixelsXY <- createPixelsXY(pixels)
   
+  totalPixelsXY <- rbindlist(list(totalPixelsXY,cbind(samplenr=myfileindex,pixelsXY)))
+                         
   # print pearson correlation of the channels
   putMsg("Pearson correlation",FALSE)
-  print(cor(pixels[,3:5],use="all.obs",method="pearson" ))
+  print(cor(pixels[,2:4],use="all.obs",method="pearson" ))
   putMsg(NULL,isEnd=TRUE)
   
   thresholdMatrix <- doDelta(pixelsXY,isInteractive)
@@ -324,7 +349,7 @@ for (myfileindex in 1:lf){
   setnames(thresholdMatrix,old = "hits", new = paste("hits",dataFile,sep = "."))
   
   # record max threshold to have hits
-  maxThrshdOnTime[myfileindex,"threshold"] <- nrow(thresholdMatrix)
+  maxThrshdOnTime[myfileindex,"threshold"] <- nrow(pixelsXY[R > 25 | B > 15 | G > 15 ,])
   
   if (nrow(thresholdMatrix) > signalThreshold){
     putMsg(paste("File:",dataFile,"seems to contain signal"),doStop=(isInteractive == 'y'))
@@ -405,6 +430,9 @@ for (myfileindex in 1:lf){
     calculateFrameEnergy(pixels)
   }
 }
+
+# set keys again, they seem to disappear
+setkeyv(totalPixelsXY,cols=c("coordX","coordY"))
 
 ############################
 # Show threshold vs hits
