@@ -20,6 +20,9 @@ file_dir <- "/Users/SB/Documents/Waag/OO 226 GammaSense/05 Research/RIVM Veldbez
 # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7","#000000")
 
+# Quantile filtering
+filtering <- .9999
+
 ## FUNCTIONS ##
 hourlyTimeSlots <- function(my_start,my_end,nr_hours){
   # Considering only full hours
@@ -137,6 +140,7 @@ colnames(pinto) <- c("time","pinto")
 pinto[,"time"] <- as.POSIXct(pinto[,"time"],format="%Y-%m-%d %H:%M:%S", tz="GMT")
 pinto <-data.table(pinto,key="time")
 
+
 datasets <- list(amstelveen,amsterdam,bilthoven,denhelder,groningen,gulpen,nieuwdorp,pinto)
 
 if ( 
@@ -162,7 +166,6 @@ colnames(pinto_pm) <- c("time","pinto_pm")
 pinto_pm[,"time"] <- as.POSIXct(pinto_pm[,"time"],format="%Y-%m-%d %H:%M:%S", tz="GMT")
 pinto_pm <-data.table(pinto_pm,key="time")
 
-filtering <- .9999
 
 pinto_pm$pinto_pm[pinto_pm$pinto_pm > quantile(pinto_pm$pinto_pm,probs=filtering)] <- NA
 
@@ -182,11 +185,32 @@ for (i in 1:len-1) {
   
 }
 
+uithoorn_pm <- read.csv(paste(file_dir,"polyphemus.csv",sep=""), sep=",", skip = 1 ,stringsAsFactors = FALSE)
+colnames(uithoorn_pm) <- c("time","uithoorn_pm")
+uithoorn_pm[,"time"] <- as.POSIXct(uithoorn_pm[,"time"],format="%Y-%m-%d %H:%M:%S", tz="GMT")
+uithoorn_pm <-data.table(uithoorn_pm,key="time")
 
+uithoorn_pm$uithoorn_pm[uithoorn_pm$uithoorn_pm > quantile(uithoorn_pm$uithoorn_pm,probs=filtering)] <- NA
+
+slots <- hourlyTimeSlots(min(pinto_pm[,time]),max(pinto_pm[,time]),1)
+
+len <- length(slots)
+
+# allocate table
+uithoorn_pm_avrg <- data.table(time=rep(uithoorn_pm$time[1],len-1),uithoorn_pm_avrg=rep(NA,len-1))
+
+
+# assign averages to intervals
+for (i in 1:len-1) {
+  uithoorn_pm_avrg$time[i] <- slots[i]
+  
+  uithoorn_pm_avrg$uithoorn_pm_avrg[i] <- uithoorn_pm[time >= slots[i] & time < slots[i+1] & !is.na(uithoorn_pm), mean(uithoorn_pm),]
+  
+}
 
 #pinto$pinto <- pinto$pinto*5
 
-all_data <- Reduce(function(...) merge(..., all = TRUE), list(amstelveen,amsterdam,bilthoven,denhelder,groningen,gulpen,nieuwdorp,pinto,pinto_pm_avrg))
+all_data <- Reduce(function(...) merge(..., all = TRUE), list(amstelveen,amsterdam,bilthoven,denhelder,groningen,gulpen,nieuwdorp,pinto,pinto_pm_avrg,uithoorn_pm_avrg))
 
 tlt <- "Official and Pinto measurements"
 
@@ -198,8 +222,9 @@ p <- ggplot(data=all_data,aes(x=time)) +
   geom_line(aes(y = groningen, colour = "groningen"),na.rm=TRUE) + 
   geom_line(aes(y = gulpen, colour = "gulpen"),na.rm=TRUE) + 
   geom_line(aes(y = nieuwdorp, colour = "nieuwdorp"),na.rm=TRUE) + 
-  geom_line(aes(y = pinto, colour = "pinto"),na.rm=TRUE) +
-  geom_line(aes(y = pinto_pm_avrg, colour = "pinto_pm_avrg"),na.rm=TRUE)
+#  geom_line(aes(y = pinto, colour = "pinto"),na.rm=TRUE) +
+  geom_line(aes(y = pinto_pm_avrg, colour = "pinto_pm_avrg"),na.rm=TRUE) +
+  geom_line(aes(y = uithoorn_pm_avrg, colour = "uithoorn_pm_avrg"),na.rm=TRUE)
 
 p <- addPlotItems(p,"time","hourly mean(cpm & nSv/h)",tlt)
 
@@ -212,8 +237,9 @@ tlt <- "Local Official and Pinto measurements"
 p <- ggplot(data=all_data,aes(x=time)) +
   geom_line(aes(y = amstelveen, colour = "amstelveen"),na.rm=TRUE) + 
   geom_line(aes(y = amsterdam, colour = "amsterdam"),na.rm=TRUE) + 
-  geom_line(aes(y = pinto, colour = "pinto"),na.rm=TRUE) +
-  geom_line(aes(y = pinto_pm_avrg, colour = "pinto_pm_avrg"),na.rm=TRUE)
+#  geom_line(aes(y = pinto, colour = "pinto"),na.rm=TRUE) +
+  geom_line(aes(y = pinto_pm_avrg, colour = "pinto_pm_avrg"),na.rm=TRUE) +
+  geom_line(aes(y = uithoorn_pm_avrg, colour = "uithoorn_pm_avrg"),na.rm=TRUE)
 
 p <- addPlotItems(p,"time","hourly mean(cpm & nSv/h)",tlt)
 
@@ -221,7 +247,7 @@ print(p)
 
 putMsg(tlt, doStop=TRUE)
 
-if( ! ( exists("avrg_corr_pinto") && exists("avrg_corr_amst") ) ){
+if( ! ( exists("avrg_corr_pinto") && exists("avrg_corr_amst") && exists("avrg_corr_uithoorn")) ){
   average_limit <- 24
   avrg_corr_pinto <- data.table(interval=seq(1,average_limit),amstelveen=rep(NaN,average_limit),
                           amsterdam=rep(NaN,average_limit),
@@ -230,8 +256,9 @@ if( ! ( exists("avrg_corr_pinto") && exists("avrg_corr_amst") ) ){
                           groningen=rep(NaN,average_limit),
                           gulpen=rep(NaN,average_limit),
                           nieuwdorp=rep(NaN,average_limit),
-                          pinto=rep(NaN,average_limit),
-                          pinto_pm_avrg=rep(NaN,average_limit)
+                          # pinto=rep(NaN,average_limit),
+                          pinto_pm_avrg=rep(NaN,average_limit),
+                          uithoorn_pm_avrg=rep(NaN,average_limit)
                       )
   
   avrg_corr_amst <- data.table(interval=seq(1,average_limit),amstelveen=rep(NaN,average_limit),
@@ -241,8 +268,21 @@ if( ! ( exists("avrg_corr_pinto") && exists("avrg_corr_amst") ) ){
                                 groningen=rep(NaN,average_limit),
                                 gulpen=rep(NaN,average_limit),
                                 nieuwdorp=rep(NaN,average_limit),
-                                pinto=rep(NaN,average_limit),
-                                pinto_pm_avrg=rep(NaN,average_limit)
+                                # pinto=rep(NaN,average_limit),
+                                pinto_pm_avrg=rep(NaN,average_limit),
+                                uithoorn_pm_avrg=rep(NaN,average_limit)
+  )
+  
+  avrg_corr_uithoorn <- data.table(interval=seq(1,average_limit),amstelveen=rep(NaN,average_limit),
+                               amsterdam=rep(NaN,average_limit),
+                               bilthoven=rep(NaN,average_limit),
+                               denhelder=rep(NaN,average_limit),
+                               groningen=rep(NaN,average_limit),
+                               gulpen=rep(NaN,average_limit),
+                               nieuwdorp=rep(NaN,average_limit),
+                               # pinto=rep(NaN,average_limit),
+                               pinto_pm_avrg=rep(NaN,average_limit),
+                               uithoorn_pm_avrg=rep(NaN,average_limit)
   )
   
   for( h in 1:average_limit){
@@ -259,8 +299,9 @@ if( ! ( exists("avrg_corr_pinto") && exists("avrg_corr_amst") ) ){
                                     groningen=rep(NaN,len-1),
                                     gulpen=rep(NaN,len-1),
                                     nieuwdorp=rep(NaN,len-1),
-                                    pinto=rep(NaN,len-1),
-                                    pinto_pm_avrg=rep(NaN,len-1)
+                                    # pinto=rep(NaN,len-1),
+                                    pinto_pm_avrg=rep(NaN,len-1),
+                                    uithoorn_pm_avrg=rep(NaN,len-1)
                                   )
   
   
@@ -275,8 +316,9 @@ if( ! ( exists("avrg_corr_pinto") && exists("avrg_corr_amst") ) ){
     all_nh_avrg$groningen[i]  <- all_data[time >= slots[i] & time < slots[i+1] & !is.na(groningen), mean(groningen),]
     all_nh_avrg$gulpen[i]     <- all_data[time >= slots[i] & time < slots[i+1] & !is.na(gulpen), mean(gulpen),]
     all_nh_avrg$nieuwdorp[i]  <- all_data[time >= slots[i] & time < slots[i+1] & !is.na(nieuwdorp), mean(nieuwdorp),]
-    all_nh_avrg$pinto[i]  <- all_data[time >= slots[i] & time < slots[i+1] & !is.na(pinto), mean(pinto),]
+    # all_nh_avrg$pinto[i]  <- all_data[time >= slots[i] & time < slots[i+1] & !is.na(pinto), mean(pinto),]
     all_nh_avrg$pinto_pm_avrg[i]  <- all_data[time >= slots[i] & time < slots[i+1] & !is.na(pinto_pm_avrg), mean(pinto_pm_avrg),]
+    all_nh_avrg$uithoorn_pm_avrg[i]  <- all_data[time >= slots[i] & time < slots[i+1] & !is.na(uithoorn_pm_avrg), mean(uithoorn_pm_avrg),]
     
     
   }
@@ -285,6 +327,7 @@ if( ! ( exists("avrg_corr_pinto") && exists("avrg_corr_amst") ) ){
   #browser()
   avrg_corr_pinto[h, colnames(avrg_corr_pinto[,-1]) := as.list(rc$r["pinto_pm_avrg",])]
   avrg_corr_amst[h, colnames(avrg_corr_pinto[,-1]) := as.list(rc$r["amsterdam",])]
+  avrg_corr_uithoorn[h, colnames(avrg_corr_uithoorn[,-1]) := as.list(rc$r["uithoorn_pm_avrg",])]
   }
 }
 
@@ -299,8 +342,9 @@ p <- ggplot(data=avrg_corr_pinto,aes(x=interval)) +
   geom_line(aes(y = groningen, colour = "groningen"),na.rm=TRUE) + 
   geom_line(aes(y = gulpen, colour = "gulpen"),na.rm=TRUE) + 
   geom_line(aes(y = nieuwdorp, colour = "nieuwdorp"),na.rm=TRUE) + 
-  geom_line(aes(y = pinto, colour = "pinto"),na.rm=TRUE) +
-  geom_line(aes(y = pinto_pm_avrg, colour = "pinto_pm_avrg"),na.rm=TRUE)
+  # geom_line(aes(y = pinto, colour = "pinto"),na.rm=TRUE) +
+  geom_line(aes(y = pinto_pm_avrg, colour = "pinto_pm_avrg"),na.rm=TRUE) +
+  geom_line(aes(y = uithoorn_pm_avrg, colour = "uithoorn_pm_avrg"),na.rm=TRUE)
 
 
 p <- addPlotItems(p,"avrg interval","correlation",tlt)
@@ -319,8 +363,30 @@ p <- ggplot(data=avrg_corr_amst,aes(x=interval)) +
   geom_line(aes(y = groningen, colour = "groningen"),na.rm=TRUE) + 
   geom_line(aes(y = gulpen, colour = "gulpen"),na.rm=TRUE) + 
   geom_line(aes(y = nieuwdorp, colour = "nieuwdorp"),na.rm=TRUE) + 
-  geom_line(aes(y = pinto, colour = "pinto"),na.rm=TRUE) +
-  geom_line(aes(y = pinto_pm_avrg, colour = "pinto_pm_avrg"),na.rm=TRUE)
+  # geom_line(aes(y = pinto, colour = "pinto"),na.rm=TRUE) +
+  geom_line(aes(y = pinto_pm_avrg, colour = "pinto_pm_avrg"),na.rm=TRUE) +
+  geom_line(aes(y = uithoorn_pm_avrg, colour = "uithoorn_pm_avrg"),na.rm=TRUE)
+
+
+p <- addPlotItems(p,"avrg interval","correlation",tlt)
+
+print(p)
+
+putMsg(tlt, doStop=TRUE)
+
+tlt <- "Correlations Uithoorn vs rest, at 1-24 intervals for average"
+
+p <- ggplot(data=avrg_corr_uithoorn,aes(x=interval)) +
+  geom_line(aes(y = amstelveen, colour = "amstelveen"),na.rm=TRUE) + 
+  geom_line(aes(y = amsterdam, colour = "amsterdam"),na.rm=TRUE) + 
+  geom_line(aes(y = bilthoven, colour = "bilthoven"),na.rm=TRUE) + 
+  geom_line(aes(y = denhelder, colour = "denhelder"),na.rm=TRUE) + 
+  geom_line(aes(y = groningen, colour = "groningen"),na.rm=TRUE) + 
+  geom_line(aes(y = gulpen, colour = "gulpen"),na.rm=TRUE) + 
+  geom_line(aes(y = nieuwdorp, colour = "nieuwdorp"),na.rm=TRUE) + 
+  # geom_line(aes(y = pinto, colour = "pinto"),na.rm=TRUE) +
+  geom_line(aes(y = pinto_pm_avrg, colour = "pinto_pm_avrg"),na.rm=TRUE) +
+  geom_line(aes(y = uithoorn_pm_avrg, colour = "uithoorn_pm_avrg"),na.rm=TRUE)
 
 
 p <- addPlotItems(p,"avrg interval","correlation",tlt)
@@ -342,4 +408,22 @@ p <- ggplot(data=all_data,aes(x=time)) +
 p <- addPlotItems(p,"time","cpm & nSv/h",tlt)
 
 print(p)
+
+putMsg(tlt, doStop=TRUE)
+
+relation <- lm(formula = all_data$amstelveen ~ all_data$uithoorn_pm_avrg)
+print(summary(relation))
+
+tlt <- "Fitted linear model Amstelveen ~ Uithoorn"
+
+p <- ggplot(data=all_data,aes(x=time)) +
+  geom_line(aes(y = amstelveen, colour = "amstelveen"),na.rm=TRUE) +
+  geom_line(aes(y = coefficients(relation)[2] * uithoorn_pm_avrg + coefficients(relation)[1], colour = "uithoorn_pm_avrg"),na.rm=TRUE)
+
+
+p <- addPlotItems(p,"time","cpm & nSv/h",tlt)
+
+print(p)
+
+putMsg(tlt, doStop=TRUE)
 
