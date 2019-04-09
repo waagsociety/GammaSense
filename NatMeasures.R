@@ -1,8 +1,6 @@
 library(data.table)
-library(ggplot2)
 library(Hmisc)
 library(scales)
-library(lubridate)
 #library(dplyr)
 
 # 21-12-18_09-01-19_hourly_avg_amstelveen.csv
@@ -23,20 +21,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 # Quantile filtering
 filtering <- .9999
 
-## FUNCTIONS ##
-hourlyTimeSlots <- function(my_start,my_end,nr_hours){
-  # Considering only full hours
-  my_start <- ceiling_date(my_start,"hour")
-  my_end <- floor_date(my_end,"hour")
-  slots <- my_start
-  pivot <- my_start
-
-  while(pivot <= my_end){
-    pivot <- pivot + hours(nr_hours)
-    slots <- append(slots,pivot)
-  }
-  return(slots)
-}
+if(!exists("functionLoaded", mode="logical")) source("~/Software/code/Utils/R/Utils.R")
 
 # function used to see whether with a time shift there is a better correlation between reference and SMB20
 findOffset <- function(my_reference, my_signal, max_offset){
@@ -63,38 +48,6 @@ findOffset <- function(my_reference, my_signal, max_offset){
   }
   ggplot(data=result,aes(x=shift)) + geom_line(aes(y = corr, colour = "corr")) + geom_line(aes(y = abscorr, colour = "abscorr"))
   return(result$shift[which(result$corr == max(result$corr,na.rm=TRUE))])
-}
-
-# Print message
-putMsg <- function(msg,isEnd=TRUE,doStop=FALSE){
-  
-  if(!is.null(msg)){
-    #browser()
-    out <- paste(msg)
-    my_stars <- paste(rep("*",nchar(out)+1),collapse="")
-    writeLines("\n")
-    writeLines(my_stars)
-    writeLines(out)
-    
-    if (isEnd){
-      writeLines(my_stars)
-      #      writeLines("\n")
-    }
-  }
-  if (doStop){
-    readline(prompt="Press ENTER to continue")
-  }
-}
-
-# Add graphical items to plot
-addPlotItems <- function(g,xlb,ylb,tlt){
-  return( g + 
-#            scale_x_datetime(date_breaks = paste(min,"min"), labels = date_format("%H:%M")) +
-            theme(axis.text.x = element_text(angle = 25, vjust = 1.0, hjust = 1.0)) +
-            xlab(xlb) + ylab(ylb) +
-            scale_colour_manual(values=cbPalette) +
-            ggtitle(tlt) +  theme(plot.title = element_text(size = 11, face = "bold", hjust=.5))
-  )
 }
 
 
@@ -169,7 +122,7 @@ pinto_pm <-data.table(pinto_pm,key="time")
 
 pinto_pm$pinto_pm[pinto_pm$pinto_pm > quantile(pinto_pm$pinto_pm,probs=filtering)] <- NA
 
-slots <- hourlyTimeSlots(min(pinto_pm[,time]),max(pinto_pm[,time]),1)
+slots <- hourlyTimeSlots(min(pinto_pm[,time]),max(pinto_pm[,time]))
 
 len <- length(slots)
 
@@ -192,7 +145,7 @@ uithoorn_pm <-data.table(uithoorn_pm,key="time")
 
 uithoorn_pm$uithoorn_pm[uithoorn_pm$uithoorn_pm > quantile(uithoorn_pm$uithoorn_pm,probs=filtering)] <- NA
 
-slots <- hourlyTimeSlots(min(pinto_pm[,time]),max(pinto_pm[,time]),1)
+slots <- hourlyTimeSlots(min(pinto_pm[,time]),max(pinto_pm[,time]))
 
 len <- length(slots)
 

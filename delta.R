@@ -21,7 +21,7 @@ doDelta <- function (pixelsXY,isInteractive){
   for (j in seq_len(ncol(auxTable))){
     set(auxTable,which(is.na(auxTable[[j]])),j,0)
   }
-  
+  browser()
   
   # Create a data.table from a vector form of the differences and immediately count the occurrences of each difference
   diffOccur <- data.table(value=auxTable[, c(R1-R2,G1-G2,B1-B2)],key="value")[,.N,by=value]

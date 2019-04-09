@@ -250,17 +250,22 @@ if ( question == 'y' ){
   files <- list.files(path=dataDir,recursive=TRUE,pattern="^frameData.*csv$")
 }else{
   #files <- c("Rene/frameData2017-06-15T08-43-46.495Z.csv","Stefano/frameData2017-06-15T08-57-11.636Z.csv","Nathan/frameData2017-06-15T09-09-26.753Z.csv")
-  files <- c("frameData2018-12-11T14_01_12.247Z.csv", "frameData2018-12-11T14_02_25.057Z.csv", "frameData2018-12-11T14_03_38.171Z.csv",
-             "frameData2018-12-11T14_04_51.170Z.csv", "frameData2018-12-11T14_06_06.619Z.csv", "frameData2018-12-11T14_07_20.639Z.csv",
-             "frameData2018-12-11T14_08_34.790Z.csv", "frameData2018-12-11T14_09_48.837Z.csv", "frameData2018-12-11T14_11_02.869Z.csv",
-             "frameData2018-12-11T14_12_16.965Z.csv", "frameData2018-12-11T14_13_31.198Z.csv", "frameData2018-12-11T14_14_45.204Z.csv",
-             "frameData2018-12-11T14_15_59.326Z.csv", "frameData2018-12-11T14_17_13.517Z.csv", "frameData2018-12-11T14_18_27.486Z.csv",
-             "frameData2018-12-11T14_19_41.404Z.csv")
-             
-  files <- c("frameData2018-12-11T14_20_55.415Z.csv", "frameData2018-12-11T14_22_09.630Z.csv",
-             "frameData2018-12-11T14_23_23.900Z.csv", "frameData2018-12-11T14_24_38.036Z.csv", "frameData2018-12-11T14_25_52.064Z.csv",
-             "frameData2018-12-11T14_27_06.095Z.csv", "frameData2018-12-11T14_28_20.050Z.csv", "frameData2018-12-11T14_29_34.093Z.csv",
-             "frameData2018-12-11T14_30_48.177Z.csv")
+
+  # files <- c("frameData2018-12-11T14_01_12.247Z.csv", "frameData2018-12-11T14_02_25.057Z.csv", "frameData2018-12-11T14_03_38.171Z.csv",
+  #            "frameData2018-12-11T14_04_51.170Z.csv", "frameData2018-12-11T14_06_06.619Z.csv", "frameData2018-12-11T14_07_20.639Z.csv",
+  #            "frameData2018-12-11T14_08_34.790Z.csv", "frameData2018-12-11T14_09_48.837Z.csv", "frameData2018-12-11T14_11_02.869Z.csv",
+  #            "frameData2018-12-11T14_12_16.965Z.csv", "frameData2018-12-11T14_13_31.198Z.csv", "frameData2018-12-11T14_14_45.204Z.csv",
+  #            "frameData2018-12-11T14_15_59.326Z.csv", "frameData2018-12-11T14_17_13.517Z.csv", "frameData2018-12-11T14_18_27.486Z.csv",
+  #            "frameData2018-12-11T14_19_41.404Z.csv")
+  #            
+  # files <- c("frameData2018-12-11T14_20_55.415Z.csv", "frameData2018-12-11T14_22_09.630Z.csv",
+  #            "frameData2018-12-11T14_23_23.900Z.csv", "frameData2018-12-11T14_24_38.036Z.csv", "frameData2018-12-11T14_25_52.064Z.csv",
+  #            "frameData2018-12-11T14_27_06.095Z.csv", "frameData2018-12-11T14_28_20.050Z.csv", "frameData2018-12-11T14_29_34.093Z.csv",
+  #            "frameData2018-12-11T14_30_48.177Z.csv")
+  
+  # files with no signal
+  files <- c("frameData2018-12-11T13_46_27.424Z.csv", "frameData2018-12-11T13_47_40.872Z.csv", "frameData2018-12-11T13_48_54.367Z.csv",
+             "frameData2018-12-11T13_50_07.119Z.csv", "frameData2018-12-11T13_51_19.831Z.csv", "frameData2018-12-11T13_52_33.037Z.csv")
 }
 
 question <- readline(prompt="Threshold value[50]? ")
@@ -281,10 +286,10 @@ maxThrshdOnTime <- data.table(time=rep(as.POSIXct("2000-01-01 00:00:00",format="
 totalPixelsXY <- data.table(samplenr=integer(),frameNR=integer(),coordX=integer(),coordY=integer(),R=integer(),G=integer(),B=integer())
 setkeyv(totalPixelsXY,cols=c("coordX","coordY"))
 
-start_tube <- RadMon123Interp[!is.na(CPM.2),min(time),]
-end_tube <- RadMon123Interp[!is.na(CPM.2),max(time),]
-
-total_cpm <- sum(RadMon123Interp$CPM.2,na.rm=TRUE)
+# start_tube <- RadMon123Interp[!is.na(CPM.2),min(time),]
+# end_tube <- RadMon123Interp[!is.na(CPM.2),max(time),]
+# 
+# total_cpm <- sum(RadMon123Interp$CPM.2,na.rm=TRUE)
 
 min_cmos <- as.POSIXct("2100-01-01 16:42:18", format="%Y-%m-%d %H:%M:%S",tz="CET")
 max_cmos <- as.POSIXct("2000-01-01 16:42:18", format="%Y-%m-%d %H:%M:%S",tz="CET")
@@ -341,9 +346,9 @@ for (myfileindex in 1:lf){
                          
   # print pearson correlation of the channels
   putMsg("Pearson correlation",FALSE)
-  print(cor(pixels[,2:4],use="all.obs",method="pearson" ))
+  print(cor(pixels[,3:5],use="all.obs",method="pearson" ))
   putMsg(NULL,isEnd=TRUE)
-  
+  #browser()
   thresholdMatrix <- doDelta(pixelsXY,isInteractive)
   
   setnames(thresholdMatrix,old = "hits", new = paste("hits",dataFile,sep = "."))
